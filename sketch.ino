@@ -10,7 +10,8 @@ const char *password = "";
 const char *mqtt_server = "broker.hivemq.com"; // Thingspeak MQTT broker
 int port = 1883;
 
-const char *pTopic = "web/switch";
+// sub/pub
+const char *sub_lock = "web/lock"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
 
 // wifi setup through TCP/IP
 WiFiClient espClient;
@@ -50,6 +51,61 @@ byte pin_rows[ROW_NUM] = {17, 5, 18, 19};
 byte pin_column[COLUMN_NUM] = {33, 32, 35, 34};
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM);
 
+// subscribe callback
+void callback(char *topic, byte *payload, unsigned int length)
+{
+  Serial.print("Topic arrived: ");
+  Serial.println(topic);
+
+  String data = "";
+  for (int i = 0; i < length; ++i)
+  {
+    data += (char)payload[i];
+  }
+
+  Serial.print("Message: ");
+  Serial.println(data);
+
+  if (String(topic) == sub_lock)
+  {
+    if (data == "true")
+      Serial.println("Lock on");
+    else
+      Serial.println("Lock off");
+  }
+  Serial.print("----------------");
+}
+
+void reconnect()
+{
+  // if client is connected, stop reconnecting
+  while (!client.connected())
+  {
+    Serial.print("Attempting MQTT connection...");
+    // Create a random client ID as a unique identifier to avoid conflicts with other clients.
+    String clientId = "ESP32Client-";
+    clientId += String(random(0xffff), HEX);
+
+    if (client.connect(clientId.c_str()))
+    {
+      Serial.println(" connected");
+      lcd.clear();
+      lcd.print("connected");
+
+      // once connected, do publish/subscribe
+      client.subscribe(sub_lock);
+    }
+    else
+    {
+      Serial.print("failed");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 5 seconds before retrying
+      delay(5000);
+    }
+  }
+}
+
 void setupWifi()
 {
   Serial.println("Connecting to ");
@@ -83,9 +139,16 @@ void setup()
   lcd.backlight();
 
   setupWifi();
+  client.setServer(mqtt_server, port);
+  client.setCallback(callback);
   // set up other devices down here
 }
 
 void loop()
 {
+  // always check if client is disconnected, reconnect
+  if (!client.connected())
+    reconnect();
+
+  client.loop(); // like socket listen: listening to notifications (subscription)
 }
