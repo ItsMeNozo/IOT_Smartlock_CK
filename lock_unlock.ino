@@ -88,14 +88,10 @@ void LED_RBG_BACK(){
 }
 void lock_unlock(){
   int button_01 = digitalRead(Button_01_pin);
-  Serial.println(button_01);
   int button_02 = digitalRead(Button_02_pin);
-  Serial.println(button_02);
   BUTTON_02(button_02);
   BUTTON_01(button_01);
   LED_RBG_BACK();
-  Serial.println('\n');
-  delay(1000);
 }
 void BUTTON_01(int button_01){
   if (Pass_sucess){
