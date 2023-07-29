@@ -1,8 +1,8 @@
-#include <LiquidCrystal_I2C.h>
+#include "PubSubClient.h" // MQTT
+#include "WiFi.h"					// for ESP32
 #include <ESP32Servo.h>
 #include <Keypad.h>
-#include "WiFi.h"					// for ESP32
-#include "PubSubClient.h" // MQTT
+#include <LiquidCrystal_I2C.h>
 
 // simulate connecting to internet through WIFI using ESP32
 const char *ssid = "Wokwi-GUEST";
@@ -22,8 +22,8 @@ PubSubClient client(wifiClient);
 // buzzer
 #define Buzzer_pin 23
 // button
-#define Button_01_pin 16
-#define Button_02_pin 39
+#define outerButtonPin 16
+#define innerButtonPin 39
 // light
 #define light_sensor 36
 // Ultrasonic Distance Sensor
@@ -55,7 +55,7 @@ Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_N
 
 Servo servo;
 bool isPressing_01 = false, isPressing_02 = false;
-bool Pass_sucess = false, isClose = false, isLock = false;
+bool Pass_sucess = true;
 int degree = 0;
 
 void setup()
@@ -75,8 +75,8 @@ void setup()
 	// set up other devices down here
 	servo.attach(servo_pin, 500, 2400);
 	servo.write(degree);
-	pinMode(Button_01_pin, INPUT);
-	pinMode(Button_02_pin, INPUT);
+	pinMode(outerButtonPin, INPUT);
+	pinMode(innerButtonPin, INPUT);
 	// ultrasonic
 	pinMode(trig_pin, OUTPUT);
 	pinMode(echo_pin, INPUT);
@@ -86,7 +86,6 @@ void setup()
 	pinMode(PIN_BLUE_02, OUTPUT);
 }
 
-// get distance
 int Ultrasonic()
 {
 	digitalWrite(trig_pin, HIGH);
@@ -96,10 +95,9 @@ int Ultrasonic()
 	int distance_cm = 0.017 * duration_us;
 	return distance_cm;
 }
-
 void LED_RBG_BACK()
 {
-	if (isLock)
+	if (isLocked())
 	{
 		analogWrite(PIN_RED_02, 0);
 		analogWrite(PIN_GREEN_02, 255);
@@ -114,76 +112,113 @@ void LED_RBG_BACK()
 }
 void lock_unlock()
 {
-	int button_01 = digitalRead(Button_01_pin);
-	int button_02 = digitalRead(Button_02_pin);
-	BUTTON_02(button_02);
-	BUTTON_01(button_01);
+	int outerButtonState = digitalRead(outerButtonPin);
+	int innerButtonState = digitalRead(innerButtonPin);
+	handleInnterButton(innerButtonState);
+	handleOuterButton(outerButtonState);
 	LED_RBG_BACK();
+	// int switchState = data.switchState;
+	// handleOuterButton(switchState, true);
 }
 
 void lock()
 {
-	isLock = true;
 	degree = 180;
 	servo.write(degree);
 }
 
 void unlock()
 {
-	isLock = false;
 	degree = 0;
 	servo.write(degree);
 }
-// button outside the door
-void BUTTON_01(int button_01)
+
+bool isClosed()
 {
-	if (Pass_sucess)
+	int distance = Ultrasonic();
+	return distance <= distance_lock;
+}
+bool isLocked()
+{
+	return degree == 180;
+}
+void remoteButton()
+{
+	if (switched == 1)
+		BUTTON_01(buttonSt, true);
+}
+// button outside the door
+void handleOuterButton(int buttonState, bool openFromWeb)
+{
+	// LOCK THE DOOR
+	if (isLocked())
 	{
-		int distance = Ultrasonic();
-		if (distance > distance_lock)
+		if (buttonState == HIGH && isPressing_01 == false)
 		{
-			// gửi tín hiệu về serve
-			Serial.println("Please close the door");
-
-			isClose = false; // supposed to return here? not set it to false
+			if (isClosed())
+				lock();
+			else
+			{
+				if (openFromWeb)
+				{
+					// send back to channel for node red to display notification
+				}
+				else
+				{
+					// lcd displays Please close the door
+					Serial.println("Please close the door");
+				}
+			}
 		}
-		// LOCK THE DOOR
-		if (button_01 == HIGH && degree == 0 && isPressing_01 == false && isClose == true)
-			lock();
-		// UNLOCK THE DOOR
-		else if (button_01 == HIGH && degree == 180 && isPressing_01 == false)
-			unlock();
-
-		if (button_01 == HIGH)
-			isPressing_01 = true;
-		if (button_01 == LOW)
-			isPressing_01 = false;
 	}
+	else
+	{
+		// UNLOCK THE DOOR
+		if (Pass_sucess)
+		{
+			// Access accepted
+			if (buttonState == HIGH && isPressing_01 == false)
+			{
+				unlock();
+			}
+		}
+		else
+		{
+			// LCD displays Access denied
+		}
+	}
+
+	if (buttonState == HIGH)
+		isPressing_01 = true;
+	if (buttonState == LOW)
+		isPressing_01 = false;
 }
 
 // button inside the door
-void BUTTON_02(int button_02)
+void handleInnerButton(int buttonState)
 {
-	int distance = Ultrasonic();
-	if (distance > distance_lock)
-	{
-		// gửi tín hiệu về
-		Serial.println("Please close the door");
-		isClose = false; // same bug as above
-	}
 	// LOCK THE DOOR
-	if (button_02 == HIGH && degree == 0 && isPressing_02 == false && isClose == true)
-		lock();
-
-	// UNLOCK THE DOOR
-	else if (button_02 == HIGH && degree == 180 && isPressing_02 == false)
+	if (isLocked())
 	{
-		unlock();
+		if (buttonState == HIGH && isPressing_01 == false && isClosed())
+		{
+			lock();
+		}
 	}
-	if (button_02 == HIGH)
-		isPressing_02 = true;
-	if (button_02 == LOW)
-		isPressing_02 = false;
+	else
+	{
+		// UNLOCK THE DOOR
+		if (buttonState == HIGH && isPressing_01 == false)
+		{
+
+			unlock();
+		}
+	}
+
+	if (buttonState == HIGH)
+		isPressing_01 = true;
+	if (buttonState == LOW)
+		isPressing_01 = false;
 }
 
 // subscribe callback
