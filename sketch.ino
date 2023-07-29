@@ -139,7 +139,7 @@ void handleOuterButton(bool openFromWeb) {
         }
     } else {
         // UNLOCK THE DOOR
-        if (Pass_success) {
+        if (Pass_success || openFromWeb) {
             // Access accepted
             unlock();
         } else {
