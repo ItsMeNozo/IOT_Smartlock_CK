@@ -54,8 +54,8 @@ byte pin_column[COLUMN_NUM] = {33, 32, 35, 34};
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM);
 
 Servo servo;
-bool isPressing_01 = false, isPressing_02 = false;
-bool Pass_sucess = true;
+bool Pass_success = true;
+bool isOuterPressing = false, isInnerPressing = false;
 int degree = 0;
 
 void setup()
@@ -110,16 +110,6 @@ void LED_RBG_BACK()
 		analogWrite(PIN_BLUE_02, 0);
 	}
 }
-void lock_unlock()
-{
-	int outerButtonState = digitalRead(outerButtonPin);
-	int innerButtonState = digitalRead(innerButtonPin);
-	handleInnterButton(innerButtonState);
-	handleOuterButton(outerButtonState);
-	LED_RBG_BACK();
-	// int switchState = data.switchState;
-	// handleOuterButton(switchState, true);
-}
 
 void lock()
 {
@@ -142,83 +132,70 @@ bool isLocked()
 {
 	return degree == 180;
 }
-void remoteButton()
-{
-	if (switched == 1)
-		BUTTON_01(buttonSt, true);
-}
 // button outside the door
-void handleOuterButton(int buttonState, bool openFromWeb)
+void handleOuterButton(bool openFromWeb)
 {
 	// LOCK THE DOOR
-	if (isLocked())
+	if (!isLocked())
 	{
-		if (buttonState == HIGH && isPressing_01 == false)
+		if (isClosed())
+			lock();
+		else
 		{
-			if (isClosed())
-				lock();
+			if (openFromWeb)
+			{
+				// send back to channel for node red to display notification
+			}
 			else
 			{
-				if (openFromWeb)
-				{
-					// send back to channel for node red to display notification
-				}
-				else
-				{
-					// lcd displays Please close the door
-					Serial.println("Please close the door");
-				}
+				// lcd displays Please close the door
+				Serial.println("Please close the door");
 			}
 		}
 	}
 	else
 	{
 		// UNLOCK THE DOOR
-		if (Pass_sucess)
+		if (Pass_success)
 		{
 			// Access accepted
-			if (buttonState == HIGH && isPressing_01 == false)
-			{
-				unlock();
-			}
+			unlock();
 		}
 		else
 		{
 			// LCD displays Access denied
 		}
 	}
-
-	if (buttonState == HIGH)
-		isPressing_01 = true;
-	if (buttonState == LOW)
-		isPressing_01 = false;
 }
 
 // button inside the door
-void handleInnerButton(int buttonState)
+void handleInnerButton()
 {
 	// LOCK THE DOOR
-	if (isLocked())
+	if (!isLocked())
 	{
-		if (buttonState == HIGH && isPressing_01 == false && isClosed())
-		{
-			lock();
-		}
+		lock();
 	}
 	else
 	{
 		// UNLOCK THE DOOR
-		if (buttonState == HIGH && isPressing_01 == false)
-		{
-
-			unlock();
-		}
+		unlock();
 	}
+}
 
-	if (buttonState == HIGH)
-		isPressing_01 = true;
-	if (buttonState == LOW)
-		isPressing_01 = false;
+void lock_unlock()
+{
+	int outerButtonState = digitalRead(outerButtonPin);
+	int innerButtonState = digitalRead(innerButtonPin);
+	if (outerButtonState && !isOuterPressing)
+		handleOuterButton(false);
+	if (innerButtonState && !isInnerPressing)
+		handleInnerButton();
+	LED_RBG_BACK();
+	isOuterPressing = outerButtonState;
+	isInnerPressing = innerButtonState;
+	// int switchState = data.switchState;
+	// handleOuterButton(switchState, true);
 }
 
 // subscribe callback
@@ -323,5 +300,5 @@ void loop()
 	// devices
 	lock_unlock();
 
-	delay(3000);
+	delay(100);
 }
