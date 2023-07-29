@@ -52,6 +52,7 @@ char keys[ROW_NUM][COLUMN_NUM] = {
 byte pin_rows[ROW_NUM] = {17, 5, 18, 19};
 byte pin_column[COLUMN_NUM] = {33, 32, 35, 34};
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM);
+Servo myservo;
 
 // COPY TỪ ĐÂY
 Servo servo;
@@ -257,6 +258,19 @@ void wifiConnect()
   Serial.println("WiFi connected");
 
   lcd.print("Connected");
+}
+
+void setupWifi()
+{
+  Serial.print("Connecting to ");
+  Serial.print(ssid);
+
+  lcd.setCursor(0, 0);
+  lcd.print("Connecting to ");
+  lcd.setCursor(0, 1);
+  lcd.print("WIFI. ");
+
+  wifiConnect();
 }
 
 void setupWifi()
