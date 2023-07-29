@@ -1,5 +1,5 @@
-#include "PubSubClient.h" // MQTT
-#include "WiFi.h"         // for ESP32
+// #include "PubSubClient.h" // MQTT
+// #include "WiFi.h"         // for ESP32
 #include <ESP32Servo.h>
 #include <Keypad.h>
 #include <LiquidCrystal_I2C.h>
@@ -14,8 +14,8 @@ int port = 1883;
 const char *sub_lock = "web/lock"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
 const char *pub_lock = "web/lock_stat";
 // wifi setup through TCP/IP
-WiFiClient wifiClient;
-PubSubClient client(wifiClient);
+// WiFiClient wifiClient;
+// PubSubClient client(wifiClient);
 
 #define ROW_NUM 4
 #define COLUMN_NUM 4
@@ -54,8 +54,8 @@ byte pin_column[COLUMN_NUM] = {33, 32, 35, 34};
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM);
 
 Servo servo;
-bool isPressing = false, isPressing_02 = false;
 bool Pass_success = true;
+bool isOuterPressing = false, isInnerPressing = false;
 int degree = 0;
 
 void setup() {
@@ -66,10 +66,10 @@ void setup() {
     lcd.backlight();
 
     // wifi
-    setupWifi();
-    client.setServer(mqtt_server, port);
-    client.setCallback(callback);
-    client.setKeepAlive(90); // if client does not send any data to broker within 60-sec interval, disconnect
+    // setupWifi();
+    // client.setServer(mqtt_server, port);
+    // client.setCallback(callback);
+    // client.setKeepAlive(90); // if client does not send any data to broker within 60-sec interval, disconnect
 
     // set up other devices down here
     servo.attach(servo_pin, 500, 2400);
@@ -123,157 +123,142 @@ bool isLocked() {
     return degree == 180;
 }
 // button outside the door
-void handleOuterButton(int buttonState, bool openFromWeb) {
+void handleOuterButton(bool openFromWeb) {
     // LOCK THE DOOR
-    if (isLocked()) {
-        if (buttonState == HIGH && isPressing == false) {
-            if (isClosed())
-                lock();
-            else {
-                if (openFromWeb) {
-                    // send back to channel for node red to display notification
+    if (!isLocked()) {
+        if (isClosed())
+            lock();
+        else {
+            if (openFromWeb) {
+                // send back to channel for node red to display notification
 
-                } else {
-                    // lcd displays Please close the door
-                    Serial.println("Please close the door");
-                }
+            } else {
+                // lcd displays Please close the door
+                Serial.println("Please close the door");
             }
         }
     } else {
         // UNLOCK THE DOOR
         if (Pass_success) {
             // Access accepted
-            if (buttonState == HIGH && isPressing == false) {
-                unlock();
-            }
+            unlock();
         } else {
             // LCD displays Access denied
         }
     }
-
-    if (buttonState == HIGH)
-        isPressing = true;
-    else
-        isPressing = false;
 }
 
 // button inside the door
-void handleInnerButton(int buttonState) {
+void handleInnerButton() {
     // LOCK THE DOOR
-    if (isLocked()) {
-        if (buttonState == HIGH && isPressing == false && isClosed()) {
-            lock();
-        }
+    if (!isLocked()) {
+        lock();
     } else {
         // UNLOCK THE DOOR
-        if (buttonState == HIGH && isPressing == false) {
-
-            unlock();
-        }
+        unlock();
     }
-
-    if (buttonState == HIGH)
-        isPressing = true;
-    else
-        isPressing = false;
 }
 
 void lock_unlock() {
     int outerButtonState = digitalRead(outerButtonPin);
     int innerButtonState = digitalRead(innerButtonPin);
-    handleInnerButton(innerButtonState);
-    handleOuterButton(outerButtonState, false);
+    if (outerButtonState && !isOuterPressing)
+        handleOuterButton(false);
+    if (innerButtonState && !isInnerPressing)
+        handleInnerButton();
     LED_RBG_BACK();
+    isOuterPressing = outerButtonState;
+    isInnerPressing = innerButtonState;
     // int switchState = data.switchState;
     // handleOuterButton(switchState, true);
 }
 
 // subscribe callback
-void callback(char *topic, byte *payload, unsigned int length) {
-    Serial.print("Topic arrived: ");
-    Serial.println(topic);
+// void callback(char *topic, byte *payload, unsigned int length) {
+//     Serial.print("Topic arrived: ");
+//     Serial.println(topic);
 
-    String data = "";
-    for (int i = 0; i < length; ++i) {
-        data += (char)payload[i];
-    }
+//     String data = "";
+//     for (int i = 0; i < length; ++i) {
+//         data += (char)payload[i];
+//     }
 
-    Serial.print("Message: ");
-    Serial.println(data);
+//     Serial.print("Message: ");
+//     Serial.println(data);
 
-    if (String(topic) == sub_lock) {
-        if (data == "true") {
-            servo.write(0);
-            Serial.println("Lock on");
-        } else {
-            servo.write(90);
+//     if (String(topic) == sub_lock) {
+//         if (data == "true") {
+//             servo.write(0);
+//             Serial.println("Lock on");
+//         } else {
+//             servo.write(90);
 
-            Serial.println("Lock off");
-        }
-    }
-    Serial.print("----------------");
-}
+//             Serial.println("Lock off");
+//         }
+//     }
+//     Serial.print("----------------");
+// }
 
-void reconnect() {
-    // if client is connected, stop reconnecting
-    while (!client.connected()) {
-        Serial.print("Attempting MQTT connection...");
-        // Create a random client ID as a unique identifier to avoid conflicts with other clients.
-        String clientId = "ESP32Client-";
-        clientId += String(random(0xffff), HEX);
+// void reconnect() {
+//     // if client is connected, stop reconnecting
+//     while (!client.connected()) {
+//         Serial.print("Attempting MQTT connection...");
+//         // Create a random client ID as a unique identifier to avoid conflicts with other clients.
+//         String clientId = "ESP32Client-";
+//         clientId += String(random(0xffff), HEX);
 
-        if (client.connect(clientId.c_str())) {
-            Serial.println(" connected");
-            lcd.clear();
-            lcd.print("connected");
+//         if (client.connect(clientId.c_str())) {
+//             Serial.println(" connected");
+//             lcd.clear();
+//             lcd.print("connected");
 
-            // once connected, do publish/subscribe
-            client.subscribe(sub_lock);
-        } else {
-            Serial.print("failed");
-            Serial.print(client.state());
-            Serial.println(" try again in 5 seconds");
-            // Wait 5 seconds before retrying
-            delay(5000);
-        }
-    }
-}
+//             // once connected, do publish/subscribe
+//             client.subscribe(sub_lock);
+//         } else {
+//             Serial.print("failed");
+//             Serial.print(client.state());
+//             Serial.println(" try again in 5 seconds");
+//             // Wait 5 seconds before retrying
+//             delay(5000);
+//         }
+//     }
+// }
 
-void wifiConnect() {
-    WiFi.begin(ssid, password);
+// void wifiConnect() {
+//     WiFi.begin(ssid, password);
 
-    // wait until wifi is connected
-    while (WiFi.status() != WL_CONNECTED) {
-        delay(500);
-        Serial.print(".");
-    }
+//     // wait until wifi is connected
+//     while (WiFi.status() != WL_CONNECTED) {
+//         delay(500);
+//         Serial.print(".");
+//     }
 
-    Serial.println("WiFi connected");
+//     Serial.println("WiFi connected");
 
-    lcd.print("Connected");
-}
+//     lcd.print("Connected");
+// }
 
-void setupWifi() {
-    Serial.print("Connecting to ");
-    Serial.print(ssid);
+// void setupWifi() {
+//     Serial.print("Connecting to ");
+//     Serial.print(ssid);
 
-    lcd.setCursor(0, 0);
-    lcd.print("Connecting to ");
-    lcd.setCursor(0, 1);
-    lcd.print("WIFI. ");
+//     lcd.setCursor(0, 0);
+//     lcd.print("Connecting to ");
+//     lcd.setCursor(0, 1);
+//     lcd.print("WIFI. ");
 
-    wifiConnect();
-}
+//     wifiConnect();
+// }
 
 void loop() {
     // always check if client is disconnected, reconnect
-    if (!client.connected())
-        reconnect();
+    // if (!client.connected())
+    //     reconnect();
 
-    client.loop(); // giúp giữ kết nối với server và để hàm callback được gọi
+    // client.loop(); // giúp giữ kết nối với server và để hàm callback được gọi
 
     // devices
     lock_unlock();
 
-    delay(3000);
+    delay(100);
 }
