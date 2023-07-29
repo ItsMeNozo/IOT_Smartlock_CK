@@ -52,69 +52,6 @@ char keys[ROW_NUM][COLUMN_NUM] = {
 byte pin_rows[ROW_NUM] = {17, 5, 18, 19};
 byte pin_column[COLUMN_NUM] = {33, 32, 35, 34};
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM);
-Servo myservo;
-
-// subscribe callback
-void callback(char *topic, byte *payload, unsigned int length)
-{
-  Serial.print("Topic arrived: ");
-  Serial.println(topic);
-
-  String data = "";
-  for (int i = 0; i < length; ++i)
-  {
-    data += (char)payload[i];
-  }
-
-  Serial.print("Message: ");
-  Serial.println(data);
-
-  if (String(topic) == sub_lock)
-  {
-    if (data == "true")
-    {
-      myservo.write(90);
-      Serial.println("Lock on");
-    }
-    else
-    {
-      myservo.write(0);
-
-      Serial.println("Lock off");
-    }
-  }
-  Serial.print("----------------");
-}
-
-void reconnect()
-{
-  // if client is connected, stop reconnecting
-  while (!client.connected())
-  {
-    Serial.print("Attempting MQTT connection...");
-    // Create a random client ID as a unique identifier to avoid conflicts with other clients.
-    String clientId = "ESP32Client-";
-    clientId += String(random(0xffff), HEX);
-
-    if (client.connect(clientId.c_str()))
-    {
-      Serial.println(" connected");
-      lcd.clear();
-      lcd.print("connected");
-
-      // once connected, do publish/subscribe
-      client.subscribe(sub_lock);
-    }
-    else
-    {
-      Serial.print("failed");
-      Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
-      // Wait 5 seconds before retrying
-      delay(5000);
-    }
-  }
-}
 
 // COPY TỪ ĐÂY
 Servo servo;
@@ -243,6 +180,69 @@ void BUTTON_02(int button_02)
   if (button_02 == LOW)
     isPressing_02 = false;
 }
+
+// subscribe callback
+void callback(char *topic, byte *payload, unsigned int length)
+{
+  Serial.print("Topic arrived: ");
+  Serial.println(topic);
+
+  String data = "";
+  for (int i = 0; i < length; ++i)
+  {
+    data += (char)payload[i];
+  }
+
+  Serial.print("Message: ");
+  Serial.println(data);
+
+  if (String(topic) == sub_lock)
+  {
+    if (data == "true")
+    {
+      servo.write(90);
+      Serial.println("Lock on");
+    }
+    else
+    {
+      servo.write(0);
+
+      Serial.println("Lock off");
+    }
+  }
+  Serial.print("----------------");
+}
+
+void reconnect()
+{
+  // if client is connected, stop reconnecting
+  while (!client.connected())
+  {
+    Serial.print("Attempting MQTT connection...");
+    // Create a random client ID as a unique identifier to avoid conflicts with other clients.
+    String clientId = "ESP32Client-";
+    clientId += String(random(0xffff), HEX);
+
+    if (client.connect(clientId.c_str()))
+    {
+      Serial.println(" connected");
+      lcd.clear();
+      lcd.print("connected");
+
+      // once connected, do publish/subscribe
+      client.subscribe(sub_lock);
+    }
+    else
+    {
+      Serial.print("failed");
+      Serial.print(client.state());
+      Serial.println(" try again in 5 seconds");
+      // Wait 5 seconds before retrying
+      delay(5000);
+    }
+  }
+}
+
 void wifiConnect()
 {
   WiFi.begin(ssid, password);
