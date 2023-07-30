@@ -12,10 +12,12 @@ int port = 1883;
 
 // sub/pub
 const char *sub_lock = "web/lock"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
-const char *pub_lock = "web/lock_stat";
+const char *pub_lock = "device/lock_stat";
+const char *pub_door_close = "device/door_not_closed";
+
 // wifi setup through TCP/IP
 WiFiClient wifiClient;
-PubSubClient client(wifiClient);
+PubSubClient mqttClient(wifiClient);
 
 #define ROW_NUM 4
 #define COLUMN_NUM 4
@@ -57,6 +59,8 @@ Servo servo;
 bool Pass_success = true;
 bool isOuterPressing = false, isInnerPressing = false;
 int degree = 0;
+String lockedStr = "🔒 Locked";
+String unlockedStr = "🔓 Unlocked";
 
 void setup()
 {
@@ -68,9 +72,9 @@ void setup()
 
 	// wifi
 	setupWifi();
-	client.setServer(mqtt_server, port);
-	client.setCallback(callback);
-	client.setKeepAlive(90); // if client does not send any data to broker within 60-sec interval, disconnect
+	mqttClient.setServer(mqtt_server, port);
+	mqttClient.setCallback(callback);
+	mqttClient.setKeepAlive(90); // if client does not send any data to broker within 60-sec interval, disconnect
 
 	// set up other devices down here
 	servo.attach(servo_pin, 500, 2400);
@@ -84,6 +88,12 @@ void setup()
 	pinMode(PIN_RED_02, OUTPUT);
 	pinMode(PIN_GREEN_02, OUTPUT);
 	pinMode(PIN_BLUE_02, OUTPUT);
+
+	// mqtt
+	mqttConnect();
+	// mqtt init: check for lock status to publish onto web -> initially, on web doesnt show lock status
+	String str = (isLocked() ? lockedStr : unlockedStr);
+	mqttClient.publish(pub_lock, str.c_str());
 }
 
 int Ultrasonic()
@@ -115,12 +125,14 @@ void lock()
 {
 	degree = 180;
 	servo.write(degree);
+	mqttClient.publish(pub_lock, lockedStr.c_str());
 }
 
 void unlock()
 {
 	degree = 0;
 	servo.write(degree);
+	mqttClient.publish(pub_lock, unlockedStr.c_str());
 }
 
 bool isClosed()
@@ -133,7 +145,7 @@ bool isLocked()
 	return degree == 180;
 }
 // button outside the door
-void handleOuterButton(bool openFromWeb)
+void handleOuterButton()
 {
 	// LOCK THE DOOR
 	if (!isLocked())
@@ -142,15 +154,9 @@ void handleOuterButton(bool openFromWeb)
 			lock();
 		else
 		{
-			if (openFromWeb)
-			{
-				// send back to channel for node red to display notification
-			}
-			else
-			{
-				// lcd displays Please close the door
-				Serial.println("Please close the door");
-			}
+			// lcd displays Please close the door
+			lcd.clear();
+			lcd.println("Please close the door!");
 		}
 	}
 	else
@@ -160,10 +166,14 @@ void handleOuterButton(bool openFromWeb)
 		{
 			// Access accepted
 			unlock();
+			lcd.clear();
+			lcd.println("Access granted!");
 		}
 		else
 		{
 			// LCD displays Access denied
+			lcd.clear();
+			lcd.println("Access denied!");
 		}
 	}
 }
@@ -188,7 +198,7 @@ void lock_unlock()
 	int outerButtonState = digitalRead(outerButtonPin);
 	int innerButtonState = digitalRead(innerButtonPin);
 	if (outerButtonState && !isOuterPressing)
-		handleOuterButton(false);
+		handleOuterButton();
 	if (innerButtonState && !isInnerPressing)
 		handleInnerButton();
 	LED_RBG_BACK();
@@ -217,42 +227,52 @@ void callback(char *topic, byte *payload, unsigned int length)
 	{
 		if (data == "true")
 		{
-			servo.write(0);
-			Serial.println("Lock on");
+			if (!isLocked())
+			{
+				if (isClosed())
+				{
+					lock();
+				}
+				else
+				{
+					String payload = "Cant lock because door is not closed!";
+					mqttClient.publish(pub_door_close, payload.c_str());
+				}
+			}
 		}
 		else
 		{
-			servo.write(90);
-
-			Serial.println("Lock off");
+			if (isLocked())
+				unlock();
 		}
 	}
-	Serial.print("----------------");
+	Serial.println("----------------");
 }
 
-void reconnect()
+void mqttConnect()
 {
 	// if client is connected, stop reconnecting
-	while (!client.connected())
+	while (!mqttClient.connected())
 	{
 		Serial.print("Attempting MQTT connection...");
 		// Create a random client ID as a unique identifier to avoid conflicts with other clients.
 		String clientId = "ESP32Client-";
 		clientId += String(random(0xffff), HEX);
 
-		if (client.connect(clientId.c_str()))
+		if (mqttClient.connect(clientId.c_str()))
 		{
+
 			Serial.println(" connected");
 			lcd.clear();
 			lcd.print("connected");
 
 			// once connected, do publish/subscribe
-			client.subscribe(sub_lock);
+			mqttClient.subscribe(sub_lock);
 		}
 		else
 		{
 			Serial.print("failed");
-			Serial.print(client.state());
+			Serial.print(mqttClient.state());
 			Serial.println(" try again in 5 seconds");
 			// Wait 5 seconds before retrying
 			delay(5000);
@@ -292,10 +312,10 @@ void setupWifi()
 void loop()
 {
 	// always check if client is disconnected, reconnect
-	if (!client.connected())
-		reconnect();
+	if (!mqttClient.connected())
+		mqttConnect();
 
-	client.loop(); // giúp giữ kết nối với server và để hàm callback được gọi
+	mqttClient.loop(); // giúp giữ kết nối với server và để hàm callback được gọi
 
 	// devices
 	lock_unlock();
