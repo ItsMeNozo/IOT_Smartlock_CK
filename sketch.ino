@@ -208,6 +208,55 @@ void lock_unlock()
 	// handleOuterButton(switchState, true);
 }
 
+String userInput = "";
+int unlockCounts = 0;
+bool disableKeypad = false;
+unsigned long startDisable;
+
+bool authorization() {
+  Serial.println(userInput);
+  if (userInput == "1234") {
+    return true;
+  } else {
+    unlockCounts += 1;
+    if (unlockCounts == 3) {
+      disableKeypad = true;
+      startDisable = millis();
+      
+    }
+  }
+}
+
+void handleKeypad() {
+  if (disableKeypad) {
+    if (millis() - startDisable < 60 * 5 * 1000)
+      return;
+    else
+      disableKeypad = false;
+  }
+  char key = keypad.getKey();
+
+  if (key != NO_KEY) {
+    if (key == 'D') {
+      lcd.clear();
+      userInput = "";
+    } else if (key == 'A') {
+      lcd.clear();
+      if (authorization()) {
+        lcd.print("Access granted");
+      } else {
+        lcd.print("Access denied");
+      }
+      delay(1000);
+      lcd.clear();
+      userInput = "";
+    } else {
+      lcd.print(key);
+      userInput += key;
+    }
+  }
+}
+
 // subscribe callback
 void callback(char *topic, byte *payload, unsigned int length)
 {
