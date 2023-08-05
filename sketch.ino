@@ -1,5 +1,5 @@
 #include "PubSubClient.h" // MQTT
-#include "WiFi.h"					// for ESP32
+#include "WiFi.h"		  // for ESP32
 #include <ESP32Servo.h>
 #include <Keypad.h>
 #include <LiquidCrystal_I2C.h>
@@ -22,35 +22,35 @@ PubSubClient mqttClient(wifiClient);
 #define ROW_NUM 4
 #define COLUMN_NUM 4
 // buzzer
-#define Buzzer_pin 23
+#define Buzzer_pin 15
 // button
 #define outerButtonPin 16
 #define innerButtonPin 39
 // light
-#define light_sensor 36
+#define light_sensor 34
 // Ultrasonic Distance Sensor
-#define trig_pin 4
-#define echo_pin 2
-#define servo_pin 15
+#define trig_pin 32
+#define echo_pin 35
+#define servo_pin 33
 // RBG 01
-#define PIN_RED_01 26		// GIOP26
-#define PIN_GREEN_01 33 // GIOP33
-#define PIN_BLUE_01 25	// GIOP25
+#define PIN_RED_01 13	// GIOP26
+#define PIN_GREEN_01 12 // GIOP33
+#define PIN_BLUE_01 14	// GIOP25
 // RBG 02
-#define PIN_RED_02 13		// GIOp13
-#define PIN_GREEN_02 12 // GIOP12
-#define PIN_BLUE_02 14	// GIOP14
+#define PIN_RED_02 27	// GIOp13
+#define PIN_GREEN_02 26 // GIOP12
+#define PIN_BLUE_02 25	// GIOP14
 // lcd 16x2 i2c
 
-#define distance_lock 3							// cm
+#define distance_lock 3				// cm
 LiquidCrystal_I2C lcd(0x27, 16, 2); // lcd
 
 // keypad
 char keys[ROW_NUM][COLUMN_NUM] = {
-		{'1', '2', '3', 'A'},
-		{'4', '5', '6', 'B'},
-		{'7', '8', '9', 'C'},
-		{'*', '0', '#', 'D'}};
+	{'1', '2', '3', 'A'},
+	{'4', '5', '6', 'B'},
+	{'7', '8', '9', 'C'},
+	{'*', '0', '#', 'D'}};
 byte pin_rows[ROW_NUM] = {17, 5, 18, 19};
 byte pin_column[COLUMN_NUM] = {33, 32, 35, 34};
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM);
