@@ -202,50 +202,70 @@ void lock_unlock()
 	if (innerButtonState && !isInnerPressing)
 		handleInnerButton();
 	LED_RBG_BACK();
-	isOuterPressing = outerButtonState;
+	isOuterPressing = outerButtonState;	
 	isInnerPressing = innerButtonState;
 	// int switchState = data.switchState;
 	// handleOuterButton(switchState, true);
 }
 
+void initAuthen() {
+    userInput = "";
+    unlockFailCounts = 0;
+    disableKeypad = false;
+	bool isDangerMode = false;
+}
+
 String userInput = "";
-int unlockCounts = 0;
+int unlockFailCounts = 0;
 bool disableKeypad = false;
 unsigned long startDisable;
+bool isDangerMode = false;
+int buzzerPin = 12, buzzerTone = 32;
 
-bool authorization() {
+bool isPasswordCorrect() {
   Serial.println(userInput);
-  if (userInput == "1234") {
-    return true;
-  } else {
-    unlockCounts += 1;
-    if (unlockCounts == 3) {
-      disableKeypad = true;
-      startDisable = millis();
-      
-    }
-  }
+  // get the correct password from the cloud
+  String correctPassword = "1234";
+  return userInput == correctPassword;
 }
 
 void handleKeypad() {
+	if (isDangerMode) {
+		return;
+	}
   if (disableKeypad) {
     if (millis() - startDisable < 60 * 5 * 1000)
       return;
     else
       disableKeypad = false;
   }
-  char key = keypad.getKey();
+  if (unlockFailCounts == 3) {
+	disableKeypad = true;
+	startDisable = millis();
+	// handleTelegramNotification()
+	String payload = "Alert";
+	mqttClient.publish("21127089/doorAlert", payload.c_str());
+  }
+  if (!isLocked()) {
+    return;
+  }
 
+  char key = keypad.getKey();
   if (key != NO_KEY) {
     if (key == 'D') {
       lcd.clear();
       userInput = "";
     } else if (key == 'A') {
       lcd.clear();
-      if (authorization()) {
+      if (isPasswordCorrect()) {
         lcd.print("Access granted");
+        unlock();
+        initAuthen();
       } else {
         lcd.print("Access denied");
+        unlockFailCounts += 1;
+        Serial.print("Unlock fail counts: ");
+        Serial.println(unlockFailCounts);
       }
       delay(1000);
       lcd.clear();
@@ -255,6 +275,18 @@ void handleKeypad() {
       userInput += key;
     }
   }
+}
+
+void activateDangerMode() {
+  // disable keypad
+  // turn on buzzer
+}
+void deactivateDangerMode() {
+  // enable keypad
+  // turn off buzzer
+}
+void handleTelegramNotification() {
+	
 }
 
 // subscribe callback
@@ -296,6 +328,20 @@ void callback(char *topic, byte *payload, unsigned int length)
 		}
 	}
 	Serial.println("----------------");
+
+	if (String(topic) == "21127089/alertReply") {
+		if (data == "Its me") {
+            disableKeypad = false;
+            unlockFailCounts = 0;
+        } 
+		else if (data == "Its not me") {
+            isDangerMode = true;
+			String payload = "Danger mode options";
+        	mqttClient.publish("21127089/dangerModeOpts", payload.c_str());
+        } else if (data == "Turn off danger mode") {
+            isDangerMode = false;
+        }
+	}
 }
 
 void mqttConnect()
@@ -368,6 +414,13 @@ void loop()
 
 	// devices
 	lock_unlock();
+
+	// buzzer for dangermode
+	if (isDangerMode) {
+		tone(buzzerPin, buzzerTone++);
+		if (buzzerTone == 1000)
+            buzzerTone = 32;
+    }
 
 	delay(100);
 }
