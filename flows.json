@@ -1,0 +1,1231 @@
+[
+    {
+        "id": "d8f87e00334234e5",
+        "type": "tab",
+        "label": "Project_CK",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "a141030fc90cf8c6",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "Verify Login",
+        "func": "if (msg.payload.username === 'admin' && msg.payload.password === 'admin')\n    msg.payload = {\n        \"tab\": \"Home\",\n        \"tabs\": {\n            \"show\": [\"Home\"],\n            \"hide\": [\"Login\"],\n        }\n    };\nelse \n    msg.payload = \"Wrong password or username! Please try again.\"\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 220,
+        "wires": [
+            [
+                "90cb500a4d53b452",
+                "fb1e31a662b3765b"
+            ]
+        ]
+    },
+    {
+        "id": "90cb500a4d53b452",
+        "type": "ui_ui_control",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "events": "all",
+        "x": 720,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b3db52ae779d1935",
+        "type": "inject",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 270,
+        "y": 120,
+        "wires": [
+            [
+                "4738d4e559d7757c"
+            ]
+        ]
+    },
+    {
+        "id": "4738d4e559d7757c",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "Jump to Login and disable Home",
+        "func": "msg.payload = {\n    \"tab\": \"Login\",\n    \"tabs\": {\n        \"hide\": [\"Home\"]\n    }\n};\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 540,
+        "y": 120,
+        "wires": [
+            [
+                "06a26c95c7539f7c"
+            ]
+        ]
+    },
+    {
+        "id": "06a26c95c7539f7c",
+        "type": "ui_ui_control",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "events": "all",
+        "x": 820,
+        "y": 120,
+        "wires": [
+            [
+                "b6ee238b1ac1ee20"
+            ]
+        ]
+    },
+    {
+        "id": "3f56a2860a79ba4c",
+        "type": "ui_toast",
+        "z": "d8f87e00334234e5",
+        "position": "bottom right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 930,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "fb1e31a662b3765b",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "Check if try again msg",
+        "func": "if (typeof msg.payload === 'string')\n    return msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 320,
+        "wires": [
+            [
+                "3f56a2860a79ba4c"
+            ]
+        ]
+    },
+    {
+        "id": "92d92e2c89dd5885",
+        "type": "ui_form",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "label": "",
+        "group": "d86330bc58d8059b",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Username",
+                "value": "username",
+                "type": "text",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "Password",
+                "value": "password",
+                "type": "password",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "username": "",
+            "password": ""
+        },
+        "payload": "",
+        "submit": "Login",
+        "cancel": "cancel",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 270,
+        "y": 220,
+        "wires": [
+            [
+                "a141030fc90cf8c6"
+            ]
+        ]
+    },
+    {
+        "id": "1d325a11245b81f1",
+        "type": "ui_text",
+        "z": "d8f87e00334234e5",
+        "group": "7ed56f2af3599580",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Lock status",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "lockVal",
+        "style": false,
+        "font": "",
+        "fontSize": "30",
+        "color": "#000000",
+        "x": 550,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "1cd1a76a908a7ca1",
+        "type": "ui_text",
+        "z": "d8f87e00334234e5",
+        "group": "f59725da85da0bf6",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "21CLC03",
+        "format": "Group 12",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 240,
+        "y": 980,
+        "wires": []
+    },
+    {
+        "id": "f0bd680dd444a40d",
+        "type": "ui_text",
+        "z": "d8f87e00334234e5",
+        "group": "f59725da85da0bf6",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "21127089",
+        "format": "Nguyễn Tuấn Kiệt (Leader)",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 240,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "ee2bb954fe87c300",
+        "type": "ui_text",
+        "z": "d8f87e00334234e5",
+        "group": "f59725da85da0bf6",
+        "order": 3,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "21127119",
+        "format": "Phạm Ánh Như Ngọc",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 240,
+        "y": 1080,
+        "wires": []
+    },
+    {
+        "id": "fc0e4b79d8b2705a",
+        "type": "ui_text",
+        "z": "d8f87e00334234e5",
+        "group": "f59725da85da0bf6",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "21127620",
+        "format": "Trần Hoàng Khải",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 240,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "b0123b7e084a2a5b",
+        "type": "ui_chart",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "group": "e6db27cac98a71df",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "label": "Door Activity and Danger Alert",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "no data",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "100",
+        "removeOlder": "2",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 750,
+        "y": 1280,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "bfcdd856d84af0fd",
+        "type": "inject",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "2",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 210,
+        "y": 1280,
+        "wires": [
+            [
+                "eb344e7c43a79b71",
+                "54592ec2f497b210",
+                "10afb95c20893622"
+            ]
+        ]
+    },
+    {
+        "id": "eb344e7c43a79b71",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "count_times_door_open",
+        "func": " // replace this line of code\nmsg.topic = \"door open\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 1220,
+        "wires": [
+            [
+                "b0123b7e084a2a5b"
+            ]
+        ]
+    },
+    {
+        "id": "54592ec2f497b210",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "count_times_lock_door",
+        "func": "// replace this line of code\nmsg.topic = \"door lock\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 1280,
+        "wires": [
+            [
+                "b0123b7e084a2a5b"
+            ]
+        ]
+    },
+    {
+        "id": "10afb95c20893622",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "count_times_danger_alert",
+        "func": " // replace this line of code\nmsg.topic = \"danger alert\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 430,
+        "y": 1340,
+        "wires": [
+            [
+                "b0123b7e084a2a5b"
+            ]
+        ]
+    },
+    {
+        "id": "c0801f11f5a3f175",
+        "type": "ui_text",
+        "z": "d8f87e00334234e5",
+        "group": "87d0df7f7baaf84d",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Username",
+        "format": "{{msg.payload}}",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 210,
+        "y": 1560,
+        "wires": []
+    },
+    {
+        "id": "f14e941fa9c16ccd",
+        "type": "ui_text_input",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "label": "New password",
+        "tooltip": "",
+        "group": "87d0df7f7baaf84d",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "mode": "password",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": true,
+        "className": "",
+        "topicType": "msg",
+        "x": 220,
+        "y": 1620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "e3f304588ab83426",
+        "type": "ui_button",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "group": "87d0df7f7baaf84d",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Change password",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 230,
+        "y": 1680,
+        "wires": [
+            [
+                "324f4b8474cdfb63"
+            ]
+        ]
+    },
+    {
+        "id": "9ba7e437ef156964",
+        "type": "ui_button",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "group": "87d0df7f7baaf84d",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "passthru": false,
+        "label": "Log out",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "msg.payload",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 220,
+        "y": 1740,
+        "wires": [
+            [
+                "d150669599e4cfed"
+            ]
+        ]
+    },
+    {
+        "id": "97616aa6c7336231",
+        "type": "ui_toast",
+        "z": "d8f87e00334234e5",
+        "position": "bottom right",
+        "displayTime": "3",
+        "highlight": "green",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 690,
+        "y": 1680,
+        "wires": []
+    },
+    {
+        "id": "324f4b8474cdfb63",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "check_pass",
+        "func": "// if matches old password\n\n// if valid password, please add if statement \nmsg.topic = \"Password changed\"; \nmsg.payload = \"Congrats! Your password was successfully changed.\"; \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 1680,
+        "wires": [
+            [
+                "97616aa6c7336231"
+            ]
+        ]
+    },
+    {
+        "id": "d150669599e4cfed",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "logOut",
+        "func": "msg.payload = {\n        \"tab\": \"Login\",\n        \"tabs\": {\n            \"show\": [\"Login\"],\n            \"hide\": [\"Home\"],\n        }\n    };\n\nreturn msg; ",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 1740,
+        "wires": [
+            [
+                "5abb9aaca6abf655"
+            ]
+        ]
+    },
+    {
+        "id": "5abb9aaca6abf655",
+        "type": "ui_ui_control",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "events": "all",
+        "x": 600,
+        "y": 1740,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b6ee238b1ac1ee20",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1020,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "5d0355e915f258fe",
+        "type": "ui_template",
+        "z": "d8f87e00334234e5",
+        "group": "e6db27cac98a71df",
+        "name": "Log",
+        "order": 2,
+        "width": 8,
+        "height": 4,
+        "format": "<ul>\n    <li ng-repeat=\"x in msg.payload\">\n        <font color=\"red\">{{x.topic}}</font>\n        <ul>\n            <li>{{x.payload}}</li>\n        </ul>\n    </li>\n</ul>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "",
+        "x": 630,
+        "y": 680,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "57550753e32b1a49",
+        "type": "comment",
+        "z": "d8f87e00334234e5",
+        "name": "Login",
+        "info": "",
+        "x": 190,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "07c86930d0be159d",
+        "type": "comment",
+        "z": "d8f87e00334234e5",
+        "name": "Door Lock Management",
+        "info": "",
+        "x": 200,
+        "y": 400,
+        "wires": []
+    },
+    {
+        "id": "663a88b6ce147489",
+        "type": "comment",
+        "z": "d8f87e00334234e5",
+        "name": "Statistics",
+        "info": "",
+        "x": 180,
+        "y": 1160,
+        "wires": []
+    },
+    {
+        "id": "921fea17aac532cf",
+        "type": "comment",
+        "z": "d8f87e00334234e5",
+        "name": "Personal Info",
+        "info": "",
+        "x": 190,
+        "y": 1500,
+        "wires": []
+    },
+    {
+        "id": "14ec3e8fc196b831",
+        "type": "comment",
+        "z": "d8f87e00334234e5",
+        "name": "Group Info",
+        "info": "",
+        "x": 160,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "520ffa224335e9e9",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "updateLog",
+        "func": "// initialize the counter to [] if flow.get() doesn't exist already\nvar dashboardLog = flow.get('dashboardLog') || [];\n\ndashboardLog.push(msg);\nif (dashboardLog.length > 20) {\n    // delete the first message in array\n    dashboardLog.shift();\n    dashboardLog.length = 20;\n}\n\nflow.set('dashboardLog', dashboardLog);\n\nconsole.log(msg);\nmsg = {}\nmsg.payload = dashboardLog;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 680,
+        "wires": [
+            [
+                "5d0355e915f258fe"
+            ]
+        ]
+    },
+    {
+        "id": "7998a471e1511cb2",
+        "type": "mqtt in",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "topic": "device/lock_stat",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e609c620bd3749d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 500,
+        "wires": [
+            [
+                "0b049713a590f416",
+                "58443f746ba0bd63",
+                "3c9ce81855c52346",
+                "b51793160de71d89"
+            ]
+        ]
+    },
+    {
+        "id": "0b049713a590f416",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "device lock",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 370,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "58443f746ba0bd63",
+        "type": "ui_template",
+        "z": "d8f87e00334234e5",
+        "group": "7ed56f2af3599580",
+        "name": "value_style",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "format": "\n<style>\n.nr-dashboard-text.lockVal p.value{\n    font-size: 1.5em;\n}\n</style>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "className": "label value",
+        "x": 370,
+        "y": 500,
+        "wires": [
+            [
+                "1d325a11245b81f1"
+            ]
+        ]
+    },
+    {
+        "id": "d6e1ef25f8f4c60c",
+        "type": "comment",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "info": "## template node\nnr-dashboard-text because we're using this node from dashboard\nmust do .lockVal after nr-dashboard-text because that's the class in text node",
+        "x": 380,
+        "y": 540,
+        "wires": []
+    },
+    {
+        "id": "3c9ce81855c52346",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "set_device_locked",
+        "func": "const device_locked = (msg.payload == \"🔒 Locked\" ? true : false); \nflow.set(\"device_locked\", device_locked); \n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 390,
+        "y": 580,
+        "wires": [
+            [
+                "c0387033870f9a95"
+            ]
+        ]
+    },
+    {
+        "id": "c0387033870f9a95",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "device & web lock are synced? ",
+        "func": "const web_lock = flow.get(\"web_lock\");\nconst device_lock = flow.get(\"device_locked\");\n\nnode.warn(`Web lock: ${web_lock}`); \nnode.warn(`Device lock: ${device_lock}`); \n\nif (web_lock == device_lock){\n    // dont allow changing switch\n    msg.payload = false; \n}\nelse \n    msg.payload = true; \n    \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 650,
+        "y": 580,
+        "wires": [
+            [
+                "fdba846633055598",
+                "c0ccc13556883423"
+            ]
+        ]
+    },
+    {
+        "id": "fd1496dcf0d29bdc",
+        "type": "ui_switch",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "label": "Lock",
+        "tooltip": "",
+        "group": "7ed56f2af3599580",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "passthru": true,
+        "decouple": "false",
+        "topic": "topic",
+        "topicType": "msg",
+        "style": "",
+        "onvalue": "true",
+        "onvalueType": "bool",
+        "onicon": "",
+        "oncolor": "",
+        "offvalue": "false",
+        "offvalueType": "bool",
+        "officon": "",
+        "offcolor": "",
+        "animate": false,
+        "className": "",
+        "x": 1090,
+        "y": 700,
+        "wires": [
+            [
+                "5be8a7f89d283fda",
+                "8952e2871072cae7",
+                "0287d80bc63efdbd"
+            ]
+        ]
+    },
+    {
+        "id": "59b0e9c873c0bc4e",
+        "type": "ui_numeric",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "label": "Auto locking",
+        "tooltip": "",
+        "group": "7ed56f2af3599580",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "wrap": true,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}} minute",
+        "min": "1",
+        "max": "60",
+        "step": 1,
+        "className": "",
+        "x": 290,
+        "y": 780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8952e2871072cae7",
+        "type": "mqtt out",
+        "z": "d8f87e00334234e5",
+        "name": "web/lock",
+        "topic": "web/lock",
+        "qos": "2",
+        "retain": "false",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e609c620bd3749d8",
+        "x": 1260,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "3abbafb7d09f37d8",
+        "type": "ui_toast",
+        "z": "d8f87e00334234e5",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 1010,
+        "y": 840,
+        "wires": []
+    },
+    {
+        "id": "84898f6a01c687d8",
+        "type": "mqtt in",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "topic": "device/door_not_closed",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e609c620bd3749d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 740,
+        "y": 760,
+        "wires": [
+            [
+                "3abbafb7d09f37d8",
+                "a3fbe3653e65f229"
+            ]
+        ]
+    },
+    {
+        "id": "5be8a7f89d283fda",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "set_web_lock",
+        "func": "flow.set(\"web_lock\", msg.payload); \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1280,
+        "y": 700,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fdba846633055598",
+        "type": "switch",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 750,
+        "y": 640,
+        "wires": [
+            [
+                "059eef3aa1ff4c99"
+            ]
+        ]
+    },
+    {
+        "id": "059eef3aa1ff4c99",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "get lock value",
+        "func": "msg.payload = flow.get(\"device_locked\")\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 920,
+        "y": 640,
+        "wires": [
+            [
+                "fd1496dcf0d29bdc"
+            ]
+        ]
+    },
+    {
+        "id": "a3fbe3653e65f229",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "function 2",
+        "func": "msg.payload = false; \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 980,
+        "y": 760,
+        "wires": [
+            [
+                "fd1496dcf0d29bdc"
+            ]
+        ]
+    },
+    {
+        "id": "c0ccc13556883423",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "0287d80bc63efdbd",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1260,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "b51793160de71d89",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "function 3",
+        "func": "\nmsg.topic = \"Door status\"; \nmsg.payload = flow.get(\"datetime\") + msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 240,
+        "y": 680,
+        "wires": [
+            [
+                "520ffa224335e9e9"
+            ]
+        ]
+    },
+    {
+        "id": "1fcb2f5518d4a84d",
+        "type": "moment",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "topic": "",
+        "input": "payload",
+        "inputType": "msg",
+        "inTz": "Asia/Ho_Chi_Minh",
+        "adjAmount": 0,
+        "adjType": "days",
+        "adjDir": "add",
+        "format": "ddd, Do MMM, YYYY, hh:mm:ss",
+        "locale": "vi_VN",
+        "output": "payload",
+        "outputType": "msg",
+        "outTz": "Asia/Ho_Chi_Minh",
+        "x": 400,
+        "y": 1400,
+        "wires": [
+            [
+                "7a79f03321bf1181"
+            ]
+        ]
+    },
+    {
+        "id": "42e181fcde694cf9",
+        "type": "inject",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "1",
+        "crontab": "",
+        "once": false,
+        "onceDelay": "1",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 170,
+        "y": 1400,
+        "wires": [
+            [
+                "1fcb2f5518d4a84d"
+            ]
+        ]
+    },
+    {
+        "id": "7a79f03321bf1181",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "function 4",
+        "func": "flow.set(\"datetime\", msg.payload); \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 620,
+        "y": 1400,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "d86330bc58d8059b",
+        "type": "ui_group",
+        "name": "login-form",
+        "tab": "9774c96daa438e1b",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "7ed56f2af3599580",
+        "type": "ui_group",
+        "name": "Door Lock Management",
+        "tab": "57053d15769f9dca",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "f59725da85da0bf6",
+        "type": "ui_group",
+        "name": "Group Info",
+        "tab": "57053d15769f9dca",
+        "order": 2,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e6db27cac98a71df",
+        "type": "ui_group",
+        "name": "Statistics",
+        "tab": "57053d15769f9dca",
+        "order": 3,
+        "disp": true,
+        "width": 8,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "87d0df7f7baaf84d",
+        "type": "ui_group",
+        "name": "Personal Info",
+        "tab": "57053d15769f9dca",
+        "order": 4,
+        "disp": true,
+        "width": 5,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "e609c620bd3749d8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "9774c96daa438e1b",
+        "type": "ui_tab",
+        "name": "Login",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "57053d15769f9dca",
+        "type": "ui_tab",
+        "name": "Home",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    }
+]
