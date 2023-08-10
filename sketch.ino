@@ -221,12 +221,19 @@ bool disableKeypad = false;
 unsigned long startDisable;
 bool isDangerMode = false;
 int buzzerPin = 12, buzzerTone = 32;
+bool isReplied = false;
+String correctPassword = "1234";
 
 bool isPasswordCorrect() {
   Serial.println(userInput);
   // get the correct password from the cloud
-  String correctPassword = "1234";
   return userInput == correctPassword;
+}
+
+void turnOnDangerMode() {
+  	isDangerMode = true;
+	String payload = "Danger mode options";
+	mqttClient.publish("21127089/dangerModeOpts", payload.c_str());
 }
 
 void handleKeypad() {
@@ -234,6 +241,9 @@ void handleKeypad() {
 		return;
 	}
   if (disableKeypad) {
+	if (!isReplied && millis() - startDisable < 60 * 1000) {
+		turnOnDangerMode();
+    }
     if (millis() - startDisable < 60 * 5 * 1000)
       return;
     else
@@ -243,12 +253,14 @@ void handleKeypad() {
 	disableKeypad = true;
 	startDisable = millis();
 	// handleTelegramNotification()
-	String payload = "Alert";
+	String payload = "Ayo you unlock too many times!";
 	mqttClient.publish("21127089/doorAlert", payload.c_str());
+	Serial.println("Just sent alert to node red");
   }
-  if (!isLocked()) {
+  if (!isLocked()) {	
     return;
   }
+
 
   char key = keypad.getKey();
   if (key != NO_KEY) {
@@ -277,18 +289,6 @@ void handleKeypad() {
   }
 }
 
-void activateDangerMode() {
-  // disable keypad
-  // turn on buzzer
-}
-void deactivateDangerMode() {
-  // enable keypad
-  // turn off buzzer
-}
-void handleTelegramNotification() {
-	
-}
-
 // subscribe callback
 void callback(char *topic, byte *payload, unsigned int length)
 {
@@ -301,7 +301,7 @@ void callback(char *topic, byte *payload, unsigned int length)
 		data += (char)payload[i];
 	}
 
-	Serial.print("Message: ");
+	Serial.print("Message: ");	
 	Serial.println(data);
 
 	if (String(topic) == sub_lock)
@@ -330,18 +330,20 @@ void callback(char *topic, byte *payload, unsigned int length)
 	Serial.println("----------------");
 
 	if (String(topic) == "21127089/alertReply") {
-		if (data == "Its me") {
+		if (data == "It's me") {
             disableKeypad = false;
             unlockFailCounts = 0;
         } 
 		else if (data == "Its not me") {
-            isDangerMode = true;
-			String payload = "Danger mode options";
-        	mqttClient.publish("21127089/dangerModeOpts", payload.c_str());
+            turnOnDangerMode();
         } else if (data == "Turn off danger mode") {
             isDangerMode = false;
         }
 	}
+
+	if (String(topic) == "id/changePassword") {
+        correctPassword = data;
+    }
 }
 
 void mqttConnect()
@@ -363,7 +365,11 @@ void mqttConnect()
 
 			// once connected, do publish/subscribe
 			mqttClient.subscribe(sub_lock);
-		}
+
+			// subscribe to get password
+            mqttClient.sucbscribe("id/changePassword");
+
+        }
 		else
 		{
 			Serial.print("failed");
@@ -402,6 +408,9 @@ void setupWifi()
 	lcd.print("WIFI. ");
 
 	wifiConnect();
+
+	String payload = "Device just activated, tho this message is uneccessary :(("
+	mqttClient.publish("id/deviceActivated", payload.c_string());
 }
 
 void loop()
