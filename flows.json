@@ -218,8 +218,8 @@
         "font": "",
         "fontSize": 16,
         "color": "#000000",
-        "x": 240,
-        "y": 980,
+        "x": 260,
+        "y": 1460,
         "wires": []
     },
     {
@@ -239,8 +239,8 @@
         "font": "",
         "fontSize": 16,
         "color": "#000000",
-        "x": 240,
-        "y": 1040,
+        "x": 260,
+        "y": 1520,
         "wires": []
     },
     {
@@ -260,8 +260,8 @@
         "font": "",
         "fontSize": 16,
         "color": "#000000",
-        "x": 240,
-        "y": 1080,
+        "x": 260,
+        "y": 1560,
         "wires": []
     },
     {
@@ -281,8 +281,8 @@
         "font": "",
         "fontSize": 16,
         "color": "#000000",
-        "x": 240,
-        "y": 1120,
+        "x": 260,
+        "y": 1600,
         "wires": []
     },
     {
@@ -302,8 +302,8 @@
         "nodata": "no data",
         "dot": false,
         "ymin": "0",
-        "ymax": "100",
-        "removeOlder": "2",
+        "ymax": "4",
+        "removeOlder": "24",
         "removeOlderPoints": "",
         "removeOlderUnit": "3600",
         "cutout": 0,
@@ -323,78 +323,11 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 750,
-        "y": 1280,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "bfcdd856d84af0fd",
-        "type": "inject",
-        "z": "d8f87e00334234e5",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "2",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 210,
-        "y": 1280,
+        "x": 710,
+        "y": 920,
         "wires": [
             [
-                "eb344e7c43a79b71",
-                "54592ec2f497b210",
-                "10afb95c20893622"
-            ]
-        ]
-    },
-    {
-        "id": "eb344e7c43a79b71",
-        "type": "function",
-        "z": "d8f87e00334234e5",
-        "name": "count_times_door_open",
-        "func": " // replace this line of code\nmsg.topic = \"door open\";\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 430,
-        "y": 1220,
-        "wires": [
-            [
-                "b0123b7e084a2a5b"
-            ]
-        ]
-    },
-    {
-        "id": "54592ec2f497b210",
-        "type": "function",
-        "z": "d8f87e00334234e5",
-        "name": "count_times_lock_door",
-        "func": "// replace this line of code\nmsg.topic = \"door lock\";\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 430,
-        "y": 1280,
-        "wires": [
-            [
-                "b0123b7e084a2a5b"
+                "8712c6c8b19427f5"
             ]
         ]
     },
@@ -402,41 +335,22 @@
         "id": "10afb95c20893622",
         "type": "function",
         "z": "d8f87e00334234e5",
-        "name": "count_times_danger_alert",
-        "func": " // replace this line of code\nmsg.topic = \"danger alert\";\n\nreturn msg;",
+        "name": "danger alert",
+        "func": " // replace this line of code\nmsg.topic = \"danger alert (0: no alert, 3: alert sent)\";\n\nmsg.payload = 3;\n// msg.payload = []; \n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 430,
-        "y": 1340,
+        "x": 510,
+        "y": 1080,
         "wires": [
             [
-                "b0123b7e084a2a5b"
+                "b0123b7e084a2a5b",
+                "24a2ac8fb56493bd",
+                "6974bfb26f276d8d"
             ]
         ]
-    },
-    {
-        "id": "c0801f11f5a3f175",
-        "type": "ui_text",
-        "z": "d8f87e00334234e5",
-        "group": "87d0df7f7baaf84d",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Username",
-        "format": "{{msg.payload}}",
-        "layout": "row-left",
-        "className": "",
-        "style": false,
-        "font": "",
-        "fontSize": 16,
-        "color": "#000000",
-        "x": 210,
-        "y": 1560,
-        "wires": []
     },
     {
         "id": "f14e941fa9c16ccd",
@@ -456,8 +370,8 @@
         "sendOnBlur": true,
         "className": "",
         "topicType": "msg",
-        "x": 220,
-        "y": 1620,
+        "x": 240,
+        "y": 1780,
         "wires": [
             []
         ]
@@ -482,8 +396,8 @@
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
-        "x": 230,
-        "y": 1680,
+        "x": 250,
+        "y": 1840,
         "wires": [
             [
                 "324f4b8474cdfb63"
@@ -510,8 +424,8 @@
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
-        "x": 220,
-        "y": 1740,
+        "x": 240,
+        "y": 1900,
         "wires": [
             [
                 "d150669599e4cfed"
@@ -533,8 +447,8 @@
         "className": "",
         "topic": "",
         "name": "",
-        "x": 690,
-        "y": 1680,
+        "x": 710,
+        "y": 1840,
         "wires": []
     },
     {
@@ -548,8 +462,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 450,
-        "y": 1680,
+        "x": 470,
+        "y": 1840,
         "wires": [
             [
                 "97616aa6c7336231"
@@ -567,8 +481,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 410,
-        "y": 1740,
+        "x": 430,
+        "y": 1900,
         "wires": [
             [
                 "5abb9aaca6abf655"
@@ -581,8 +495,8 @@
         "z": "d8f87e00334234e5",
         "name": "",
         "events": "all",
-        "x": 600,
-        "y": 1740,
+        "x": 620,
+        "y": 1900,
         "wires": [
             []
         ]
@@ -618,8 +532,8 @@
         "resendOnRefresh": true,
         "templateScope": "local",
         "className": "",
-        "x": 630,
-        "y": 680,
+        "x": 1250,
+        "y": 1200,
         "wires": [
             []
         ]
@@ -650,8 +564,8 @@
         "z": "d8f87e00334234e5",
         "name": "Statistics",
         "info": "",
-        "x": 180,
-        "y": 1160,
+        "x": 100,
+        "y": 840,
         "wires": []
     },
     {
@@ -660,8 +574,8 @@
         "z": "d8f87e00334234e5",
         "name": "Personal Info",
         "info": "",
-        "x": 190,
-        "y": 1500,
+        "x": 210,
+        "y": 1660,
         "wires": []
     },
     {
@@ -671,7 +585,7 @@
         "name": "Group Info",
         "info": "",
         "x": 160,
-        "y": 920,
+        "y": 1420,
         "wires": []
     },
     {
@@ -685,8 +599,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 410,
-        "y": 680,
+        "x": 1090,
+        "y": 1200,
         "wires": [
             [
                 "5d0355e915f258fe"
@@ -713,7 +627,7 @@
                 "0b049713a590f416",
                 "58443f746ba0bd63",
                 "3c9ce81855c52346",
-                "b51793160de71d89"
+                "a065950d244cb101"
             ]
         ]
     },
@@ -772,13 +686,13 @@
         "type": "function",
         "z": "d8f87e00334234e5",
         "name": "set_device_locked",
-        "func": "const device_locked = (msg.payload == \"🔒 Locked\" ? true : false); \nflow.set(\"device_locked\", device_locked); \n\nreturn msg;",
+        "func": "const device_locked = (msg.payload == \"🔒 Locked\" ? true : false); \nflow.set(\"device_locked\", device_locked); \nflow.set(\"prev_lock\", device_locked); \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 390,
+        "x": 230,
         "y": 580,
         "wires": [
             [
@@ -797,7 +711,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 650,
+        "x": 550,
         "y": 580,
         "wires": [
             [
@@ -832,13 +746,12 @@
         "offcolor": "",
         "animate": false,
         "className": "",
-        "x": 1090,
+        "x": 990,
         "y": 700,
         "wires": [
             [
-                "5be8a7f89d283fda",
-                "8952e2871072cae7",
-                "0287d80bc63efdbd"
+                "0287d80bc63efdbd",
+                "7b80e988d1598815"
             ]
         ]
     },
@@ -862,7 +775,7 @@
         "max": "60",
         "step": 1,
         "className": "",
-        "x": 290,
+        "x": 390,
         "y": 780,
         "wires": [
             []
@@ -875,14 +788,14 @@
         "name": "web/lock",
         "topic": "web/lock",
         "qos": "2",
-        "retain": "false",
+        "retain": "",
         "respTopic": "",
         "contentType": "",
         "userProps": "",
         "correl": "",
         "expiry": "",
         "broker": "e609c620bd3749d8",
-        "x": 1260,
+        "x": 1340,
         "y": 640,
         "wires": []
     },
@@ -901,31 +814,9 @@
         "className": "",
         "topic": "",
         "name": "",
-        "x": 1010,
+        "x": 910,
         "y": 840,
         "wires": []
-    },
-    {
-        "id": "84898f6a01c687d8",
-        "type": "mqtt in",
-        "z": "d8f87e00334234e5",
-        "name": "",
-        "topic": "device/door_not_closed",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "e609c620bd3749d8",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 740,
-        "y": 760,
-        "wires": [
-            [
-                "3abbafb7d09f37d8",
-                "a3fbe3653e65f229"
-            ]
-        ]
     },
     {
         "id": "5be8a7f89d283fda",
@@ -938,7 +829,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1280,
+        "x": 1360,
         "y": 700,
         "wires": [
             []
@@ -959,7 +850,7 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 750,
+        "x": 650,
         "y": 640,
         "wires": [
             [
@@ -978,27 +869,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 920,
+        "x": 820,
         "y": 640,
-        "wires": [
-            [
-                "fd1496dcf0d29bdc"
-            ]
-        ]
-    },
-    {
-        "id": "a3fbe3653e65f229",
-        "type": "function",
-        "z": "d8f87e00334234e5",
-        "name": "function 2",
-        "func": "msg.payload = false; \nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 980,
-        "y": 760,
         "wires": [
             [
                 "fd1496dcf0d29bdc"
@@ -1010,7 +882,7 @@
         "type": "debug",
         "z": "d8f87e00334234e5",
         "name": "debug 2",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1018,7 +890,7 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 880,
+        "x": 780,
         "y": 520,
         "wires": []
     },
@@ -1027,6 +899,111 @@
         "type": "debug",
         "z": "d8f87e00334234e5",
         "name": "debug 3",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1160,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "b51793160de71d89",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "create lock log",
+        "func": "\nmsg.topic = \"Lock status\"; \nconst obj = msg.payload.feeds[0];\nlet dateStr = obj.created_at; \nlet val = obj.field1; \n\n// detect abnormality: maybe data is not written yet\nif (val == \"\") {\n    msg.payload = -1;\n    return msg;\n}\n\n// Split date and time\nlet parts = dateStr.split(\"T\");\nlet date = parts[0];\nlet timeAndOffset = parts[1];\n\n// Remove timezone offset\nvar timeWithoutOffset = timeAndOffset.split(\"+\")[0];\n\n\nmsg.payload = date + \", \" + timeWithoutOffset + (val === \"2\" ? \": Door was unlocked\": \": Door was locked\"); \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 820,
+        "y": 1200,
+        "wires": [
+            [
+                "520ffa224335e9e9"
+            ]
+        ]
+    },
+    {
+        "id": "9ed1098141f2ed58",
+        "type": "comment",
+        "z": "d8f87e00334234e5",
+        "name": "Telegram",
+        "info": "",
+        "x": 180,
+        "y": 2020,
+        "wires": []
+    },
+    {
+        "id": "403c52d203957039",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "function 10",
+        "func": "msg.callback = msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 500,
+        "y": 2360,
+        "wires": [
+            [
+                "b7d5390de02c41f5"
+            ]
+        ]
+    },
+    {
+        "id": "b7d5390de02c41f5",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "function 11",
+        "func": "if (msg.callback.content == `It's me`) {\n    msg.payload.content = 'Its you';\n}\nif (msg.callback.content == `It's not me!`) {\n    msg.payload.content = 'Its not you';\n}\nif (msg.callback.content == 3) {\n    msg.payload.content = 'Turn off danger mode';\n}\nmsg.payload.type = \"message\";\nmsg.payload.chatId = '6562331656';\n// msg.payload.reply_markup = JSON.stringify({ remove_keyboard: true })\n// msg.payload.reply_markup = JSON.stringify({ inline_keyboard: [] });\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 2360,
+        "wires": [
+            [
+                "9134a1abf363d2d2",
+                "d5ce0c23927c44bd"
+            ]
+        ]
+    },
+    {
+        "id": "26c217c004ef7714",
+        "type": "mqtt in",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "topic": "21127089/doorAlert",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e609c620bd3749d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 2120,
+        "wires": [
+            [
+                "47d870df96daaff7"
+            ]
+        ]
+    },
+    {
+        "id": "151b01946a58178d",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 11",
         "active": true,
         "tosidebar": true,
         "console": false,
@@ -1034,26 +1011,497 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1260,
-        "y": 580,
+        "x": 800,
+        "y": 2040,
         "wires": []
     },
     {
-        "id": "b51793160de71d89",
+        "id": "8e62ab63b3a5cb5d",
+        "type": "mqtt out",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "topic": "21127089/alertReply",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e609c620bd3749d8",
+        "x": 900,
+        "y": 2480,
+        "wires": []
+    },
+    {
+        "id": "ea1891746c9a6ca3",
+        "type": "mqtt in",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "topic": "21127089/dangerModeOpts",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e609c620bd3749d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 2500,
+        "wires": [
+            [
+                "41238e480c113c5b"
+            ]
+        ]
+    },
+    {
+        "id": "41238e480c113c5b",
         "type": "function",
         "z": "d8f87e00334234e5",
-        "name": "function 3",
-        "func": "\nmsg.topic = \"Door status\"; \nmsg.payload = flow.get(\"datetime\") + msg.payload;\nreturn msg;",
+        "name": "function 12",
+        "func": "var opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        \"keyboard\": [[\n            {\n                \"text\": \"Turn off danger mode\",\n            },\n        ]],\n        \"one_time_keyboard\": true\n    })\n};\nmsg.payload = {};\nmsg.error = false;\nmsg.payload.content = 'Tap to turn off Danger Mode.';\nmsg.payload.options = opts;\nmsg.payload.chatId = '6562331656';\nmsg.payload.type = \"message\";\nreturn [msg];",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 240,
-        "y": 680,
+        "x": 420,
+        "y": 2500,
         "wires": [
             [
-                "520ffa224335e9e9"
+                "11af81b1fb33145d"
+            ]
+        ]
+    },
+    {
+        "id": "47d870df96daaff7",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "function 5.1",
+        "func": "var opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        \"keyboard\": [[\n            {\n                \"text\": \"It's me\",\n            },\n            {\n                \"text\": \"It's not me!\",\n            }\n        ]],\n        \"one_time_keyboard\": true\n    })\n};\nmsg.payload = {};\nmsg.error = false;\nmsg.payload.content = 'Selection?';\nmsg.payload.options = opts;\nmsg.payload.chatId = '6562331656';\nmsg.payload.type = \"message\";\nreturn [msg];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 370,
+        "y": 2120,
+        "wires": [
+            [
+                "5d4231e570bfdd6e"
+            ]
+        ]
+    },
+    {
+        "id": "551cfbf3f3d1d51e",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 12",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 420,
+        "y": 2300,
+        "wires": []
+    },
+    {
+        "id": "614f36fe04fae1fc",
+        "type": "switch",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "property": "payload.content",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "It's me",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "It's not me!",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 2,
+        "x": 310,
+        "y": 2380,
+        "wires": [
+            [
+                "403c52d203957039"
+            ],
+            [
+                "403c52d203957039"
+            ]
+        ]
+    },
+    {
+        "id": "4392ed0214b00650",
+        "type": "inject",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 200,
+        "y": 2180,
+        "wires": [
+            [
+                "47d870df96daaff7"
+            ]
+        ]
+    },
+    {
+        "id": "4c895b3b0c395ddf",
+        "type": "inject",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 220,
+        "y": 2560,
+        "wires": [
+            [
+                "41238e480c113c5b"
+            ]
+        ]
+    },
+    {
+        "id": "d5ce0c23927c44bd",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "function 13",
+        "func": "msg.payload = msg.payload.content\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 720,
+        "y": 2440,
+        "wires": [
+            [
+                "8e62ab63b3a5cb5d"
+            ]
+        ]
+    },
+    {
+        "id": "2accb8ade221812d",
+        "type": "telegram receiver",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "bot": "16a8eea19b573829",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "x": 110,
+        "y": 2360,
+        "wires": [
+            [
+                "551cfbf3f3d1d51e",
+                "614f36fe04fae1fc"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "5d4231e570bfdd6e",
+        "type": "telegram sender",
+        "z": "d8f87e00334234e5",
+        "d": true,
+        "name": "",
+        "bot": "16a8eea19b573829",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 590,
+        "y": 2120,
+        "wires": [
+            [
+                "151b01946a58178d"
+            ]
+        ]
+    },
+    {
+        "id": "11af81b1fb33145d",
+        "type": "telegram sender",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "bot": "16a8eea19b573829",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 630,
+        "y": 2500,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "9134a1abf363d2d2",
+        "type": "telegram sender",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "bot": "16a8eea19b573829",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 850,
+        "y": 2360,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c0801f11f5a3f175",
+        "type": "ui_text",
+        "z": "d8f87e00334234e5",
+        "group": "87d0df7f7baaf84d",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Username",
+        "format": "admin",
+        "layout": "row-left",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 230,
+        "y": 1720,
+        "wires": []
+    },
+    {
+        "id": "84898f6a01c687d8",
+        "type": "mqtt in",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "topic": "device/door_not_closed",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e609c620bd3749d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 620,
+        "y": 780,
+        "wires": [
+            [
+                "3abbafb7d09f37d8",
+                "a3fbe3653e65f229"
+            ]
+        ]
+    },
+    {
+        "id": "a3fbe3653e65f229",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "turn off lock",
+        "func": "msg.payload = false; \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 780,
+        "wires": [
+            [
+                "fd1496dcf0d29bdc"
+            ]
+        ]
+    },
+    {
+        "id": "528278afc7f876e2",
+        "type": "comment",
+        "z": "d8f87e00334234e5",
+        "name": "mqtt in explanation",
+        "info": "send notification when door not closed and send command to turn off virtual lock and show noti",
+        "x": 650,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "47a9bcd30c3322a4",
+        "type": "mqtt in",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "topic": "21127089/doorAlert",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e609c620bd3749d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 90,
+        "y": 1060,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "24a2ac8fb56493bd",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "turn off alert on chart",
+        "func": "msg.topic = \"danger alert (0: no alert, 3: alert sent)\";\nmsg.payload = 0;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 340,
+        "y": 1000,
+        "wires": [
+            [
+                "b0123b7e084a2a5b",
+                "b00195a483ca812e"
+            ]
+        ]
+    },
+    {
+        "id": "8dd012ea800895d2",
+        "type": "comment",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "info": "turn off alert on chart function will be executed in 2 cases: \n 1. On first loaded\n 2. Right after danger alert is sent\n\n Danger alert gets fired and goes through the graph and turn off function at the same time. It will make sure to send 0 signal right after danger alert is triggered.\n Before writing the new lock status to the chart, it writes the old status value",
+        "x": 700,
+        "y": 960,
+        "wires": []
+    },
+    {
+        "id": "2b345528913ac078",
+        "type": "inject",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 280,
+        "y": 1080,
+        "wires": [
+            [
+                "10afb95c20893622",
+                "91d769d764b35690"
+            ]
+        ]
+    },
+    {
+        "id": "e591c47d589087e6",
+        "type": "http request",
+        "z": "d8f87e00334234e5",
+        "d": true,
+        "name": "Write lock",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.thingspeak.com/update?api_key=RUK1GD4GABD5TQEN&field1={{payload}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 720,
+        "y": 1000,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "58972588ade27245",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "door lock/unlock",
+        "func": "\nlet stat = flow.get(\"device_locked\");\n\nmsg.topic = \"door lock (1: locked, 2: unlocked)\";\nmsg.payload = (stat === true ? 1 : 2);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 920,
+        "wires": [
+            [
+                "b0123b7e084a2a5b",
+                "e591c47d589087e6",
+                "2aca4da1a8f1069d"
+            ]
+        ]
+    },
+    {
+        "id": "17b1e1d15f48d96f",
+        "type": "inject",
+        "z": "d8f87e00334234e5",
+        "name": "clear chart",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[]",
+        "payloadType": "jsonata",
+        "x": 440,
+        "y": 1120,
+        "wires": [
+            [
+                "b0123b7e084a2a5b"
             ]
         ]
     },
@@ -1074,8 +1522,8 @@
         "output": "payload",
         "outputType": "msg",
         "outTz": "Asia/Ho_Chi_Minh",
-        "x": 400,
-        "y": 1400,
+        "x": 420,
+        "y": 1340,
         "wires": [
             [
                 "7a79f03321bf1181"
@@ -1086,6 +1534,7 @@
         "id": "42e181fcde694cf9",
         "type": "inject",
         "z": "d8f87e00334234e5",
+        "d": true,
         "name": "",
         "props": [
             {
@@ -1103,8 +1552,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 170,
-        "y": 1400,
+        "x": 190,
+        "y": 1340,
         "wires": [
             [
                 "1fcb2f5518d4a84d"
@@ -1115,17 +1564,331 @@
         "id": "7a79f03321bf1181",
         "type": "function",
         "z": "d8f87e00334234e5",
-        "name": "function 4",
+        "name": "get datetime",
         "func": "flow.set(\"datetime\", msg.payload); \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 620,
-        "y": 1400,
+        "x": 650,
+        "y": 1340,
         "wires": [
             []
+        ]
+    },
+    {
+        "id": "51c6ae3e56d850ab",
+        "type": "http request",
+        "z": "d8f87e00334234e5",
+        "name": "Read lock",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.thingspeak.com/channels/2227143/fields/1.json?api_key=1IPEHQXO7BHRWNUK&results=1&timezone=Asia/Bangkok",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 520,
+        "y": 1200,
+        "wires": [
+            [
+                "b51793160de71d89",
+                "e8aca99590039370"
+            ]
+        ]
+    },
+    {
+        "id": "e8aca99590039370",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 15",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "63454f1a184e3569",
+        "type": "http request",
+        "z": "d8f87e00334234e5",
+        "name": "Read danger alert",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "https://api.thingspeak.com/channels/2227143/fields/2.json?api_key=1IPEHQXO7BHRWNUK&results=2&timezone=Asia/Bangkok",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 550,
+        "y": 1280,
+        "wires": [
+            [
+                "1bd95f1be44fbaef",
+                "a71f406d0de7ab0a"
+            ]
+        ]
+    },
+    {
+        "id": "2aca4da1a8f1069d",
+        "type": "delay",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "20",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "20",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 320,
+        "y": 1200,
+        "wires": [
+            [
+                "51c6ae3e56d850ab"
+            ]
+        ]
+    },
+    {
+        "id": "1bd95f1be44fbaef",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 16",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 760,
+        "y": 1320,
+        "wires": []
+    },
+    {
+        "id": "91d769d764b35690",
+        "type": "delay",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "20",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "21",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 340,
+        "y": 1280,
+        "wires": [
+            [
+                "63454f1a184e3569"
+            ]
+        ]
+    },
+    {
+        "id": "8712c6c8b19427f5",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 17",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 920,
+        "wires": []
+    },
+    {
+        "id": "6974bfb26f276d8d",
+        "type": "http request",
+        "z": "d8f87e00334234e5",
+        "d": true,
+        "name": "Write danger alert",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "https://api.thingspeak.com/update?api_key=RUK1GD4GABD5TQEN&field2={{payload}}",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 970,
+        "y": 1080,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "b00195a483ca812e",
+        "type": "delay",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "pauseType": "delay",
+        "timeout": "20",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 700,
+        "y": 1040,
+        "wires": [
+            [
+                "6974bfb26f276d8d",
+                "8c34629044b6d409"
+            ]
+        ]
+    },
+    {
+        "id": "8c34629044b6d409",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 18",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 900,
+        "y": 1040,
+        "wires": []
+    },
+    {
+        "id": "a71f406d0de7ab0a",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "create alert log",
+        "func": "\nmsg.topic = \"Danger alert\"; \nconst obj = msg.payload.feeds[0]; // obj as \"3\" as field2\nlet dateStr = obj.created_at; \nlet val = obj.field2; \n\n// detect abnormality: maybe data is not written yet\nif (val == \"0\" || val == \"\")\n{\n    msg.payload = -1; \n    return msg; \n}\n\n// Split date and time\nlet parts = dateStr.split(\"T\");\nlet date = parts[0];\nlet timeAndOffset = parts[1];\n\n// Remove timezone offset\nvar timeWithoutOffset = timeAndOffset.split(\"+\")[0];\n\nmsg.payload = date + \", \" + timeWithoutOffset + \": Danger alert was sent\"; \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 860,
+        "y": 1280,
+        "wires": [
+            [
+                "54ed57a417145d9a"
+            ]
+        ]
+    },
+    {
+        "id": "54ed57a417145d9a",
+        "type": "switch",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "neq",
+                "v": "-1",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 1050,
+        "y": 1280,
+        "wires": [
+            [
+                "520ffa224335e9e9"
+            ]
+        ]
+    },
+    {
+        "id": "7b80e988d1598815",
+        "type": "delay",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "pauseType": "rate",
+        "timeout": "5",
+        "timeoutUnits": "seconds",
+        "rate": "1",
+        "nbRateUnits": "1",
+        "rateUnits": "second",
+        "randomFirst": "1",
+        "randomLast": "5",
+        "randomUnits": "seconds",
+        "drop": false,
+        "allowrate": false,
+        "outputs": 1,
+        "x": 1150,
+        "y": 700,
+        "wires": [
+            [
+                "8952e2871072cae7",
+                "5be8a7f89d283fda"
+            ]
+        ]
+    },
+    {
+        "id": "bfa5303a6dd25b0a",
+        "type": "comment",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "info": "to prevent messages from getting sent to fast -> infinite loop so we queue messages",
+        "x": 1180,
+        "y": 740,
+        "wires": []
+    },
+    {
+        "id": "a065950d244cb101",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "set old lock stat",
+        "func": "\nlet stat = flow.get(\"device_locked\");\nstat = !stat; \n\nmsg.topic = \"door lock (1: locked, 2: unlocked)\";\nmsg.payload = (stat === true ? 1 : 2);\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 280,
+        "y": 840,
+        "wires": [
+            [
+                "58972588ade27245",
+                "b0123b7e084a2a5b"
+            ]
         ]
     },
     {
@@ -1209,6 +1972,31 @@
         "willMsg": {},
         "userProps": "",
         "sessionExpiry": ""
+    },
+    {
+        "id": "16a8eea19b573829",
+        "type": "telegram bot",
+        "botname": "ESPNotification",
+        "usernames": "ntkiet",
+        "chatids": "6562331656",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
     },
     {
         "id": "9774c96daa438e1b",
