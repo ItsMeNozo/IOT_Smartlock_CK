@@ -62,6 +62,33 @@ int degree = 0;
 String lockedStr = "🔒 Locked";
 String unlockedStr = "🔓 Unlocked";
 
+// Thingspeak
+const char *host = "api.thingspeak.com";
+const int portTS = 80;
+const char *requestLockOn = "/update?api_key=RUK1GD4GABD5TQEN&field1=1";
+const char *requestLockOff = "/update?api_key=RUK1GD4GABD5TQEN&field1=2";
+const char *requestDangerOn = "/update?api_key=RUK1GD4GABD5TQEN&field2=3";
+const char *requestDangerOff = "/update?api_key=RUK1GD4GABD5TQEN&field2=0";
+
+void sendRequest(const char *request)
+{
+	Serial.println(request);
+	WiFiClient client;
+	while (!client.connect(host, portTS))
+	{
+		Serial.println("connection fail");
+		delay(1000);
+	}
+	client.print(String("GET ") + request + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: close\r\n\r\n");
+	delay(500);
+
+	while (client.available())
+	{
+		String line = client.readStringUntil('\r');
+		Serial.print(line);
+	}
+}
+
 void setup()
 {
 	Serial.begin(9600);
@@ -123,6 +150,7 @@ void lock()
 	degree = 180;
 	servo.write(degree);
 	mqttClient.publish(pub_lock, lockedStr.c_str());
+	sendRequest(requestLockOn);
 }
 
 void unlock()
@@ -130,6 +158,7 @@ void unlock()
 	degree = 0;
 	servo.write(degree);
 	mqttClient.publish(pub_lock, unlockedStr.c_str());
+	sendRequest(requestLockOff);
 }
 
 bool isClosed()
