@@ -91,9 +91,6 @@ void setup()
 
 	// mqtt
 	mqttConnect();
-	// mqtt init: check for lock status to publish onto web -> initially, on web doesnt show lock status
-	String str = (isLocked() ? lockedStr : unlockedStr);
-	mqttClient.publish(pub_lock, str.c_str());
 }
 
 int Ultrasonic()
@@ -278,6 +275,11 @@ void mqttConnect()
 			delay(5000);
 		}
 	}
+
+	// mqtt init: check for lock status to publish onto web -> initially, on web doesnt show lock status
+	String strLock = (isLocked() ? lockedStr : unlockedStr);
+
+	mqttClient.publish(pub_lock, strLock.c_str());
 }
 
 void wifiConnect()
