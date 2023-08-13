@@ -1,5 +1,5 @@
 #include "PubSubClient.h" // MQTT
-#include "WiFi.h"		  // for ESP32
+#include "WiFi.h"					// for ESP32
 #include <ESP32Servo.h>
 #include <Keypad.h>
 #include <LiquidCrystal_I2C.h>
@@ -12,13 +12,17 @@ int port = 1883;
 
 // sub/pub
 const char *sub_lock = "web/lock"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
+const char *sub_pass = "21127119/pass"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
+
 const char *pub_lock = "device/lock_stat";
 const char *pub_door_close = "device/door_not_closed";
+const char *pub_device_on = "21127119/device_activated";
 
 // wifi setup through TCP/IP
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
 
+	
 #define ROW_NUM 4
 #define COLUMN_NUM 4
 // buzzer
@@ -33,24 +37,24 @@ PubSubClient mqttClient(wifiClient);
 #define echo_pin 35
 #define servo_pin 33
 // RBG 01
-#define PIN_RED_01 13	// GIOP26
+#define PIN_RED_01 13		// GIOP26
 #define PIN_GREEN_01 12 // GIOP33
 #define PIN_BLUE_01 14	// GIOP25
 // RBG 02
-#define PIN_RED_02 27	// GIOp13
+#define PIN_RED_02 27		// GIOp13
 #define PIN_GREEN_02 26 // GIOP12
 #define PIN_BLUE_02 25	// GIOP14
 // lcd 16x2 i2c
 
-#define distance_lock 3				// cm
+#define distance_lock 3							// cm
 LiquidCrystal_I2C lcd(0x27, 16, 2); // lcd
 
 // keypad
 char keys[ROW_NUM][COLUMN_NUM] = {
-	{'1', '2', '3', 'A'},
-	{'4', '5', '6', 'B'},
-	{'7', '8', '9', 'C'},
-	{'*', '0', '#', 'D'}};
+		{'1', '2', '3', 'A'},
+		{'4', '5', '6', 'B'},
+		{'7', '8', '9', 'C'},
+		{'*', '0', '#', 'D'}};
 byte pin_rows[ROW_NUM] = {17, 5, 18, 19};
 byte pin_column[COLUMN_NUM] = {33, 32, 35, 34};
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM);
@@ -61,32 +65,33 @@ bool isOuterPressing = false, isInnerPressing = false;
 int degree = 0;
 String lockedStr = "🔒 Locked";
 String unlockedStr = "🔓 Unlocked";
+String passAll; 
 
 // Thingspeak
-const char *host = "api.thingspeak.com";
+const char* host = "api.thingspeak.com";
 const int portTS = 80;
-const char *requestLockOn = "/update?api_key=RUK1GD4GABD5TQEN&field1=1";
-const char *requestLockOff = "/update?api_key=RUK1GD4GABD5TQEN&field1=2";
-const char *requestDangerOn = "/update?api_key=RUK1GD4GABD5TQEN&field2=3";
-const char *requestDangerOff = "/update?api_key=RUK1GD4GABD5TQEN&field2=0";
+// const char* requestDangerSent = "/update?api_key=RUK1GD4GABD5TQEN&field1=3";
+const char* request = "/update?api_key=RUK1GD4GABD5TQEN&field1=";
 
-void sendRequest(const char *request)
-{
-	Serial.println(request);
-	WiFiClient client;
-	while (!client.connect(host, portTS))
-	{
-		Serial.println("connection fail");
-		delay(1000);
-	}
-	client.print(String("GET ") + request + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: close\r\n\r\n");
-	delay(500);
 
-	while (client.available())
-	{
-		String line = client.readStringUntil('\r');
-		Serial.print(line);
-	}
+
+
+void sendRequest(const char* request) {
+	Serial.println(request); 
+  WiFiClient client;
+  while(!client.connect(host, portTS)) {
+    Serial.println("connection fail");
+    delay(1000);
+  }
+  client.print(String("GET ") + request + " HTTP/1.1\r\n"
+              + "Host: " + host + "\r\n"
+              + "Connection: close\r\n\r\n");
+  delay(500);
+
+  while(client.available()) {
+    String line = client.readStringUntil('\r');
+    Serial.print(line);
+  }
 }
 
 void setup()
@@ -118,6 +123,11 @@ void setup()
 
 	// mqtt
 	mqttConnect();
+
+	// pub device activated
+	String payload = "Device on"; 
+	mqttClient.publish(pub_device_on, payload.c_str());
+	
 }
 
 int Ultrasonic()
@@ -150,7 +160,9 @@ void lock()
 	degree = 180;
 	servo.write(degree);
 	mqttClient.publish(pub_lock, lockedStr.c_str());
-	sendRequest(requestLockOn);
+
+	String requestLockOn = String(request) + "1" ; 
+	sendRequest(requestLockOn.c_str());
 }
 
 void unlock()
@@ -158,7 +170,10 @@ void unlock()
 	degree = 0;
 	servo.write(degree);
 	mqttClient.publish(pub_lock, unlockedStr.c_str());
-	sendRequest(requestLockOff);
+
+	String requestLockOff = String(request) + "2" ; 
+
+	sendRequest(requestLockOff.c_str());
 }
 
 bool isClosed()
@@ -272,6 +287,10 @@ void callback(char *topic, byte *payload, unsigned int length)
 				unlock();
 		}
 	}
+	else if (String(topic) == sub_pass)
+	{
+		passAll = data; 
+	}
 	Serial.println("----------------");
 }
 
@@ -294,6 +313,7 @@ void mqttConnect()
 
 			// once connected, do publish/subscribe
 			mqttClient.subscribe(sub_lock);
+			mqttClient.subscribe(sub_pass); 
 		}
 		else
 		{
@@ -307,8 +327,9 @@ void mqttConnect()
 
 	// mqtt init: check for lock status to publish onto web -> initially, on web doesnt show lock status
 	String strLock = (isLocked() ? lockedStr : unlockedStr);
-
+	
 	mqttClient.publish(pub_lock, strLock.c_str());
+
 }
 
 void wifiConnect()
@@ -350,6 +371,7 @@ void loop()
 
 	// devices
 	lock_unlock();
+
 
 	delay(100);
 }
