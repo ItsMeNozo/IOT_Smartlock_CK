@@ -357,7 +357,7 @@
         "type": "ui_text_input",
         "z": "d8f87e00334234e5",
         "name": "",
-        "label": "New password",
+        "label": "New device password",
         "tooltip": "",
         "group": "87d0df7f7baaf84d",
         "order": 2,
@@ -370,10 +370,12 @@
         "sendOnBlur": true,
         "className": "",
         "topicType": "msg",
-        "x": 240,
+        "x": 260,
         "y": 1780,
         "wires": [
-            []
+            [
+                "935c44a04498c77e"
+            ]
         ]
     },
     {
@@ -386,21 +388,21 @@
         "width": 0,
         "height": 0,
         "passthru": false,
-        "label": "Change password",
+        "label": "Change",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "",
-        "payloadType": "str",
+        "payload": "pass",
+        "payloadType": "flow",
         "topic": "topic",
         "topicType": "msg",
-        "x": 250,
+        "x": 220,
         "y": 1840,
         "wires": [
             [
-                "324f4b8474cdfb63"
+                "f25b84fbc9b352a7"
             ]
         ]
     },
@@ -424,8 +426,8 @@
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
-        "x": 240,
-        "y": 1900,
+        "x": 220,
+        "y": 2020,
         "wires": [
             [
                 "d150669599e4cfed"
@@ -447,7 +449,7 @@
         "className": "",
         "topic": "",
         "name": "",
-        "x": 710,
+        "x": 1050,
         "y": 1840,
         "wires": []
     },
@@ -455,14 +457,14 @@
         "id": "324f4b8474cdfb63",
         "type": "function",
         "z": "d8f87e00334234e5",
-        "name": "check_pass",
+        "name": "set success msg",
         "func": "// if matches old password\n\n// if valid password, please add if statement \nmsg.topic = \"Password changed\"; \nmsg.payload = \"Congrats! Your password was successfully changed.\"; \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 470,
+        "x": 820,
         "y": 1840,
         "wires": [
             [
@@ -481,8 +483,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 430,
-        "y": 1900,
+        "x": 410,
+        "y": 2020,
         "wires": [
             [
                 "5abb9aaca6abf655"
@@ -495,8 +497,8 @@
         "z": "d8f87e00334234e5",
         "name": "",
         "events": "all",
-        "x": 620,
-        "y": 1900,
+        "x": 600,
+        "y": 2020,
         "wires": [
             []
         ]
@@ -572,7 +574,7 @@
         "id": "921fea17aac532cf",
         "type": "comment",
         "z": "d8f87e00334234e5",
-        "name": "Personal Info",
+        "name": "Device setting",
         "info": "",
         "x": 210,
         "y": 1660,
@@ -925,7 +927,7 @@
         "y": 1200,
         "wires": [
             [
-                "520ffa224335e9e9"
+                "54ed57a417145d9a"
             ]
         ]
     },
@@ -935,8 +937,8 @@
         "z": "d8f87e00334234e5",
         "name": "Telegram",
         "info": "",
-        "x": 180,
-        "y": 2020,
+        "x": 200,
+        "y": 2200,
         "wires": []
     },
     {
@@ -950,8 +952,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 500,
-        "y": 2360,
+        "x": 520,
+        "y": 2540,
         "wires": [
             [
                 "b7d5390de02c41f5"
@@ -969,8 +971,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 660,
-        "y": 2360,
+        "x": 680,
+        "y": 2540,
         "wires": [
             [
                 "9134a1abf363d2d2",
@@ -991,8 +993,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 150,
-        "y": 2120,
+        "x": 170,
+        "y": 2300,
         "wires": [
             [
                 "47d870df96daaff7"
@@ -1011,8 +1013,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 800,
-        "y": 2040,
+        "x": 820,
+        "y": 2220,
         "wires": []
     },
     {
@@ -1029,8 +1031,8 @@
         "correl": "",
         "expiry": "",
         "broker": "e609c620bd3749d8",
-        "x": 900,
-        "y": 2480,
+        "x": 920,
+        "y": 2660,
         "wires": []
     },
     {
@@ -1046,8 +1048,8 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 160,
-        "y": 2500,
+        "x": 180,
+        "y": 2680,
         "wires": [
             [
                 "41238e480c113c5b"
@@ -1065,8 +1067,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 420,
-        "y": 2500,
+        "x": 440,
+        "y": 2680,
         "wires": [
             [
                 "11af81b1fb33145d"
@@ -1084,8 +1086,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 370,
-        "y": 2120,
+        "x": 390,
+        "y": 2300,
         "wires": [
             [
                 "5d4231e570bfdd6e"
@@ -1104,8 +1106,8 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 420,
-        "y": 2300,
+        "x": 440,
+        "y": 2480,
         "wires": []
     },
     {
@@ -1130,8 +1132,8 @@
         "checkall": "true",
         "repair": false,
         "outputs": 2,
-        "x": 310,
-        "y": 2380,
+        "x": 330,
+        "y": 2560,
         "wires": [
             [
                 "403c52d203957039"
@@ -1162,8 +1164,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 200,
-        "y": 2180,
+        "x": 220,
+        "y": 2360,
         "wires": [
             [
                 "47d870df96daaff7"
@@ -1191,8 +1193,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 220,
-        "y": 2560,
+        "x": 240,
+        "y": 2740,
         "wires": [
             [
                 "41238e480c113c5b"
@@ -1210,8 +1212,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 720,
-        "y": 2440,
+        "x": 740,
+        "y": 2620,
         "wires": [
             [
                 "8e62ab63b3a5cb5d"
@@ -1222,12 +1224,13 @@
         "id": "2accb8ade221812d",
         "type": "telegram receiver",
         "z": "d8f87e00334234e5",
+        "d": true,
         "name": "",
         "bot": "16a8eea19b573829",
         "saveDataDir": "",
         "filterCommands": false,
-        "x": 110,
-        "y": 2360,
+        "x": 130,
+        "y": 2540,
         "wires": [
             [
                 "551cfbf3f3d1d51e",
@@ -1245,8 +1248,8 @@
         "bot": "16a8eea19b573829",
         "haserroroutput": false,
         "outputs": 1,
-        "x": 590,
-        "y": 2120,
+        "x": 610,
+        "y": 2300,
         "wires": [
             [
                 "151b01946a58178d"
@@ -1257,12 +1260,13 @@
         "id": "11af81b1fb33145d",
         "type": "telegram sender",
         "z": "d8f87e00334234e5",
+        "d": true,
         "name": "",
         "bot": "16a8eea19b573829",
         "haserroroutput": false,
         "outputs": 1,
-        "x": 630,
-        "y": 2500,
+        "x": 650,
+        "y": 2680,
         "wires": [
             []
         ]
@@ -1271,36 +1275,16 @@
         "id": "9134a1abf363d2d2",
         "type": "telegram sender",
         "z": "d8f87e00334234e5",
+        "d": true,
         "name": "",
         "bot": "16a8eea19b573829",
         "haserroroutput": false,
         "outputs": 1,
-        "x": 850,
-        "y": 2360,
+        "x": 870,
+        "y": 2540,
         "wires": [
             []
         ]
-    },
-    {
-        "id": "c0801f11f5a3f175",
-        "type": "ui_text",
-        "z": "d8f87e00334234e5",
-        "group": "87d0df7f7baaf84d",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Username",
-        "format": "admin",
-        "layout": "row-left",
-        "className": "",
-        "style": false,
-        "font": "",
-        "fontSize": 16,
-        "color": "#000000",
-        "x": 230,
-        "y": 1720,
-        "wires": []
     },
     {
         "id": "84898f6a01c687d8",
@@ -1896,6 +1880,277 @@
         ]
     },
     {
+        "id": "92768a99f05396f4",
+        "type": "mqtt in",
+        "z": "d8f87e00334234e5",
+        "name": "on-start device",
+        "topic": "21127119/device_activated",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e609c620bd3749d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 160,
+        "y": 2080,
+        "wires": [
+            [
+                "8725a9d30ad9414e"
+            ]
+        ]
+    },
+    {
+        "id": "8725a9d30ad9414e",
+        "type": "file in",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "filename": "C:\\IOT\\pass.txt",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 400,
+        "y": 2080,
+        "wires": [
+            [
+                "28cce13559baa166",
+                "b74139f27ace3fcd"
+            ]
+        ]
+    },
+    {
+        "id": "28cce13559baa166",
+        "type": "mqtt out",
+        "z": "d8f87e00334234e5",
+        "name": "pub password",
+        "topic": "21127119/pass",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e609c620bd3749d8",
+        "x": 600,
+        "y": 2080,
+        "wires": []
+    },
+    {
+        "id": "935c44a04498c77e",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "set pass",
+        "func": "flow.set(\"pass\", msg.payload); \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 460,
+        "y": 1780,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "320c00a421b120aa",
+        "type": "file",
+        "z": "d8f87e00334234e5",
+        "name": "write new pass",
+        "filename": "C:\\IOT\\pass.txt",
+        "filenameType": "str",
+        "appendNewline": true,
+        "createDir": true,
+        "overwriteFile": "true",
+        "encoding": "none",
+        "x": 940,
+        "y": 1900,
+        "wires": [
+            [
+                "dc1768d603e8ebce",
+                "63c4bcb43e05fe07"
+            ]
+        ]
+    },
+    {
+        "id": "f25b84fbc9b352a7",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "check pass",
+        "func": "let pass = msg.payload; \n\n// tối đa 16 ký tự\nif (pass.length == \"\" || pass.length > 16){\n    msg.payload = false; \n    return msg;  \n}\n\nfor (let c of pass){\n    if (c < '0' || c > '9'){\n        msg.payload = false;\n        return msg;  \n    }\n}\n\nmsg.payload = true; \nflow.set(\"pass\", pass); \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 1840,
+        "wires": [
+            [
+                "9d8d7c8c919189fa",
+                "2d17f0e971dcf603"
+            ]
+        ]
+    },
+    {
+        "id": "9d8d7c8c919189fa",
+        "type": "switch",
+        "z": "d8f87e00334234e5",
+        "name": "pass valid",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "true"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 640,
+        "y": 1840,
+        "wires": [
+            [
+                "324f4b8474cdfb63",
+                "302d59a4ac360810"
+            ]
+        ]
+    },
+    {
+        "id": "dc1768d603e8ebce",
+        "type": "mqtt out",
+        "z": "d8f87e00334234e5",
+        "name": "pub password",
+        "topic": "21127119/pass",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e609c620bd3749d8",
+        "x": 1160,
+        "y": 1900,
+        "wires": []
+    },
+    {
+        "id": "2d17f0e971dcf603",
+        "type": "switch",
+        "z": "d8f87e00334234e5",
+        "name": "pass invalid",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "false"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 670,
+        "y": 1960,
+        "wires": [
+            [
+                "a80b0768c63fc191"
+            ]
+        ]
+    },
+    {
+        "id": "ed7d7a0a8ac268ba",
+        "type": "ui_toast",
+        "z": "d8f87e00334234e5",
+        "position": "bottom right",
+        "displayTime": "3",
+        "highlight": "red",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 1110,
+        "y": 1960,
+        "wires": []
+    },
+    {
+        "id": "a80b0768c63fc191",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "set fail msg",
+        "func": "\nmsg.topic = \"Invalid password\"; \nmsg.payload = \"Cant change password\"; \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 870,
+        "y": 1960,
+        "wires": [
+            [
+                "ed7d7a0a8ac268ba"
+            ]
+        ]
+    },
+    {
+        "id": "63c4bcb43e05fe07",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 19",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1140,
+        "y": 1780,
+        "wires": []
+    },
+    {
+        "id": "b74139f27ace3fcd",
+        "type": "debug",
+        "z": "d8f87e00334234e5",
+        "name": "debug 20",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 600,
+        "y": 2140,
+        "wires": []
+    },
+    {
+        "id": "302d59a4ac360810",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "retrieve pass",
+        "func": "msg.payload = flow.get(\"pass\"); \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 750,
+        "y": 1900,
+        "wires": [
+            [
+                "320c00a421b120aa"
+            ]
+        ]
+    },
+    {
         "id": "d86330bc58d8059b",
         "type": "ui_group",
         "name": "login-form",
@@ -1942,11 +2197,11 @@
     {
         "id": "87d0df7f7baaf84d",
         "type": "ui_group",
-        "name": "Personal Info",
+        "name": "Device Setting",
         "tab": "57053d15769f9dca",
         "order": 4,
         "disp": true,
-        "width": 5,
+        "width": "5",
         "collapse": false,
         "className": ""
     },
