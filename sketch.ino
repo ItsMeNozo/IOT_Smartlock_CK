@@ -11,9 +11,12 @@ const char *mqtt_server = "broker.hivemq.com"; // Thingspeak MQTT broker
 int port = 1883;
 
 // sub/pub
-const char *sub_lock = "web/lock"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
+const char *sub_lock = "web/lock";		// currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
+const char *sub_pass = "21127119/pass"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
+
 const char *pub_lock = "device/lock_stat";
 const char *pub_door_close = "device/door_not_closed";
+const char *pub_device_on = "21127119/device_activated";
 
 // wifi setup through TCP/IP
 WiFiClient wifiClient;
@@ -61,6 +64,7 @@ bool isOuterPressing = false, isInnerPressing = false;
 int degree = 0;
 String lockedStr = "🔒 Locked";
 String unlockedStr = "🔓 Unlocked";
+String passAll;
 
 // Thingspeak
 const char *host = "api.thingspeak.com";
@@ -120,6 +124,10 @@ void setup()
 
 	// mqtt
 	mqttConnect();
+
+	// pub device activated
+	String payload = "Device on";
+	mqttClient.publish(pub_device_on, payload.c_str());
 }
 
 int Ultrasonic(){
@@ -348,6 +356,10 @@ void callback(char *topic, byte *payload, unsigned int length){
 				unlock();
 		}
 	}
+	else if (String(topic) == sub_pass)
+	{
+		passAll = data;
+	}
 	Serial.println("----------------");
 	if (String(topic) == "21127089/alertReply") {
 		if (data == "It's me") {
@@ -387,6 +399,7 @@ void mqttConnect(){
 			// once connected, do publish/subscribe
 			mqttClient.subscribe(sub_lock);
 			mqttClient.subscribe("21127089/alertReply");
+			mqttClient.subscribe(sub_pass);
 		}
 		else
 		{
