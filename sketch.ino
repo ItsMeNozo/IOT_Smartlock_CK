@@ -1,5 +1,5 @@
 #include "PubSubClient.h" // MQTT
-#include "WiFi.h"					// for ESP32
+#include "WiFi.h"		  // for ESP32
 #include <ESP32Servo.h>
 #include <Keypad.h>
 #include <LiquidCrystal_I2C.h>
@@ -11,7 +11,7 @@ const char *mqtt_server = "broker.hivemq.com"; // Thingspeak MQTT broker
 int port = 1883;
 
 // sub/pub
-const char *sub_lock = "web/lock"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
+const char *sub_lock = "web/lock";		// currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
 const char *sub_pass = "21127119/pass"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
 
 const char *pub_lock = "device/lock_stat";
@@ -22,41 +22,40 @@ const char *pub_device_on = "21127119/device_activated";
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
 
-	
 #define ROW_NUM 4
 #define COLUMN_NUM 4
 // buzzer
-#define Buzzer_pin 15
+#define Buzzer_pin 13
 // button
 #define outerButtonPin 16
 #define innerButtonPin 39
 // light
-#define light_sensor 34
+#define light_sensor 35
 // Ultrasonic Distance Sensor
-#define trig_pin 32
-#define echo_pin 35
-#define servo_pin 33
+#define trig_pin 2
+#define echo_pin 36
+#define servo_pin 15
 // RBG 01
-#define PIN_RED_01 13		// GIOP26
+#define PIN_RED_01 4	// GIOP26
 #define PIN_GREEN_01 12 // GIOP33
 #define PIN_BLUE_01 14	// GIOP25
 // RBG 02
-#define PIN_RED_02 27		// GIOp13
+#define PIN_RED_02 27	// GIOp13
 #define PIN_GREEN_02 26 // GIOP12
 #define PIN_BLUE_02 25	// GIOP14
 // lcd 16x2 i2c
 
-#define distance_lock 3							// cm
+#define distance_lock 3				// cm
 LiquidCrystal_I2C lcd(0x27, 16, 2); // lcd
 
 // keypad
 char keys[ROW_NUM][COLUMN_NUM] = {
-		{'1', '2', '3', 'A'},
-		{'4', '5', '6', 'B'},
-		{'7', '8', '9', 'C'},
-		{'*', '0', '#', 'D'}};
-byte pin_rows[ROW_NUM] = {17, 5, 18, 19};
-byte pin_column[COLUMN_NUM] = {33, 32, 35, 34};
+	{'1', '2', '3', 'A'},
+	{'4', '5', '6', 'B'},
+	{'7', '8', '9', 'C'},
+	{'*', '0', '#', 'D'}};
+byte pin_rows[ROW_NUM] = {17, 5, 3, 23};
+byte pin_column[COLUMN_NUM] = {33, 32, 18, 19};
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM);
 
 Servo servo;
@@ -65,33 +64,31 @@ bool isOuterPressing = false, isInnerPressing = false;
 int degree = 0;
 String lockedStr = "🔒 Locked";
 String unlockedStr = "🔓 Unlocked";
-String passAll; 
+String correctPassword;
 
 // Thingspeak
-const char* host = "api.thingspeak.com";
+const char *host = "api.thingspeak.com";
 const int portTS = 80;
 // const char* requestDangerSent = "/update?api_key=RUK1GD4GABD5TQEN&field1=3";
-const char* request = "/update?api_key=RUK1GD4GABD5TQEN&field1=";
+const char *request = "/update?api_key=RUK1GD4GABD5TQEN&field1=";
 
+void sendRequest(const char *request)
+{
+	Serial.println(request);
+	WiFiClient client;
+	while (!client.connect(host, portTS))
+	{
+		Serial.println("connection fail");
+		delay(1000);
+	}
+	client.print(String("GET ") + request + " HTTP/1.1\r\n" + "Host: " + host + "\r\n" + "Connection: close\r\n\r\n");
+	delay(500);
 
-
-
-void sendRequest(const char* request) {
-	Serial.println(request); 
-  WiFiClient client;
-  while(!client.connect(host, portTS)) {
-    Serial.println("connection fail");
-    delay(1000);
-  }
-  client.print(String("GET ") + request + " HTTP/1.1\r\n"
-              + "Host: " + host + "\r\n"
-              + "Connection: close\r\n\r\n");
-  delay(500);
-
-  while(client.available()) {
-    String line = client.readStringUntil('\r');
-    Serial.print(line);
-  }
+	while (client.available())
+	{
+		String line = client.readStringUntil('\r');
+		Serial.print(line);
+	}
 }
 
 void setup()
@@ -120,14 +117,15 @@ void setup()
 	pinMode(PIN_RED_02, OUTPUT);
 	pinMode(PIN_GREEN_02, OUTPUT);
 	pinMode(PIN_BLUE_02, OUTPUT);
+	// buzzer
+	pinMode(Buzzer_pin, OUTPUT);
 
 	// mqtt
 	mqttConnect();
 
 	// pub device activated
-	String payload = "Device on"; 
+	String payload = "Device on";
 	mqttClient.publish(pub_device_on, payload.c_str());
-	
 }
 
 int Ultrasonic()
@@ -161,7 +159,7 @@ void lock()
 	servo.write(degree);
 	mqttClient.publish(pub_lock, lockedStr.c_str());
 
-	String requestLockOn = String(request) + "1" ; 
+	String requestLockOn = String(request) + "1";
 	sendRequest(requestLockOn.c_str());
 }
 
@@ -171,7 +169,7 @@ void unlock()
 	servo.write(degree);
 	mqttClient.publish(pub_lock, unlockedStr.c_str());
 
-	String requestLockOff = String(request) + "2" ; 
+	String requestLockOff = String(request) + "2";
 
 	sendRequest(requestLockOff.c_str());
 }
@@ -179,12 +177,132 @@ void unlock()
 bool isClosed()
 {
 	int distance = Ultrasonic();
+	Serial.print("distance: ");
+	Serial.println(distance);
 	return distance <= distance_lock;
 }
 bool isLocked()
 {
 	return degree == 180;
 }
+
+String userInput = "";
+int unlockFailCounts = 0;
+bool disableKeypad = false;
+unsigned long startDisable;
+bool isDangerMode = false;
+int buzzerPin = 12, buzzerTone = 500;
+bool isReplied = false;
+
+void initAuthen()
+{
+	userInput = "";
+	unlockFailCounts = 0;
+	disableKeypad = false;
+	isDangerMode = false;
+}
+
+bool isPasswordCorrect()
+{
+	Serial.println(userInput);
+	// get the correct password from the cloud
+	return userInput == correctPassword;
+}
+
+void turnOnDangerMode()
+{
+	isDangerMode = true;
+	String payload = "Danger mode options";
+	mqttClient.publish("21127089/dangerModeOpts", payload.c_str());
+}
+void turnOffDangerMode()
+{
+	isDangerMode = false;
+	noTone(Buzzer_pin);
+}
+void authenBeforeUnlock()
+{
+	lcd.clear();
+	if (isPasswordCorrect())
+	{
+		lcd.print("Access granted");
+		unlock();
+		initAuthen();
+	}
+	else
+	{
+		lcd.print("Access denied");
+		unlockFailCounts += 1;
+		Serial.print("Unlock fail counts: ");
+		Serial.println(unlockFailCounts);
+	}
+	delay(1000);
+	lcd.clear();
+	userInput = "";
+}
+
+void handleKeypad()
+{
+	if (isDangerMode)
+	{
+		Serial.println("danger mode is on");
+		// buzzer for dangermode
+		tone(Buzzer_pin, buzzerTone);
+		buzzerTone++;
+		if (buzzerTone == 510)
+			buzzerTone = 500;
+		return;
+	}
+	if (disableKeypad)
+	{
+		Serial.println("keypad is disabled");
+		if (!isReplied && millis() - startDisable >= 10 * 1000)
+		{
+			turnOnDangerMode();
+		}
+		return;
+	}
+	if (unlockFailCounts == 3)
+	{
+		Serial.println("you failed to unlock 3 times");
+		disableKeypad = true;
+		isReplied = false;
+		startDisable = millis();
+		// handleTelegramNotification()
+		String payload = "Ayo you unlock too many times!";
+		mqttClient.publish("21127089/doorAlert", payload.c_str());
+		Serial.println("Just sent alert to node red");
+		// write to cloud
+		String requestDanger = String(request) + "3";
+		sendRequest(requestDanger.c_str());
+	}
+	if (!isLocked())
+	{
+		// Serial.println("The door is unlocked so the keypad is disabled");
+		return;
+	}
+
+	char key = keypad.getKey();
+	if (key != NO_KEY)
+	{
+		if (key == 'D')
+		{
+			lcd.clear();
+			userInput = "";
+		}
+		else if (key == 'A')
+		{
+			authenBeforeUnlock();
+		}
+		else
+		{
+			lcd.print(key);
+			Serial.print(key);
+			userInput += key;
+		}
+	}
+}
+
 // button outside the door
 void handleOuterButton()
 {
@@ -197,28 +315,14 @@ void handleOuterButton()
 		{
 			// lcd displays Please close the door
 			lcd.clear();
-			lcd.println("Please close the door!");
+			lcd.println("Close door first");
 		}
 	}
 	else
 	{
-		// UNLOCK THE DOOR
-		if (Pass_success)
-		{
-			// Access accepted
-			unlock();
-			lcd.clear();
-			lcd.println("Access granted!");
-		}
-		else
-		{
-			// LCD displays Access denied
-			lcd.clear();
-			lcd.println("Access denied!");
-		}
+		authenBeforeUnlock();
 	}
 }
-
 // button inside the door
 void handleInnerButton()
 {
@@ -233,7 +337,6 @@ void handleInnerButton()
 		unlock();
 	}
 }
-
 void lock_unlock()
 {
 	int outerButtonState = digitalRead(outerButtonPin);
@@ -289,11 +392,28 @@ void callback(char *topic, byte *payload, unsigned int length)
 	}
 	else if (String(topic) == sub_pass)
 	{
-		passAll = data; 
+		correctPassword = data;
 	}
 	Serial.println("----------------");
+	if (String(topic) == "21127089/alertReply")
+	{
+		if (data == "It's me")
+		{
+			isReplied = true;
+			initAuthen();
+		}
+		else if (data == "It's not me")
+		{
+			isReplied = true;
+			turnOnDangerMode();
+		}
+		else if (data == "Turn off danger mode")
+		{
+			turnOffDangerMode();
+			initAuthen();
+		}
+	}
 }
-
 void mqttConnect()
 {
 	// if client is connected, stop reconnecting
@@ -310,10 +430,13 @@ void mqttConnect()
 			Serial.println(" connected");
 			lcd.clear();
 			lcd.print("connected");
+			delay(1000);
+			lcd.clear();
 
 			// once connected, do publish/subscribe
 			mqttClient.subscribe(sub_lock);
-			mqttClient.subscribe(sub_pass); 
+			mqttClient.subscribe("21127089/alertReply");
+			mqttClient.subscribe(sub_pass);
 		}
 		else
 		{
@@ -327,11 +450,9 @@ void mqttConnect()
 
 	// mqtt init: check for lock status to publish onto web -> initially, on web doesnt show lock status
 	String strLock = (isLocked() ? lockedStr : unlockedStr);
-	
+
 	mqttClient.publish(pub_lock, strLock.c_str());
-
 }
-
 void wifiConnect()
 {
 	WiFi.begin(ssid, password);
@@ -347,7 +468,6 @@ void wifiConnect()
 
 	lcd.print("Connected");
 }
-
 void setupWifi()
 {
 	Serial.print("Connecting to ");
@@ -360,7 +480,6 @@ void setupWifi()
 
 	wifiConnect();
 }
-
 void loop()
 {
 	// always check if client is disconnected, reconnect
@@ -372,6 +491,8 @@ void loop()
 	// devices
 	lock_unlock();
 
+	//
+	handleKeypad();
 
 	delay(100);
 }
