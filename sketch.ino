@@ -10,11 +10,10 @@ const char *password = "";
 const char *mqtt_server = "broker.hivemq.com"; // Thingspeak MQTT broker
 int port = 1883;
 
-// sub/pub
 const char *sub_lock = "web/lock"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
 const char *pub_lock = "device/lock_stat";
 const char *pub_door_close = "device/door_not_closed";
-
+const char *Count_down_time = "time/time_out";
 // wifi setup through TCP/IP
 WiFiClient wifiClient;
 PubSubClient mqttClient(wifiClient);
@@ -22,18 +21,18 @@ PubSubClient mqttClient(wifiClient);
 #define ROW_NUM 4
 #define COLUMN_NUM 4
 // buzzer
-#define Buzzer_pin 15
+#define Buzzer_pin 13
 // button
 #define outerButtonPin 16
 #define innerButtonPin 39
 // light
-#define light_sensor 34
+#define light_sensor 35
 // Ultrasonic Distance Sensor
-#define trig_pin 32
-#define echo_pin 35
-#define servo_pin 33
+#define trig_pin 2
+#define echo_pin 36
+#define servo_pin 15
 // RBG 01
-#define PIN_RED_01 13	// GIOP26
+#define PIN_RED_01 4	// GIOP26
 #define PIN_GREEN_01 12 // GIOP33
 #define PIN_BLUE_01 14	// GIOP25
 // RBG 02
@@ -51,14 +50,15 @@ char keys[ROW_NUM][COLUMN_NUM] = {
 	{'4', '5', '6', 'B'},
 	{'7', '8', '9', 'C'},
 	{'*', '0', '#', 'D'}};
-byte pin_rows[ROW_NUM] = {17, 5, 18, 19};
-byte pin_column[COLUMN_NUM] = {33, 32, 35, 34};
+byte pin_rows[ROW_NUM] = {17, 5, 3, 23};
+byte pin_column[COLUMN_NUM] = {33, 32, 18,19};
 Keypad keypad = Keypad(makeKeymap(keys), pin_rows, pin_column, ROW_NUM, COLUMN_NUM);
 
 Servo servo;
 bool Pass_success = true;
 bool isOuterPressing = false, isInnerPressing = false;
-int degree = 0;
+bool IsSetCountdown = false;
+int degree = 0, Count_down = 0,time_out = 1;
 String lockedStr = "🔒 Locked";
 String unlockedStr = "🔓 Unlocked";
 
@@ -69,6 +69,7 @@ const char *requestLockOn = "/update?api_key=RUK1GD4GABD5TQEN&field1=1";
 const char *requestLockOff = "/update?api_key=RUK1GD4GABD5TQEN&field1=2";
 const char *requestDangerOn = "/update?api_key=RUK1GD4GABD5TQEN&field2=3";
 const char *requestDangerOff = "/update?api_key=RUK1GD4GABD5TQEN&field2=0";
+
 
 void sendRequest(const char *request)
 {
@@ -103,6 +104,7 @@ void setup()
 	mqttClient.setCallback(callback);
 	mqttClient.setKeepAlive(90); // if client does not send any data to broker within 60-sec interval, disconnect
 
+
 	// set up other devices down here
 	servo.attach(servo_pin, 500, 2400);
 	servo.write(degree);
@@ -120,8 +122,7 @@ void setup()
 	mqttConnect();
 }
 
-int Ultrasonic()
-{
+int Ultrasonic(){
 	digitalWrite(trig_pin, HIGH);
 	delayMicroseconds(10);
 	digitalWrite(trig_pin, LOW);
@@ -131,72 +132,60 @@ int Ultrasonic()
 }
 void LED_RBG_BACK()
 {
-	if (isLocked())
-	{
+	if (isLocked()){
 		analogWrite(PIN_RED_02, 0);
 		analogWrite(PIN_GREEN_02, 255);
 		analogWrite(PIN_BLUE_02, 0);
 	}
-	else
-	{
+	else{
 		analogWrite(PIN_GREEN_02, 0);
 		analogWrite(PIN_RED_02, 255);
 		analogWrite(PIN_BLUE_02, 0);
 	}
 }
 
-void lock()
-{
+void lock(){
 	degree = 180;
 	servo.write(degree);
 	mqttClient.publish(pub_lock, lockedStr.c_str());
 	sendRequest(requestLockOn);
 }
 
-void unlock()
-{
+void unlock(){
 	degree = 0;
 	servo.write(degree);
 	mqttClient.publish(pub_lock, unlockedStr.c_str());
 	sendRequest(requestLockOff);
 }
 
-bool isClosed()
-{
+bool isClosed(){
 	int distance = Ultrasonic();
 	return distance <= distance_lock;
 }
-bool isLocked()
-{
+bool isLocked(){
 	return degree == 180;
 }
 // button outside the door
-void handleOuterButton()
-{
+void handleOuterButton(){
 	// LOCK THE DOOR
-	if (!isLocked())
-	{
+	if (!isLocked()){
 		if (isClosed())
 			lock();
-		else
-		{
+		else{
 			// lcd displays Please close the door
 			lcd.clear();
 			lcd.println("Please close the door!");
 		}
 	}
-	else
-	{
+	else{
 		// UNLOCK THE DOOR
-		if (Pass_success)
-		{
+		if (Pass_success){
 			// Access accepted
 			unlock();
 			lcd.clear();
 			lcd.println("Access granted!");
 		}
-		else
-		{
+		else{
 			// LCD displays Access denied
 			lcd.clear();
 			lcd.println("Access denied!");
@@ -205,20 +194,36 @@ void handleOuterButton()
 }
 
 // button inside the door
-void handleInnerButton()
-{
+void handleInnerButton(){
 	// LOCK THE DOOR
-	if (!isLocked())
-	{
+	if (!isLocked()){
 		lock();
 	}
-	else
-	{
+	else{
 		// UNLOCK THE DOOR
 		unlock();
 	}
 }
-
+void set_time(){
+	if(!IsSetCountdown){
+		Count_down = millis();
+		IsSetCountdown = true;
+	}  
+}
+void schedule_auto(){
+	if (isClosed()){
+		if(!isLocked()){
+			set_time();
+			if (millis() - Count_down > time_out)
+				handleInnerButton();
+		}
+		else
+			IsSetCountdown = false;
+	}
+	else
+		IsSetCountdown = false;
+	LED_RBG_BACK();
+}
 void lock_unlock()
 {
 	int outerButtonState = digitalRead(outerButtonPin);
@@ -272,11 +277,14 @@ void callback(char *topic, byte *payload, unsigned int length)
 				unlock();
 		}
 	}
+	else if(String(topic) == Count_down_time){
+		time_out = atoi(data.c_str()) * 1000 ; 
+		Serial.println(time_out);
+	}
 	Serial.println("----------------");
 }
 
-void mqttConnect()
-{
+void mqttConnect(){
 	// if client is connected, stop reconnecting
 	while (!mqttClient.connected())
 	{
@@ -294,6 +302,7 @@ void mqttConnect()
 
 			// once connected, do publish/subscribe
 			mqttClient.subscribe(sub_lock);
+			mqttClient.subscribe(Count_down_time);
 		}
 		else
 		{
@@ -310,9 +319,7 @@ void mqttConnect()
 
 	mqttClient.publish(pub_lock, strLock.c_str());
 }
-
-void wifiConnect()
-{
+void wifiConnect(){
 	WiFi.begin(ssid, password);
 
 	// wait until wifi is connected
@@ -326,9 +333,7 @@ void wifiConnect()
 
 	lcd.print("Connected");
 }
-
-void setupWifi()
-{
+void setupWifi(){
 	Serial.print("Connecting to ");
 	Serial.print(ssid);
 
@@ -339,9 +344,7 @@ void setupWifi()
 
 	wifiConnect();
 }
-
-void loop()
-{
+void loop(){
 	// always check if client is disconnected, reconnect
 	if (!mqttClient.connected())
 		mqttConnect();
@@ -350,6 +353,6 @@ void loop()
 
 	// devices
 	lock_unlock();
-
+	schedule_auto();
 	delay(100);
 }
