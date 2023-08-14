@@ -18,9 +18,6 @@ const char *pub_lock = "device/lock_stat";
 const char *pub_door_close = "device/door_not_closed";
 const char *pub_device_on = "21127119/device_activated";
 
-const char *sub_lock = "web/lock"; // currently sub to this topic so we'll know user from the web trying to turn off/on lock switch
-const char *pub_lock = "device/lock_stat";
-const char *pub_door_close = "device/door_not_closed";
 const char *Count_down_time = "time/time_out";
 // wifi setup through TCP/IP
 WiFiClient wifiClient;
@@ -66,7 +63,7 @@ Servo servo;
 bool Pass_success = true;
 bool isOuterPressing = false, isInnerPressing = false;
 bool IsSetCountdown = false;
-int degree = 0, Count_down = 0,time_out = 1;
+int degree = 0, Count_down = 0, time_out = 1;
 String lockedStr = "🔒 Locked";
 String unlockedStr = "🔓 Unlocked";
 String correctPassword;
@@ -76,7 +73,6 @@ const char *host = "api.thingspeak.com";
 const int portTS = 80;
 // const char* requestDangerSent = "/update?api_key=RUK1GD4GABD5TQEN&field1=3";
 const char *request = "/update?api_key=RUK1GD4GABD5TQEN&field1=";
-
 
 void sendRequest(const char *request)
 {
@@ -111,7 +107,6 @@ void setup()
 	mqttClient.setCallback(callback);
 	mqttClient.setKeepAlive(90); // if client does not send any data to broker within 60-sec interval, disconnect
 
-
 	// set up other devices down here
 	servo.attach(servo_pin, 500, 2400);
 	servo.write(degree);
@@ -135,7 +130,8 @@ void setup()
 	mqttClient.publish(pub_device_on, payload.c_str());
 }
 
-int Ultrasonic(){
+int Ultrasonic()
+{
 	digitalWrite(trig_pin, HIGH);
 	delayMicroseconds(10);
 	digitalWrite(trig_pin, LOW);
@@ -145,19 +141,22 @@ int Ultrasonic(){
 }
 void LED_RBG_BACK()
 {
-	if (isLocked()){
+	if (isLocked())
+	{
 		analogWrite(PIN_RED_02, 0);
 		analogWrite(PIN_GREEN_02, 255);
 		analogWrite(PIN_BLUE_02, 0);
 	}
-	else{
+	else
+	{
 		analogWrite(PIN_GREEN_02, 0);
 		analogWrite(PIN_RED_02, 255);
 		analogWrite(PIN_BLUE_02, 0);
 	}
 }
 
-void lock(){
+void lock()
+{
 	degree = 180;
 	servo.write(degree);
 	mqttClient.publish(pub_lock, lockedStr.c_str());
@@ -166,7 +165,8 @@ void lock(){
 	sendRequest(requestLockOn.c_str());
 }
 
-void unlock(){
+void unlock()
+{
 	degree = 0;
 	servo.write(degree);
 	mqttClient.publish(pub_lock, unlockedStr.c_str());
@@ -176,13 +176,13 @@ void unlock(){
 	sendRequest(requestLockOff.c_str());
 }
 
-bool isClosed(){
+bool isClosed()
+{
 	int distance = Ultrasonic();
-	Serial.print("distance: ");
-	Serial.println(distance);
 	return distance <= distance_lock;
 }
-bool isLocked(){
+bool isLocked()
+{
 	return degree == 180;
 }
 
@@ -304,12 +304,15 @@ void handleKeypad()
 }
 
 // button outside the door
-void handleOuterButton(){
+void handleOuterButton()
+{
 	// LOCK THE DOOR
-	if (!isLocked()){
+	if (!isLocked())
+	{
 		if (isClosed())
 			lock();
-		else{
+		else
+		{
 			// lcd displays Please close the door
 			lcd.clear();
 			lcd.println("Close door first");
@@ -321,25 +324,33 @@ void handleOuterButton(){
 	}
 }
 // button inside the door
-void handleInnerButton(){
+void handleInnerButton()
+{
 	// LOCK THE DOOR
-	if (!isLocked()){
+	if (!isLocked())
+	{
 		lock();
 	}
-	else{
+	else
+	{
 		// UNLOCK THE DOOR
 		unlock();
 	}
 }
-void set_time(){
-	if(!IsSetCountdown){
+void set_time()
+{
+	if (!IsSetCountdown)
+	{
 		Count_down = millis();
 		IsSetCountdown = true;
-	}  
+	}
 }
-void schedule_auto(){
-	if (isClosed()){
-		if(!isLocked()){
+void schedule_auto()
+{
+	if (isClosed())
+	{
+		if (!isLocked())
+		{
 			set_time();
 			if (millis() - Count_down > time_out)
 				handleInnerButton();
@@ -404,35 +415,41 @@ void callback(char *topic, byte *payload, unsigned int length)
 				unlock();
 		}
 	}
+
+	else if (String(topic) == Count_down_time)
+	{
+		time_out = atoi(data.c_str()) * 60000;
+		Serial.println(time_out);
+	}
+
 	else if (String(topic) == sub_pass)
 	{
 		correctPassword = data;
-	else if(String(topic) == Count_down_time){
-		time_out = atoi(data.c_str()) * 1000 ; 
-		Serial.println(time_out);
-	}
-	Serial.println("----------------");
-	if (String(topic) == "21127089/alertReply")
-	{
-		if (data == "It's me")
+
+		Serial.println("----------------");
+		if (String(topic) == "21127089/alertReply")
 		{
-			isReplied = true;
-			initAuthen();
-		}
-		else if (data == "It's not me")
-		{
-			isReplied = true;
-			turnOnDangerMode();
-		}
-		else if (data == "Turn off danger mode")
-		{
-			turnOffDangerMode();
-			initAuthen();
+			if (data == "It's me")
+			{
+				isReplied = true;
+				initAuthen();
+			}
+			else if (data == "It's not me")
+			{
+				isReplied = true;
+				turnOnDangerMode();
+			}
+			else if (data == "Turn off danger mode")
+			{
+				turnOffDangerMode();
+				initAuthen();
+			}
 		}
 	}
 }
 
-void mqttConnect(){
+void mqttConnect()
+{
 	// if client is connected, stop reconnecting
 	while (!mqttClient.connected())
 	{
@@ -471,7 +488,8 @@ void mqttConnect(){
 
 	mqttClient.publish(pub_lock, strLock.c_str());
 }
-void wifiConnect(){
+void wifiConnect()
+{
 	WiFi.begin(ssid, password);
 
 	// wait until wifi is connected
@@ -485,7 +503,8 @@ void wifiConnect(){
 
 	lcd.print("Connected");
 }
-void setupWifi(){
+void setupWifi()
+{
 	Serial.print("Connecting to ");
 	Serial.print(ssid);
 
@@ -496,7 +515,8 @@ void setupWifi(){
 
 	wifiConnect();
 }
-void loop(){
+void loop()
+{
 	// always check if client is disconnected, reconnect
 	if (!mqttClient.connected())
 		mqttConnect();
