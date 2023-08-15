@@ -594,6 +594,7 @@
         "id": "520ffa224335e9e9",
         "type": "function",
         "z": "d8f87e00334234e5",
+        "d": true,
         "name": "updateLog",
         "func": "// initialize the counter to [] if flow.get() doesn't exist already\nvar dashboardLog = flow.get('dashboardLog') || [];\n\ndashboardLog.push(msg);\nif (dashboardLog.length > 20) {\n    // delete the first message in array\n    dashboardLog.shift();\n    dashboardLog.length = 20;\n}\n\nflow.set('dashboardLog', dashboardLog);\n\nconsole.log(msg);\nmsg = {}\nmsg.payload = dashboardLog;\nreturn msg;",
         "outputs": 1,
@@ -601,7 +602,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1090,
+        "x": 1050,
         "y": 1200,
         "wires": [
             [
@@ -758,32 +759,6 @@
         ]
     },
     {
-        "id": "59b0e9c873c0bc4e",
-        "type": "ui_numeric",
-        "z": "d8f87e00334234e5",
-        "name": "",
-        "label": "Auto locking",
-        "tooltip": "",
-        "group": "7ed56f2af3599580",
-        "order": 4,
-        "width": 0,
-        "height": 0,
-        "wrap": true,
-        "passthru": true,
-        "topic": "topic",
-        "topicType": "msg",
-        "format": "{{value}} minute",
-        "min": "1",
-        "max": "60",
-        "step": 1,
-        "className": "",
-        "x": 390,
-        "y": 780,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "8952e2871072cae7",
         "type": "mqtt out",
         "z": "d8f87e00334234e5",
@@ -916,18 +891,20 @@
         "id": "b51793160de71d89",
         "type": "function",
         "z": "d8f87e00334234e5",
-        "name": "create lock log",
-        "func": "\nmsg.topic = \"Lock status\"; \nconst obj = msg.payload.feeds[0];\nlet dateStr = obj.created_at; \nlet val = obj.field1; \n\n// detect abnormality: maybe data is not written yet\nif (val == \"\") {\n    msg.payload = -1;\n    return msg;\n}\n\n// Split date and time\nlet parts = dateStr.split(\"T\");\nlet date = parts[0];\nlet timeAndOffset = parts[1];\n\n// Remove timezone offset\nvar timeWithoutOffset = timeAndOffset.split(\"+\")[0];\n\n\nmsg.payload = date + \", \" + timeWithoutOffset + (val === \"2\" ? \": Door was unlocked\": \": Door was locked\"); \nreturn msg;",
+        "name": "create logs",
+        "func": "const arr = []; \n\nfor (let feed of msg.payload.feeds)\n{\n    let dateStr = feed.created_at;\n    let val = feed.field1;\n    const objLog = {}; \n\n    // // detect abnormality: maybe data is not written yet\n    // if (val === \"\") {\n    //     msg.payload = -1;\n    //     return msg;\n    // }\n\n    let msgLog = \"\";\n    // set topic and log message\n    if (val === \"3\") {\n        objLog.topic = \"Danger alert\";\n        msgLog = \"Danger alert was sent\";\n    }\n\n    else if (val === \"1\" || val === \"2\") {\n        objLog.topic = \"Lock status\";\n        msgLog = (val === \"2\" ? \": Door was unlocked\" : \": Door was locked\");\n    }\n\n    // Split date and time\n    let parts = dateStr.split(\"T\");\n    let date = parts[0];\n    let timeAndOffset = parts[1];\n\n    // Remove timezone offset\n    var timeWithoutOffset = timeAndOffset.split(\"+\")[0];\n\n\n    objLog.payload = date + \", \" + timeWithoutOffset + \" \" + msgLog; \n    arr.push(objLog); \n}\n\nmsg.payload = arr; \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 820,
+        "x": 810,
         "y": 1200,
         "wires": [
             [
-                "54ed57a417145d9a"
+                "54ed57a417145d9a",
+                "520ffa224335e9e9",
+                "5d0355e915f258fe"
             ]
         ]
     },
@@ -1354,8 +1331,7 @@
         "y": 1060,
         "wires": [
             [
-                "10afb95c20893622",
-                "91d769d764b35690"
+                "10afb95c20893622"
             ]
         ]
     },
@@ -1374,8 +1350,7 @@
         "y": 1000,
         "wires": [
             [
-                "b0123b7e084a2a5b",
-                "b00195a483ca812e"
+                "b0123b7e084a2a5b"
             ]
         ]
     },
@@ -1415,8 +1390,7 @@
         "y": 1100,
         "wires": [
             [
-                "10afb95c20893622",
-                "91d769d764b35690"
+                "10afb95c20893622"
             ]
         ]
     },
@@ -1459,8 +1433,7 @@
         "wires": [
             [
                 "b0123b7e084a2a5b",
-                "e591c47d589087e6",
-                "2aca4da1a8f1069d"
+                "e591c47d589087e6"
             ]
         ]
     },
@@ -1569,11 +1542,11 @@
         "id": "51c6ae3e56d850ab",
         "type": "http request",
         "z": "d8f87e00334234e5",
-        "name": "Read lock",
+        "name": "Read cloud",
         "method": "GET",
         "ret": "obj",
         "paytoqs": "ignore",
-        "url": "https://api.thingspeak.com/channels/2227143/fields/1.json?api_key=1IPEHQXO7BHRWNUK&results=1&timezone=Asia/Bangkok",
+        "url": "https://api.thingspeak.com/channels/2227143/fields/1.json?api_key=1IPEHQXO7BHRWNUK&results=20&timezone=Asia/Bangkok",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -1581,7 +1554,7 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 520,
+        "x": 530,
         "y": 1200,
         "wires": [
             [
@@ -1595,7 +1568,7 @@
         "type": "debug",
         "z": "d8f87e00334234e5",
         "name": "debug 15",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1611,6 +1584,7 @@
         "id": "63454f1a184e3569",
         "type": "http request",
         "z": "d8f87e00334234e5",
+        "d": true,
         "name": "Read danger alert",
         "method": "GET",
         "ret": "obj",
@@ -1633,31 +1607,6 @@
         ]
     },
     {
-        "id": "2aca4da1a8f1069d",
-        "type": "delay",
-        "z": "d8f87e00334234e5",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "20",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "20",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 320,
-        "y": 1200,
-        "wires": [
-            [
-                "51c6ae3e56d850ab"
-            ]
-        ]
-    },
-    {
         "id": "1bd95f1be44fbaef",
         "type": "debug",
         "z": "d8f87e00334234e5",
@@ -1672,31 +1621,6 @@
         "x": 760,
         "y": 1320,
         "wires": []
-    },
-    {
-        "id": "91d769d764b35690",
-        "type": "delay",
-        "z": "d8f87e00334234e5",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "20",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "21",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 340,
-        "y": 1280,
-        "wires": [
-            [
-                "63454f1a184e3569"
-            ]
-        ]
     },
     {
         "id": "8712c6c8b19427f5",
@@ -1738,48 +1662,6 @@
         ]
     },
     {
-        "id": "b00195a483ca812e",
-        "type": "delay",
-        "z": "d8f87e00334234e5",
-        "name": "",
-        "pauseType": "delay",
-        "timeout": "20",
-        "timeoutUnits": "seconds",
-        "rate": "1",
-        "nbRateUnits": "1",
-        "rateUnits": "second",
-        "randomFirst": "1",
-        "randomLast": "5",
-        "randomUnits": "seconds",
-        "drop": false,
-        "allowrate": false,
-        "outputs": 1,
-        "x": 700,
-        "y": 1040,
-        "wires": [
-            [
-                "6974bfb26f276d8d",
-                "8c34629044b6d409"
-            ]
-        ]
-    },
-    {
-        "id": "8c34629044b6d409",
-        "type": "debug",
-        "z": "d8f87e00334234e5",
-        "name": "debug 18",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 900,
-        "y": 1040,
-        "wires": []
-    },
-    {
         "id": "a71f406d0de7ab0a",
         "type": "function",
         "z": "d8f87e00334234e5",
@@ -1802,6 +1684,7 @@
         "id": "54ed57a417145d9a",
         "type": "switch",
         "z": "d8f87e00334234e5",
+        "d": true,
         "name": "",
         "property": "payload",
         "propertyType": "msg",
@@ -1963,7 +1846,7 @@
         "name": "write new pass",
         "filename": "C:\\IOT\\pass.txt",
         "filenameType": "str",
-        "appendNewline": true,
+        "appendNewline": false,
         "createDir": true,
         "overwriteFile": "true",
         "encoding": "none",
@@ -1981,7 +1864,7 @@
         "type": "function",
         "z": "d8f87e00334234e5",
         "name": "check pass",
-        "func": "let pass = msg.payload; \n\n// tối đa 16 ký tự\nif (pass.length == \"\" || pass.length > 16){\n    msg.payload = false; \n    return msg;  \n}\n\nfor (let c of pass){\n    if (c < '0' || c > '9'){\n        msg.payload = false;\n        return msg;  \n    }\n}\n\nmsg.payload = true; \nflow.set(\"pass\", pass); \nreturn msg;",
+        "func": "let pass = msg.payload; \n\n// tối đa 16 ký tự\nif (pass.length === \"\" || pass.length > 16){\n    msg.payload = false; \n    return msg;  \n}\n\n// phải là số\nfor (let c of pass){\n    if (c < '0' || c > '9'){\n        msg.payload = false;\n        return msg;  \n    }\n}\n\nmsg.payload = true; \nflow.set(\"pass\", pass); \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2151,6 +2034,129 @@
         ]
     },
     {
+        "id": "d57dd296953f0ccd",
+        "type": "inject",
+        "z": "d8f87e00334234e5",
+        "name": "Always update log",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "20",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 310,
+        "y": 1200,
+        "wires": [
+            [
+                "51c6ae3e56d850ab"
+            ]
+        ]
+    },
+    {
+        "id": "185e1cc2bb825d7f",
+        "type": "inject",
+        "z": "d8f87e00334234e5",
+        "name": "Empty log",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 980,
+        "y": 1420,
+        "wires": [
+            [
+                "16216c0c8f62154d"
+            ]
+        ]
+    },
+    {
+        "id": "16216c0c8f62154d",
+        "type": "function",
+        "z": "d8f87e00334234e5",
+        "name": "updateLog",
+        "func": "msg.payload = []; \nflow.set('dashboardLog', []);  \nreturn msg; ",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1170,
+        "y": 1420,
+        "wires": [
+            [
+                "5d0355e915f258fe"
+            ]
+        ]
+    },
+    {
+        "id": "8e8efd6843e9f40d",
+        "type": "mqtt out",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "topic": "time/time_out",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e8dcd7847cd87e9d",
+        "x": 500,
+        "y": 700,
+        "wires": []
+    },
+    {
+        "id": "54c127936eecc2c6",
+        "type": "ui_numeric",
+        "z": "d8f87e00334234e5",
+        "name": "",
+        "label": "Auto locking",
+        "tooltip": "",
+        "group": "7ed56f2af3599580",
+        "order": 4,
+        "width": 0,
+        "height": 0,
+        "wrap": true,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}} minute",
+        "min": "1",
+        "max": "60",
+        "step": 1,
+        "className": "",
+        "x": 290,
+        "y": 700,
+        "wires": [
+            [
+                "8e8efd6843e9f40d"
+            ]
+        ]
+    },
+    {
         "id": "d86330bc58d8059b",
         "type": "ui_group",
         "name": "login-form",
@@ -2256,6 +2262,33 @@
         "useselfsignedcertificate": false,
         "sslterminated": false,
         "verboselogging": false
+    },
+    {
+        "id": "e8dcd7847cd87e9d",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
     },
     {
         "id": "9774c96daa438e1b",
