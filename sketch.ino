@@ -63,10 +63,10 @@ Servo servo;
 bool Pass_success = true;
 bool isOuterPressing = false, isInnerPressing = false;
 bool IsSetCountdown = false;
-int degree = 0, Count_down = 0, time_out = 1;
+int degree = 0, Count_down = 0, time_out = 60 * 1000;
 String lockedStr = "🔒 Locked";
 String unlockedStr = "🔓 Unlocked";
-String correctPassword;
+String correctPassword = "N";
 
 // Thingspeak
 const char *host = "api.thingspeak.com";
@@ -122,6 +122,11 @@ void setup()
 	// buzzer
 	pinMode(Buzzer_pin, OUTPUT);
 
+	// led for not locked
+	analogWrite(PIN_GREEN_02, 0);
+	analogWrite(PIN_RED_02, 255);
+	analogWrite(PIN_BLUE_02, 0);
+
 	// mqtt
 	mqttConnect();
 
@@ -139,26 +144,16 @@ int Ultrasonic()
 	int distance_cm = 0.017 * duration_us;
 	return distance_cm;
 }
-void LED_RBG_BACK()
-{
-	if (isLocked())
-	{
-		analogWrite(PIN_RED_02, 0);
-		analogWrite(PIN_GREEN_02, 255);
-		analogWrite(PIN_BLUE_02, 0);
-	}
-	else
-	{
-		analogWrite(PIN_GREEN_02, 0);
-		analogWrite(PIN_RED_02, 255);
-		analogWrite(PIN_BLUE_02, 0);
-	}
-}
 
 void lock()
 {
 	degree = 180;
 	servo.write(degree);
+
+	// led green
+	analogWrite(PIN_RED_02, 0);
+	analogWrite(PIN_GREEN_02, 255);
+
 	mqttClient.publish(pub_lock, lockedStr.c_str());
 
 	String requestLockOn = String(request) + "1";
@@ -169,6 +164,11 @@ void unlock()
 {
 	degree = 0;
 	servo.write(degree);
+
+	// led red
+	analogWrite(PIN_GREEN_02, 0);
+	analogWrite(PIN_RED_02, 255);
+
 	mqttClient.publish(pub_lock, unlockedStr.c_str());
 
 	String requestLockOff = String(request) + "2";
@@ -223,6 +223,10 @@ void turnOffDangerMode()
 void authenBeforeUnlock()
 {
 	lcd.clear();
+
+	if (userInput.length() == 0)
+		return;
+
 	if (isPasswordCorrect())
 	{
 		lcd.print("Access granted");
@@ -329,7 +333,8 @@ void handleInnerButton()
 	// LOCK THE DOOR
 	if (!isLocked())
 	{
-		lock();
+		if (isClosed())
+			lock();
 	}
 	else
 	{
@@ -360,7 +365,6 @@ void schedule_auto()
 	}
 	else
 		IsSetCountdown = false;
-	LED_RBG_BACK();
 }
 void lock_unlock()
 {
@@ -370,7 +374,6 @@ void lock_unlock()
 		handleOuterButton();
 	if (innerButtonState && !isInnerPressing)
 		handleInnerButton();
-	LED_RBG_BACK();
 	isOuterPressing = outerButtonState;
 	isInnerPressing = innerButtonState;
 	// int switchState = data.switchState;
