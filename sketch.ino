@@ -224,6 +224,7 @@ void turnOnDangerMode()
 void turnOffDangerMode()
 {
 	isDangerMode = false;
+
 	noTone(Buzzer_pin);
 }
 void authenBeforeUnlock()
@@ -463,23 +464,24 @@ void callback(char *topic, byte *payload, unsigned int length)
 		correctPassword = data;
 
 		Serial.println("----------------");
-		if (String(topic) == "21127089/alertReply")
+	}
+
+	else if (String(topic) == "21127089/alertReply")
+	{
+		if (data == "It's me")
 		{
-			if (data == "It's me")
-			{
-				isReplied = true;
-				initAuthen();
-			}
-			else if (data == "It's not me")
-			{
-				isReplied = true;
-				turnOnDangerMode();
-			}
-			else if (data == "Turn off danger mode")
-			{
-				turnOffDangerMode();
-				initAuthen();
-			}
+			isReplied = true;
+			initAuthen();
+		}
+		else if (data == "It's not me")
+		{
+			isReplied = true;
+			turnOnDangerMode();
+		}
+		else if (data == "Turn off danger mode")
+		{
+			turnOffDangerMode();
+			initAuthen();
 		}
 	}
 }

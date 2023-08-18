@@ -909,361 +909,6 @@
         ]
     },
     {
-        "id": "83726ea953b9c7c4",
-        "type": "comment",
-        "z": "6bfeec6122bbd2e8",
-        "name": "Telegram",
-        "info": "",
-        "x": 200,
-        "y": 2420,
-        "wires": []
-    },
-    {
-        "id": "cca45d7eb117f690",
-        "type": "function",
-        "z": "6bfeec6122bbd2e8",
-        "name": "function 10",
-        "func": "msg.callback = msg.payload;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 520,
-        "y": 2680,
-        "wires": [
-            [
-                "2279cf096d8860b4"
-            ]
-        ]
-    },
-    {
-        "id": "2279cf096d8860b4",
-        "type": "function",
-        "z": "6bfeec6122bbd2e8",
-        "name": "function 11",
-        "func": "if (msg.callback.content == `It's me`) {\n    msg.payload.content = 'Its you';\n}\nif (msg.callback.content == `It's not me!`) {\n    msg.payload.content = 'Its not you';\n}\nif (msg.callback.content == 3) {\n    msg.payload.content = 'Turn off danger mode';\n}\nmsg.payload.type = \"message\";\nmsg.payload.chatId = '6562331656';\n// msg.payload.reply_markup = JSON.stringify({ remove_keyboard: true })\n// msg.payload.reply_markup = JSON.stringify({ inline_keyboard: [] });\n\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 680,
-        "y": 2680,
-        "wires": [
-            [
-                "a63bcf121ed1eb77",
-                "792a70e3e65b7aab"
-            ]
-        ]
-    },
-    {
-        "id": "480f6afa6f26c092",
-        "type": "mqtt in",
-        "z": "6bfeec6122bbd2e8",
-        "name": "",
-        "topic": "21127089/doorAlert",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "e609c620bd3749d8",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 170,
-        "y": 2520,
-        "wires": [
-            [
-                "afd78125416c855a"
-            ]
-        ]
-    },
-    {
-        "id": "e30842275abbcb74",
-        "type": "debug",
-        "z": "6bfeec6122bbd2e8",
-        "name": "debug 11",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 820,
-        "y": 2440,
-        "wires": []
-    },
-    {
-        "id": "0cff17d160e3afe8",
-        "type": "mqtt out",
-        "z": "6bfeec6122bbd2e8",
-        "name": "",
-        "topic": "21127089/alertReply",
-        "qos": "2",
-        "retain": "",
-        "respTopic": "",
-        "contentType": "",
-        "userProps": "",
-        "correl": "",
-        "expiry": "",
-        "broker": "e609c620bd3749d8",
-        "x": 920,
-        "y": 2800,
-        "wires": []
-    },
-    {
-        "id": "b0b3e850665d9f72",
-        "type": "mqtt in",
-        "z": "6bfeec6122bbd2e8",
-        "name": "",
-        "topic": "21127089/dangerModeOpts",
-        "qos": "2",
-        "datatype": "auto-detect",
-        "broker": "e609c620bd3749d8",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 180,
-        "y": 2820,
-        "wires": [
-            [
-                "19b1381684bf6d61"
-            ]
-        ]
-    },
-    {
-        "id": "19b1381684bf6d61",
-        "type": "function",
-        "z": "6bfeec6122bbd2e8",
-        "name": "function 12",
-        "func": "var opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        \"keyboard\": [[\n            {\n                \"text\": \"Turn off danger mode\",\n            },\n        ]],\n        \"one_time_keyboard\": true\n    })\n};\nmsg.payload = {};\nmsg.error = false;\nmsg.payload.content = 'Tap to turn off Danger Mode.';\nmsg.payload.options = opts;\nmsg.payload.chatId = '6562331656';\nmsg.payload.type = \"message\";\nreturn [msg];",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 440,
-        "y": 2820,
-        "wires": [
-            [
-                "9ecaef8673466e4b"
-            ]
-        ]
-    },
-    {
-        "id": "afd78125416c855a",
-        "type": "function",
-        "z": "6bfeec6122bbd2e8",
-        "name": "function 5.1",
-        "func": "var opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        \"keyboard\": [[\n            {\n                \"text\": \"It's me\",\n            },\n            {\n                \"text\": \"It's not me!\",\n            }\n        ]],\n        \"one_time_keyboard\": true\n    })\n};\nmsg.payload = {};\nmsg.error = false;\nmsg.payload.content = 'Selection?';\nmsg.payload.options = opts;\nmsg.payload.chatId = '6562331656';\nmsg.payload.type = \"message\";\nreturn [msg];",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 390,
-        "y": 2520,
-        "wires": [
-            [
-                "9f0c713315e23b9a"
-            ]
-        ]
-    },
-    {
-        "id": "0494fac1435d634f",
-        "type": "debug",
-        "z": "6bfeec6122bbd2e8",
-        "name": "debug 12",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 440,
-        "y": 2620,
-        "wires": []
-    },
-    {
-        "id": "e0082fdb85cb12e3",
-        "type": "switch",
-        "z": "6bfeec6122bbd2e8",
-        "name": "",
-        "property": "payload.content",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "eq",
-                "v": "It's me",
-                "vt": "str"
-            },
-            {
-                "t": "eq",
-                "v": "It's not me!",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 2,
-        "x": 330,
-        "y": 2700,
-        "wires": [
-            [
-                "cca45d7eb117f690"
-            ],
-            [
-                "cca45d7eb117f690"
-            ]
-        ]
-    },
-    {
-        "id": "ab688a76c52fe3b1",
-        "type": "inject",
-        "z": "6bfeec6122bbd2e8",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 220,
-        "y": 2580,
-        "wires": [
-            [
-                "afd78125416c855a"
-            ]
-        ]
-    },
-    {
-        "id": "bfeaf87cb21d28c5",
-        "type": "inject",
-        "z": "6bfeec6122bbd2e8",
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 240,
-        "y": 2880,
-        "wires": [
-            [
-                "19b1381684bf6d61"
-            ]
-        ]
-    },
-    {
-        "id": "792a70e3e65b7aab",
-        "type": "function",
-        "z": "6bfeec6122bbd2e8",
-        "name": "function 13",
-        "func": "msg.payload = msg.payload.content\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 740,
-        "y": 2760,
-        "wires": [
-            [
-                "0cff17d160e3afe8"
-            ]
-        ]
-    },
-    {
-        "id": "b0b4cc325cc9b565",
-        "type": "telegram receiver",
-        "z": "6bfeec6122bbd2e8",
-        "d": true,
-        "name": "",
-        "bot": "16a8eea19b573829",
-        "saveDataDir": "",
-        "filterCommands": false,
-        "x": 130,
-        "y": 2680,
-        "wires": [
-            [
-                "0494fac1435d634f",
-                "e0082fdb85cb12e3"
-            ],
-            []
-        ]
-    },
-    {
-        "id": "9f0c713315e23b9a",
-        "type": "telegram sender",
-        "z": "6bfeec6122bbd2e8",
-        "d": true,
-        "name": "",
-        "bot": "16a8eea19b573829",
-        "haserroroutput": false,
-        "outputs": 1,
-        "x": 610,
-        "y": 2520,
-        "wires": [
-            [
-                "e30842275abbcb74"
-            ]
-        ]
-    },
-    {
-        "id": "9ecaef8673466e4b",
-        "type": "telegram sender",
-        "z": "6bfeec6122bbd2e8",
-        "d": true,
-        "name": "",
-        "bot": "16a8eea19b573829",
-        "haserroroutput": false,
-        "outputs": 1,
-        "x": 650,
-        "y": 2820,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "a63bcf121ed1eb77",
-        "type": "telegram sender",
-        "z": "6bfeec6122bbd2e8",
-        "d": true,
-        "name": "",
-        "bot": "16a8eea19b573829",
-        "haserroroutput": false,
-        "outputs": 1,
-        "x": 930,
-        "y": 2680,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "3dce9ccee0ce1fbc",
         "type": "mqtt in",
         "z": "6bfeec6122bbd2e8",
@@ -2085,6 +1730,382 @@
         ]
     },
     {
+        "id": "fb3bc93294c762b3",
+        "type": "comment",
+        "z": "6bfeec6122bbd2e8",
+        "name": "Telegram",
+        "info": "",
+        "x": 160,
+        "y": 2380,
+        "wires": []
+    },
+    {
+        "id": "6602efa89b5aa0b3",
+        "type": "telegram sender",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "bot": "c02213771d929471",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 570,
+        "y": 2480,
+        "wires": [
+            [
+                "25125d906166b230"
+            ]
+        ]
+    },
+    {
+        "id": "69847088dd335dae",
+        "type": "function",
+        "z": "6bfeec6122bbd2e8",
+        "name": "function 15",
+        "func": "// msg.callback = msg.payload;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 2720,
+        "wires": [
+            [
+                "a189f91db6dcbcee",
+                "6939ce4dfe9c2d0b"
+            ]
+        ]
+    },
+    {
+        "id": "c88211b124f54ae2",
+        "type": "function",
+        "z": "6bfeec6122bbd2e8",
+        "d": true,
+        "name": "function 16",
+        "func": "if (msg.callback.content == `It's me`) {\n    msg.payload.content = `It's me`;\n}\nif (msg.callback.content == `It's not me`) {\n    msg.payload.content = `It's not me`\n}\nif (msg.callback.content == 3) {\n    msg.payload.content = 'Turn off danger mode';\n}\nmsg.payload.type = \"message\";\nmsg.payload.chatId = '6562331656';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 660,
+        "y": 2620,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7a36dbf8c11d5f6b",
+        "type": "mqtt in",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "topic": "21127089/doorAlert",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e609c620bd3749d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 130,
+        "y": 2480,
+        "wires": [
+            [
+                "43b7a3d9c8533b7b"
+            ]
+        ]
+    },
+    {
+        "id": "25125d906166b230",
+        "type": "debug",
+        "z": "6bfeec6122bbd2e8",
+        "name": "debug 21",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 820,
+        "y": 2420,
+        "wires": []
+    },
+    {
+        "id": "44f9f2c221bea9ed",
+        "type": "mqtt out",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "topic": "21127089/alertReply",
+        "qos": "2",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "e609c620bd3749d8",
+        "x": 880,
+        "y": 2840,
+        "wires": []
+    },
+    {
+        "id": "76a245480c1768ee",
+        "type": "mqtt in",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "topic": "21127089/dangerModeOpts",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "e609c620bd3749d8",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 140,
+        "y": 2860,
+        "wires": [
+            [
+                "acae83cb14083a77"
+            ]
+        ]
+    },
+    {
+        "id": "acae83cb14083a77",
+        "type": "function",
+        "z": "6bfeec6122bbd2e8",
+        "name": "function 17",
+        "func": "var opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        \"keyboard\": [[\n            {\n                \"text\": \"Turn off danger mode\",\n            },\n        ]],\n        \"one_time_keyboard\": true\n    })\n};\nmsg.payload = {};\nmsg.error = false;\nmsg.payload.content = 'Tap to turn off Danger Mode.';\nmsg.payload.options = opts;\nmsg.payload.chatId = '5568748632';\nmsg.payload.type = \"message\";\nreturn [msg];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 2860,
+        "wires": [
+            [
+                "fa4fd2ccc80d7acc"
+            ]
+        ]
+    },
+    {
+        "id": "fa4fd2ccc80d7acc",
+        "type": "telegram sender",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "bot": "c02213771d929471",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 610,
+        "y": 2860,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "43b7a3d9c8533b7b",
+        "type": "function",
+        "z": "6bfeec6122bbd2e8",
+        "name": "function 5.1",
+        "func": "var opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        \"keyboard\": [[\n            {\n                \"text\": \"It's me\",\n            },\n            {\n                \"text\": \"It's not me\",\n            }\n        ]],\n        \"one_time_keyboard\": true\n    })\n};\nmsg.payload = {};\nmsg.error = false;\nmsg.payload.content = 'Selection?';\nmsg.payload.options = opts;\nmsg.payload.chatId = '5568748632';\nmsg.payload.type = \"message\";\nreturn [msg];",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 350,
+        "y": 2480,
+        "wires": [
+            [
+                "6602efa89b5aa0b3"
+            ]
+        ]
+    },
+    {
+        "id": "ff49c91388a8b44e",
+        "type": "telegram receiver",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "bot": "c02213771d929471",
+        "saveDataDir": "",
+        "filterCommands": false,
+        "x": 90,
+        "y": 2720,
+        "wires": [
+            [
+                "9dee017c4f01bdad",
+                "2bbaf1e8304f5317"
+            ],
+            []
+        ]
+    },
+    {
+        "id": "9dee017c4f01bdad",
+        "type": "debug",
+        "z": "6bfeec6122bbd2e8",
+        "name": "debug 22",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 400,
+        "y": 2660,
+        "wires": []
+    },
+    {
+        "id": "2bbaf1e8304f5317",
+        "type": "switch",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "property": "payload.content",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "It's me",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "It's not me",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "Turn off danger mode",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 290,
+        "y": 2740,
+        "wires": [
+            [
+                "69847088dd335dae"
+            ],
+            [
+                "69847088dd335dae"
+            ],
+            [
+                "69847088dd335dae"
+            ]
+        ]
+    },
+    {
+        "id": "a189f91db6dcbcee",
+        "type": "telegram sender",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "bot": "c02213771d929471",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 830,
+        "y": 2720,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "c390249f30901d6e",
+        "type": "inject",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 180,
+        "y": 2540,
+        "wires": [
+            [
+                "43b7a3d9c8533b7b"
+            ]
+        ]
+    },
+    {
+        "id": "8af4425d0ba6509b",
+        "type": "inject",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 200,
+        "y": 2920,
+        "wires": [
+            [
+                "acae83cb14083a77"
+            ]
+        ]
+    },
+    {
+        "id": "6939ce4dfe9c2d0b",
+        "type": "function",
+        "z": "6bfeec6122bbd2e8",
+        "name": "function 18",
+        "func": "msg.payload = msg.payload.content\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 700,
+        "y": 2800,
+        "wires": [
+            [
+                "44f9f2c221bea9ed",
+                "b775390baccd0faa"
+            ]
+        ]
+    },
+    {
+        "id": "b775390baccd0faa",
+        "type": "debug",
+        "z": "6bfeec6122bbd2e8",
+        "name": "debug 23",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 880,
+        "y": 2920,
+        "wires": []
+    },
+    {
         "id": "d86330bc58d8059b",
         "type": "ui_group",
         "name": "login-form",
@@ -2167,31 +2188,6 @@
         "sessionExpiry": ""
     },
     {
-        "id": "16a8eea19b573829",
-        "type": "telegram bot",
-        "botname": "ESPNotification",
-        "usernames": "ntkiet",
-        "chatids": "6562331656",
-        "baseapiurl": "",
-        "updatemode": "polling",
-        "pollinterval": "300",
-        "usesocks": false,
-        "sockshost": "",
-        "socksprotocol": "socks5",
-        "socksport": "6667",
-        "socksusername": "anonymous",
-        "sockspassword": "",
-        "bothost": "",
-        "botpath": "",
-        "localbotport": "8443",
-        "publicbotport": "8443",
-        "privatekey": "",
-        "certificate": "",
-        "useselfsignedcertificate": false,
-        "sslterminated": false,
-        "verboselogging": false
-    },
-    {
         "id": "e8dcd7847cd87e9d",
         "type": "mqtt-broker",
         "name": "",
@@ -2217,6 +2213,31 @@
         "willMsg": {},
         "userProps": "",
         "sessionExpiry": ""
+    },
+    {
+        "id": "c02213771d929471",
+        "type": "telegram bot",
+        "botname": "smart_lock_bot",
+        "usernames": "zeldaxzuoey",
+        "chatids": "5568748632",
+        "baseapiurl": "",
+        "updatemode": "polling",
+        "pollinterval": "300",
+        "usesocks": false,
+        "sockshost": "",
+        "socksprotocol": "socks5",
+        "socksport": "6667",
+        "socksusername": "anonymous",
+        "sockspassword": "",
+        "bothost": "",
+        "botpath": "",
+        "localbotport": "8443",
+        "publicbotport": "8443",
+        "privatekey": "",
+        "certificate": "",
+        "useselfsignedcertificate": false,
+        "sslterminated": false,
+        "verboselogging": false
     },
     {
         "id": "9774c96daa438e1b",
