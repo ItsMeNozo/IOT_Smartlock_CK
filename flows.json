@@ -1,6 +1,6 @@
 [
     {
-        "id": "d8f87e00334234e5",
+        "id": "6bfeec6122bbd2e8",
         "type": "tab",
         "label": "Project_CK",
         "disabled": false,
@@ -8,9 +8,9 @@
         "env": []
     },
     {
-        "id": "a141030fc90cf8c6",
+        "id": "aa17fe60a5d661d9",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Verify Login",
         "func": "if (msg.payload.username === 'admin' && msg.payload.password === 'admin')\n    msg.payload = {\n        \"tab\": \"Home\",\n        \"tabs\": {\n            \"show\": [\"Home\"],\n            \"hide\": [\"Login\"],\n        }\n    };\nelse \n    msg.payload = \"Wrong password or username! Please try again.\"\nreturn msg;",
         "outputs": 1,
@@ -22,15 +22,15 @@
         "y": 220,
         "wires": [
             [
-                "90cb500a4d53b452",
-                "fb1e31a662b3765b"
+                "0160502b846a4868",
+                "c6f585dc671bf4da"
             ]
         ]
     },
     {
-        "id": "90cb500a4d53b452",
+        "id": "0160502b846a4868",
         "type": "ui_ui_control",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "events": "all",
         "x": 720,
@@ -40,9 +40,9 @@
         ]
     },
     {
-        "id": "b3db52ae779d1935",
+        "id": "6593ab0a34ac0974",
         "type": "inject",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "props": [
             {
@@ -60,14 +60,14 @@
         "y": 120,
         "wires": [
             [
-                "4738d4e559d7757c"
+                "6344178dc98241f2"
             ]
         ]
     },
     {
-        "id": "4738d4e559d7757c",
+        "id": "6344178dc98241f2",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Jump to Login and disable Home",
         "func": "msg.payload = {\n    \"tab\": \"Login\",\n    \"tabs\": {\n        \"hide\": [\"Home\"]\n    }\n};\nreturn msg;",
         "outputs": 1,
@@ -79,28 +79,28 @@
         "y": 120,
         "wires": [
             [
-                "06a26c95c7539f7c"
+                "23d62fa39e42bf61"
             ]
         ]
     },
     {
-        "id": "06a26c95c7539f7c",
+        "id": "23d62fa39e42bf61",
         "type": "ui_ui_control",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "events": "all",
         "x": 820,
         "y": 120,
         "wires": [
             [
-                "b6ee238b1ac1ee20"
+                "1107ce73f9a8e779"
             ]
         ]
     },
     {
-        "id": "3f56a2860a79ba4c",
+        "id": "1f608a827fead139",
         "type": "ui_toast",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "position": "bottom right",
         "displayTime": "3",
         "highlight": "",
@@ -117,9 +117,9 @@
         "wires": []
     },
     {
-        "id": "fb1e31a662b3765b",
+        "id": "c6f585dc671bf4da",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Check if try again msg",
         "func": "if (typeof msg.payload === 'string')\n    return msg;",
         "outputs": 1,
@@ -131,14 +131,14 @@
         "y": 320,
         "wires": [
             [
-                "3f56a2860a79ba4c"
+                "1f608a827fead139"
             ]
         ]
     },
     {
-        "id": "92d92e2c89dd5885",
+        "id": "1570c5f911d206ad",
         "type": "ui_form",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "label": "",
         "group": "d86330bc58d8059b",
@@ -176,14 +176,14 @@
         "y": 220,
         "wires": [
             [
-                "a141030fc90cf8c6"
+                "aa17fe60a5d661d9"
             ]
         ]
     },
     {
-        "id": "1d325a11245b81f1",
+        "id": "98a657da80328948",
         "type": "ui_text",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "group": "7ed56f2af3599580",
         "order": 1,
         "width": 0,
@@ -202,9 +202,9 @@
         "wires": []
     },
     {
-        "id": "1cd1a76a908a7ca1",
+        "id": "22641b6901726cc2",
         "type": "ui_text",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "group": "f59725da85da0bf6",
         "order": 1,
         "width": 6,
@@ -219,13 +219,13 @@
         "fontSize": 16,
         "color": "#000000",
         "x": 260,
-        "y": 1460,
+        "y": 1600,
         "wires": []
     },
     {
-        "id": "f0bd680dd444a40d",
+        "id": "7b593de99fca81bd",
         "type": "ui_text",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "group": "f59725da85da0bf6",
         "order": 2,
         "width": 6,
@@ -240,13 +240,13 @@
         "fontSize": 16,
         "color": "#000000",
         "x": 260,
-        "y": 1520,
+        "y": 1660,
         "wires": []
     },
     {
-        "id": "ee2bb954fe87c300",
+        "id": "da60cec070d8532e",
         "type": "ui_text",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "group": "f59725da85da0bf6",
         "order": 3,
         "width": 6,
@@ -261,13 +261,13 @@
         "fontSize": 16,
         "color": "#000000",
         "x": 260,
-        "y": 1560,
+        "y": 1700,
         "wires": []
     },
     {
-        "id": "fc0e4b79d8b2705a",
+        "id": "cfa0409db1f48856",
         "type": "ui_text",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "group": "f59725da85da0bf6",
         "order": 4,
         "width": 6,
@@ -282,13 +282,13 @@
         "fontSize": 16,
         "color": "#000000",
         "x": 260,
-        "y": 1600,
+        "y": 1740,
         "wires": []
     },
     {
-        "id": "b0123b7e084a2a5b",
+        "id": "8a207440a142e767",
         "type": "ui_chart",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "group": "e6db27cac98a71df",
         "order": 1,
@@ -324,17 +324,17 @@
         "useDifferentColor": false,
         "className": "",
         "x": 710,
-        "y": 920,
+        "y": 980,
         "wires": [
             [
-                "8712c6c8b19427f5"
+                "3c7e4373a24df3af"
             ]
         ]
     },
     {
-        "id": "10afb95c20893622",
+        "id": "fe1c5a2cbb782f8c",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "danger alert",
         "func": " // replace this line of code\nmsg.topic = \"danger alert (0: no alert, 3: alert sent)\";\n\nmsg.payload = 3;\n// msg.payload = []; \n\nreturn msg;",
         "outputs": 1,
@@ -342,20 +342,20 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 510,
-        "y": 1080,
+        "x": 410,
+        "y": 1180,
         "wires": [
             [
-                "b0123b7e084a2a5b",
-                "24a2ac8fb56493bd",
-                "6974bfb26f276d8d"
+                "8a207440a142e767",
+                "7b96523c72bb8bfa",
+                "828bd6bd5b2439d0"
             ]
         ]
     },
     {
-        "id": "f14e941fa9c16ccd",
+        "id": "194f99074858b658",
         "type": "ui_text_input",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "label": "New device password",
         "tooltip": "",
@@ -370,18 +370,18 @@
         "sendOnBlur": true,
         "className": "",
         "topicType": "msg",
-        "x": 260,
-        "y": 1780,
+        "x": 200,
+        "y": 1920,
         "wires": [
             [
-                "935c44a04498c77e"
+                "aa071aa0adf230d7"
             ]
         ]
     },
     {
-        "id": "e3f304588ab83426",
+        "id": "e3dcc2306077ed9e",
         "type": "ui_button",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "group": "87d0df7f7baaf84d",
         "order": 3,
@@ -398,18 +398,18 @@
         "payloadType": "flow",
         "topic": "topic",
         "topicType": "msg",
-        "x": 220,
-        "y": 1840,
+        "x": 160,
+        "y": 1980,
         "wires": [
             [
-                "f25b84fbc9b352a7"
+                "401374f51e0d0f42"
             ]
         ]
     },
     {
-        "id": "9ba7e437ef156964",
+        "id": "6394014e0090d9b2",
         "type": "ui_button",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "group": "87d0df7f7baaf84d",
         "order": 4,
@@ -426,18 +426,18 @@
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
-        "x": 220,
-        "y": 2020,
+        "x": 160,
+        "y": 2160,
         "wires": [
             [
-                "d150669599e4cfed"
+                "872e4253c987f1aa"
             ]
         ]
     },
     {
-        "id": "97616aa6c7336231",
+        "id": "a268bea2c02ed56d",
         "type": "ui_toast",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "position": "bottom right",
         "displayTime": "3",
         "highlight": "green",
@@ -449,14 +449,14 @@
         "className": "",
         "topic": "",
         "name": "",
-        "x": 1050,
-        "y": 1840,
+        "x": 990,
+        "y": 1980,
         "wires": []
     },
     {
-        "id": "324f4b8474cdfb63",
+        "id": "bd46f18bb2628c36",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "set success msg",
         "func": "// if matches old password\n\n// if valid password, please add if statement \nmsg.topic = \"Password changed\"; \nmsg.payload = \"Congrats! Your password was successfully changed.\"; \nreturn msg;",
         "outputs": 1,
@@ -464,18 +464,18 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 820,
-        "y": 1840,
+        "x": 760,
+        "y": 1980,
         "wires": [
             [
-                "97616aa6c7336231"
+                "a268bea2c02ed56d"
             ]
         ]
     },
     {
-        "id": "d150669599e4cfed",
+        "id": "872e4253c987f1aa",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "logOut",
         "func": "msg.payload = {\n        \"tab\": \"Login\",\n        \"tabs\": {\n            \"show\": [\"Login\"],\n            \"hide\": [\"Home\"],\n        }\n    };\n\nreturn msg; ",
         "outputs": 1,
@@ -483,32 +483,32 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 410,
-        "y": 2020,
+        "x": 350,
+        "y": 2160,
         "wires": [
             [
-                "5abb9aaca6abf655"
+                "7f9f84ccefb406f7"
             ]
         ]
     },
     {
-        "id": "5abb9aaca6abf655",
+        "id": "7f9f84ccefb406f7",
         "type": "ui_ui_control",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "events": "all",
-        "x": 600,
-        "y": 2020,
+        "x": 540,
+        "y": 2160,
         "wires": [
             []
         ]
     },
     {
-        "id": "b6ee238b1ac1ee20",
+        "id": "1107ce73f9a8e779",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "debug 1",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -520,9 +520,9 @@
         "wires": []
     },
     {
-        "id": "5d0355e915f258fe",
+        "id": "2a0f1fdc95d008a4",
         "type": "ui_template",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "group": "e6db27cac98a71df",
         "name": "Log",
         "order": 2,
@@ -534,16 +534,16 @@
         "resendOnRefresh": true,
         "templateScope": "local",
         "className": "",
-        "x": 1250,
-        "y": 1200,
+        "x": 1090,
+        "y": 1320,
         "wires": [
             []
         ]
     },
     {
-        "id": "57550753e32b1a49",
+        "id": "f5aa89c628052414",
         "type": "comment",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Login",
         "info": "",
         "x": 190,
@@ -551,9 +551,9 @@
         "wires": []
     },
     {
-        "id": "07c86930d0be159d",
+        "id": "152a17d19b24ee9b",
         "type": "comment",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Door Lock Management",
         "info": "",
         "x": 200,
@@ -561,39 +561,39 @@
         "wires": []
     },
     {
-        "id": "663a88b6ce147489",
+        "id": "ce987d8fd622e8f3",
         "type": "comment",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Statistics",
         "info": "",
-        "x": 100,
-        "y": 840,
+        "x": 160,
+        "y": 880,
         "wires": []
     },
     {
-        "id": "921fea17aac532cf",
+        "id": "cd5cdd1331ad3cd2",
         "type": "comment",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Device setting",
         "info": "",
         "x": 210,
-        "y": 1660,
+        "y": 1800,
         "wires": []
     },
     {
-        "id": "14ec3e8fc196b831",
+        "id": "2b5b268525e74717",
         "type": "comment",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Group Info",
         "info": "",
         "x": 160,
-        "y": 1420,
+        "y": 1560,
         "wires": []
     },
     {
-        "id": "520ffa224335e9e9",
+        "id": "e48104653ba9295b",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "d": true,
         "name": "updateLog",
         "func": "// initialize the counter to [] if flow.get() doesn't exist already\nvar dashboardLog = flow.get('dashboardLog') || [];\n\ndashboardLog.push(msg);\nif (dashboardLog.length > 20) {\n    // delete the first message in array\n    dashboardLog.shift();\n    dashboardLog.length = 20;\n}\n\nflow.set('dashboardLog', dashboardLog);\n\nconsole.log(msg);\nmsg = {}\nmsg.payload = dashboardLog;\nreturn msg;",
@@ -602,18 +602,18 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1050,
-        "y": 1200,
+        "x": 890,
+        "y": 1320,
         "wires": [
             [
-                "5d0355e915f258fe"
+                "2a0f1fdc95d008a4"
             ]
         ]
     },
     {
-        "id": "7998a471e1511cb2",
+        "id": "0c9ac71a9ef8e5a5",
         "type": "mqtt in",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "topic": "device/lock_stat",
         "qos": "2",
@@ -627,17 +627,17 @@
         "y": 500,
         "wires": [
             [
-                "0b049713a590f416",
-                "58443f746ba0bd63",
-                "3c9ce81855c52346",
-                "a065950d244cb101"
+                "6ed563d829576d45",
+                "77c5152483f6b776",
+                "b61d7fae53d825bb",
+                "7a8c33ccfd49b7d6"
             ]
         ]
     },
     {
-        "id": "0b049713a590f416",
+        "id": "6ed563d829576d45",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "device lock",
         "active": true,
         "tosidebar": true,
@@ -652,9 +652,9 @@
         "wires": []
     },
     {
-        "id": "58443f746ba0bd63",
+        "id": "77c5152483f6b776",
         "type": "ui_template",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "group": "7ed56f2af3599580",
         "name": "value_style",
         "order": 3,
@@ -670,14 +670,14 @@
         "y": 500,
         "wires": [
             [
-                "1d325a11245b81f1"
+                "98a657da80328948"
             ]
         ]
     },
     {
-        "id": "d6e1ef25f8f4c60c",
+        "id": "e40dd8d2aef4540b",
         "type": "comment",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "info": "## template node\nnr-dashboard-text because we're using this node from dashboard\nmust do .lockVal after nr-dashboard-text because that's the class in text node",
         "x": 380,
@@ -685,9 +685,9 @@
         "wires": []
     },
     {
-        "id": "3c9ce81855c52346",
+        "id": "b61d7fae53d825bb",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "set_device_locked",
         "func": "const device_locked = (msg.payload == \"🔒 Locked\" ? true : false); \nflow.set(\"device_locked\", device_locked); \nflow.set(\"prev_lock\", device_locked); \nreturn msg;",
         "outputs": 1,
@@ -699,14 +699,14 @@
         "y": 580,
         "wires": [
             [
-                "c0387033870f9a95"
+                "4eec9f0dff98233e"
             ]
         ]
     },
     {
-        "id": "c0387033870f9a95",
+        "id": "4eec9f0dff98233e",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "device & web lock are synced? ",
         "func": "const web_lock = flow.get(\"web_lock\");\nconst device_lock = flow.get(\"device_locked\");\n\nnode.warn(`Web lock: ${web_lock}`); \nnode.warn(`Device lock: ${device_lock}`); \n\nif (web_lock == device_lock){\n    // dont allow changing switch\n    msg.payload = false; \n}\nelse \n    msg.payload = true; \n    \nreturn msg;",
         "outputs": 1,
@@ -718,15 +718,15 @@
         "y": 580,
         "wires": [
             [
-                "fdba846633055598",
-                "c0ccc13556883423"
+                "1908d9635d3282c5",
+                "bfbbe26bbfdb658d"
             ]
         ]
     },
     {
-        "id": "fd1496dcf0d29bdc",
+        "id": "e89c644e6e2c4afa",
         "type": "ui_switch",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "label": "Lock",
         "tooltip": "",
@@ -753,15 +753,15 @@
         "y": 700,
         "wires": [
             [
-                "0287d80bc63efdbd",
-                "7b80e988d1598815"
+                "a8903ce42382a174",
+                "3e9156de99cd5a62"
             ]
         ]
     },
     {
-        "id": "8952e2871072cae7",
+        "id": "77d7328825807022",
         "type": "mqtt out",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "web/lock",
         "topic": "web/lock",
         "qos": "2",
@@ -777,9 +777,9 @@
         "wires": []
     },
     {
-        "id": "3abbafb7d09f37d8",
+        "id": "759712254001551b",
         "type": "ui_toast",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "position": "top right",
         "displayTime": "3",
         "highlight": "",
@@ -796,9 +796,9 @@
         "wires": []
     },
     {
-        "id": "5be8a7f89d283fda",
+        "id": "f8d99fcd68b2cff0",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "set_web_lock",
         "func": "flow.set(\"web_lock\", msg.payload); \nreturn msg;",
         "outputs": 1,
@@ -813,9 +813,9 @@
         ]
     },
     {
-        "id": "fdba846633055598",
+        "id": "1908d9635d3282c5",
         "type": "switch",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "property": "payload",
         "propertyType": "msg",
@@ -831,14 +831,14 @@
         "y": 640,
         "wires": [
             [
-                "059eef3aa1ff4c99"
+                "6434b643d78a6a06"
             ]
         ]
     },
     {
-        "id": "059eef3aa1ff4c99",
+        "id": "6434b643d78a6a06",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "get lock value",
         "func": "msg.payload = flow.get(\"device_locked\")\nreturn msg;",
         "outputs": 1,
@@ -850,14 +850,14 @@
         "y": 640,
         "wires": [
             [
-                "fd1496dcf0d29bdc"
+                "e89c644e6e2c4afa"
             ]
         ]
     },
     {
-        "id": "c0ccc13556883423",
+        "id": "bfbbe26bbfdb658d",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "debug 2",
         "active": false,
         "tosidebar": true,
@@ -872,9 +872,9 @@
         "wires": []
     },
     {
-        "id": "0287d80bc63efdbd",
+        "id": "a8903ce42382a174",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "debug 3",
         "active": false,
         "tosidebar": true,
@@ -888,9 +888,9 @@
         "wires": []
     },
     {
-        "id": "b51793160de71d89",
+        "id": "de1cece6a9f3c50b",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "create logs",
         "func": "const arr = []; \n\nfor (let feed of msg.payload.feeds)\n{\n    let dateStr = feed.created_at;\n    let val = feed.field1;\n    const objLog = {}; \n\n    // // detect abnormality: maybe data is not written yet\n    // if (val === \"\") {\n    //     msg.payload = -1;\n    //     return msg;\n    // }\n\n    let msgLog = \"\";\n    // set topic and log message\n    if (val === \"3\") {\n        objLog.topic = \"Danger alert\";\n        msgLog = \"Danger alert was sent\";\n    }\n\n    else if (val === \"1\" || val === \"2\") {\n        objLog.topic = \"Lock status\";\n        msgLog = (val === \"2\" ? \": Door was unlocked\" : \": Door was locked\");\n    }\n\n    // Split date and time\n    let parts = dateStr.split(\"T\");\n    let date = parts[0];\n    let timeAndOffset = parts[1];\n\n    // Remove timezone offset\n    var timeWithoutOffset = timeAndOffset.split(\"+\")[0];\n\n\n    objLog.payload = date + \", \" + timeWithoutOffset + \" \" + msgLog; \n    arr.push(objLog); \n}\n\nmsg.payload = arr; \nreturn msg;",
         "outputs": 1,
@@ -898,30 +898,30 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 810,
-        "y": 1200,
+        "x": 650,
+        "y": 1320,
         "wires": [
             [
-                "54ed57a417145d9a",
-                "520ffa224335e9e9",
-                "5d0355e915f258fe"
+                "21cf670bfd6eb54b",
+                "e48104653ba9295b",
+                "2a0f1fdc95d008a4"
             ]
         ]
     },
     {
-        "id": "9ed1098141f2ed58",
+        "id": "83726ea953b9c7c4",
         "type": "comment",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Telegram",
         "info": "",
         "x": 200,
-        "y": 2200,
+        "y": 2420,
         "wires": []
     },
     {
-        "id": "403c52d203957039",
+        "id": "cca45d7eb117f690",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "function 10",
         "func": "msg.callback = msg.payload;\nreturn msg;",
         "outputs": 1,
@@ -930,17 +930,17 @@
         "finalize": "",
         "libs": [],
         "x": 520,
-        "y": 2540,
+        "y": 2680,
         "wires": [
             [
-                "b7d5390de02c41f5"
+                "2279cf096d8860b4"
             ]
         ]
     },
     {
-        "id": "b7d5390de02c41f5",
+        "id": "2279cf096d8860b4",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "function 11",
         "func": "if (msg.callback.content == `It's me`) {\n    msg.payload.content = 'Its you';\n}\nif (msg.callback.content == `It's not me!`) {\n    msg.payload.content = 'Its not you';\n}\nif (msg.callback.content == 3) {\n    msg.payload.content = 'Turn off danger mode';\n}\nmsg.payload.type = \"message\";\nmsg.payload.chatId = '6562331656';\n// msg.payload.reply_markup = JSON.stringify({ remove_keyboard: true })\n// msg.payload.reply_markup = JSON.stringify({ inline_keyboard: [] });\n\nreturn msg;",
         "outputs": 1,
@@ -949,18 +949,18 @@
         "finalize": "",
         "libs": [],
         "x": 680,
-        "y": 2540,
+        "y": 2680,
         "wires": [
             [
-                "9134a1abf363d2d2",
-                "d5ce0c23927c44bd"
+                "a63bcf121ed1eb77",
+                "792a70e3e65b7aab"
             ]
         ]
     },
     {
-        "id": "26c217c004ef7714",
+        "id": "480f6afa6f26c092",
         "type": "mqtt in",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "topic": "21127089/doorAlert",
         "qos": "2",
@@ -971,17 +971,17 @@
         "rh": 0,
         "inputs": 0,
         "x": 170,
-        "y": 2300,
+        "y": 2520,
         "wires": [
             [
-                "47d870df96daaff7"
+                "afd78125416c855a"
             ]
         ]
     },
     {
-        "id": "151b01946a58178d",
+        "id": "e30842275abbcb74",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "debug 11",
         "active": true,
         "tosidebar": true,
@@ -991,13 +991,13 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 820,
-        "y": 2220,
+        "y": 2440,
         "wires": []
     },
     {
-        "id": "8e62ab63b3a5cb5d",
+        "id": "0cff17d160e3afe8",
         "type": "mqtt out",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "topic": "21127089/alertReply",
         "qos": "2",
@@ -1009,13 +1009,13 @@
         "expiry": "",
         "broker": "e609c620bd3749d8",
         "x": 920,
-        "y": 2660,
+        "y": 2800,
         "wires": []
     },
     {
-        "id": "ea1891746c9a6ca3",
+        "id": "b0b3e850665d9f72",
         "type": "mqtt in",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "topic": "21127089/dangerModeOpts",
         "qos": "2",
@@ -1026,17 +1026,17 @@
         "rh": 0,
         "inputs": 0,
         "x": 180,
-        "y": 2680,
+        "y": 2820,
         "wires": [
             [
-                "41238e480c113c5b"
+                "19b1381684bf6d61"
             ]
         ]
     },
     {
-        "id": "41238e480c113c5b",
+        "id": "19b1381684bf6d61",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "function 12",
         "func": "var opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        \"keyboard\": [[\n            {\n                \"text\": \"Turn off danger mode\",\n            },\n        ]],\n        \"one_time_keyboard\": true\n    })\n};\nmsg.payload = {};\nmsg.error = false;\nmsg.payload.content = 'Tap to turn off Danger Mode.';\nmsg.payload.options = opts;\nmsg.payload.chatId = '6562331656';\nmsg.payload.type = \"message\";\nreturn [msg];",
         "outputs": 1,
@@ -1045,17 +1045,17 @@
         "finalize": "",
         "libs": [],
         "x": 440,
-        "y": 2680,
+        "y": 2820,
         "wires": [
             [
-                "11af81b1fb33145d"
+                "9ecaef8673466e4b"
             ]
         ]
     },
     {
-        "id": "47d870df96daaff7",
+        "id": "afd78125416c855a",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "function 5.1",
         "func": "var opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        \"keyboard\": [[\n            {\n                \"text\": \"It's me\",\n            },\n            {\n                \"text\": \"It's not me!\",\n            }\n        ]],\n        \"one_time_keyboard\": true\n    })\n};\nmsg.payload = {};\nmsg.error = false;\nmsg.payload.content = 'Selection?';\nmsg.payload.options = opts;\nmsg.payload.chatId = '6562331656';\nmsg.payload.type = \"message\";\nreturn [msg];",
         "outputs": 1,
@@ -1064,17 +1064,17 @@
         "finalize": "",
         "libs": [],
         "x": 390,
-        "y": 2300,
+        "y": 2520,
         "wires": [
             [
-                "5d4231e570bfdd6e"
+                "9f0c713315e23b9a"
             ]
         ]
     },
     {
-        "id": "551cfbf3f3d1d51e",
+        "id": "0494fac1435d634f",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "debug 12",
         "active": true,
         "tosidebar": true,
@@ -1084,13 +1084,13 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 440,
-        "y": 2480,
+        "y": 2620,
         "wires": []
     },
     {
-        "id": "614f36fe04fae1fc",
+        "id": "e0082fdb85cb12e3",
         "type": "switch",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "property": "payload.content",
         "propertyType": "msg",
@@ -1110,20 +1110,20 @@
         "repair": false,
         "outputs": 2,
         "x": 330,
-        "y": 2560,
+        "y": 2700,
         "wires": [
             [
-                "403c52d203957039"
+                "cca45d7eb117f690"
             ],
             [
-                "403c52d203957039"
+                "cca45d7eb117f690"
             ]
         ]
     },
     {
-        "id": "4392ed0214b00650",
+        "id": "ab688a76c52fe3b1",
         "type": "inject",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "props": [
             {
@@ -1142,17 +1142,17 @@
         "payload": "",
         "payloadType": "date",
         "x": 220,
-        "y": 2360,
+        "y": 2580,
         "wires": [
             [
-                "47d870df96daaff7"
+                "afd78125416c855a"
             ]
         ]
     },
     {
-        "id": "4c895b3b0c395ddf",
+        "id": "bfeaf87cb21d28c5",
         "type": "inject",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "props": [
             {
@@ -1171,17 +1171,17 @@
         "payload": "",
         "payloadType": "date",
         "x": 240,
-        "y": 2740,
+        "y": 2880,
         "wires": [
             [
-                "41238e480c113c5b"
+                "19b1381684bf6d61"
             ]
         ]
     },
     {
-        "id": "d5ce0c23927c44bd",
+        "id": "792a70e3e65b7aab",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "function 13",
         "func": "msg.payload = msg.payload.content\nreturn msg;",
         "outputs": 1,
@@ -1190,83 +1190,83 @@
         "finalize": "",
         "libs": [],
         "x": 740,
-        "y": 2620,
+        "y": 2760,
         "wires": [
             [
-                "8e62ab63b3a5cb5d"
+                "0cff17d160e3afe8"
             ]
         ]
     },
     {
-        "id": "2accb8ade221812d",
+        "id": "b0b4cc325cc9b565",
         "type": "telegram receiver",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "d": true,
         "name": "",
         "bot": "16a8eea19b573829",
         "saveDataDir": "",
         "filterCommands": false,
         "x": 130,
-        "y": 2540,
+        "y": 2680,
         "wires": [
             [
-                "551cfbf3f3d1d51e",
-                "614f36fe04fae1fc"
+                "0494fac1435d634f",
+                "e0082fdb85cb12e3"
             ],
             []
         ]
     },
     {
-        "id": "5d4231e570bfdd6e",
+        "id": "9f0c713315e23b9a",
         "type": "telegram sender",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "d": true,
         "name": "",
         "bot": "16a8eea19b573829",
         "haserroroutput": false,
         "outputs": 1,
         "x": 610,
-        "y": 2300,
+        "y": 2520,
         "wires": [
             [
-                "151b01946a58178d"
+                "e30842275abbcb74"
             ]
         ]
     },
     {
-        "id": "11af81b1fb33145d",
+        "id": "9ecaef8673466e4b",
         "type": "telegram sender",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "d": true,
         "name": "",
         "bot": "16a8eea19b573829",
         "haserroroutput": false,
         "outputs": 1,
         "x": 650,
+        "y": 2820,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "a63bcf121ed1eb77",
+        "type": "telegram sender",
+        "z": "6bfeec6122bbd2e8",
+        "d": true,
+        "name": "",
+        "bot": "16a8eea19b573829",
+        "haserroroutput": false,
+        "outputs": 1,
+        "x": 930,
         "y": 2680,
         "wires": [
             []
         ]
     },
     {
-        "id": "9134a1abf363d2d2",
-        "type": "telegram sender",
-        "z": "d8f87e00334234e5",
-        "d": true,
-        "name": "",
-        "bot": "16a8eea19b573829",
-        "haserroroutput": false,
-        "outputs": 1,
-        "x": 870,
-        "y": 2540,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "84898f6a01c687d8",
+        "id": "3dce9ccee0ce1fbc",
         "type": "mqtt in",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "topic": "device/door_not_closed",
         "qos": "2",
@@ -1280,15 +1280,15 @@
         "y": 780,
         "wires": [
             [
-                "3abbafb7d09f37d8",
-                "a3fbe3653e65f229"
+                "759712254001551b",
+                "bc9d228219a14f38"
             ]
         ]
     },
     {
-        "id": "a3fbe3653e65f229",
+        "id": "bc9d228219a14f38",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "turn off lock",
         "func": "msg.payload = false; \nreturn msg;",
         "outputs": 1,
@@ -1300,14 +1300,14 @@
         "y": 780,
         "wires": [
             [
-                "fd1496dcf0d29bdc"
+                "e89c644e6e2c4afa"
             ]
         ]
     },
     {
-        "id": "528278afc7f876e2",
+        "id": "388fb2a76520140e",
         "type": "comment",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "mqtt in explanation",
         "info": "send notification when door not closed and send command to turn off virtual lock and show noti",
         "x": 650,
@@ -1315,9 +1315,9 @@
         "wires": []
     },
     {
-        "id": "47a9bcd30c3322a4",
+        "id": "beeaa5790e4c8dd9",
         "type": "mqtt in",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "topic": "21127089/doorAlert",
         "qos": "2",
@@ -1327,18 +1327,18 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 130,
-        "y": 1060,
+        "x": 150,
+        "y": 1180,
         "wires": [
             [
-                "10afb95c20893622"
+                "fe1c5a2cbb782f8c"
             ]
         ]
     },
     {
-        "id": "24a2ac8fb56493bd",
+        "id": "7b96523c72bb8bfa",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "turn off alert on chart",
         "func": "msg.topic = \"danger alert (0: no alert, 3: alert sent)\";\nmsg.payload = 0;\n\nreturn msg;",
         "outputs": 1,
@@ -1346,28 +1346,28 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 340,
-        "y": 1000,
+        "x": 360,
+        "y": 1080,
         "wires": [
             [
-                "b0123b7e084a2a5b"
+                "8a207440a142e767"
             ]
         ]
     },
     {
-        "id": "8dd012ea800895d2",
+        "id": "776ae5d92017b3ea",
         "type": "comment",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "info": "turn off alert on chart function will be executed in 2 cases: \n 1. On first loaded\n 2. Right after danger alert is sent\n\n Danger alert gets fired and goes through the graph and turn off function at the same time. It will make sure to send 0 signal right after danger alert is triggered.\n Before writing the new lock status to the chart, it writes the old status value",
-        "x": 700,
-        "y": 960,
+        "x": 720,
+        "y": 1080,
         "wires": []
     },
     {
-        "id": "2b345528913ac078",
+        "id": "668eb541c36a8da1",
         "type": "inject",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "d": true,
         "name": "",
         "props": [
@@ -1386,18 +1386,18 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 140,
-        "y": 1100,
+        "x": 160,
+        "y": 1220,
         "wires": [
             [
-                "10afb95c20893622"
+                "fe1c5a2cbb782f8c"
             ]
         ]
     },
     {
-        "id": "e591c47d589087e6",
+        "id": "f8571188de6e9b26",
         "type": "http request",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "d": true,
         "name": "Write lock",
         "method": "GET",
@@ -1411,16 +1411,16 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 720,
-        "y": 1000,
+        "x": 740,
+        "y": 1120,
         "wires": [
             []
         ]
     },
     {
-        "id": "58972588ade27245",
+        "id": "9d3fe675f3b66e81",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "door lock/unlock",
         "func": "\nlet stat = flow.get(\"device_locked\");\n\nmsg.topic = \"door lock (1: locked, 2: unlocked)\";\nmsg.payload = (stat === true ? 1 : 2);\n\nreturn msg;",
         "outputs": 1,
@@ -1428,19 +1428,19 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 380,
-        "y": 920,
+        "x": 320,
+        "y": 1020,
         "wires": [
             [
-                "b0123b7e084a2a5b",
-                "e591c47d589087e6"
+                "8a207440a142e767",
+                "f8571188de6e9b26"
             ]
         ]
     },
     {
-        "id": "17b1e1d15f48d96f",
+        "id": "b9b01c4b71aa17d7",
         "type": "inject",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "clear chart",
         "props": [
             {
@@ -1458,90 +1458,18 @@
         "topic": "",
         "payload": "[]",
         "payloadType": "jsonata",
-        "x": 440,
-        "y": 1120,
+        "x": 460,
+        "y": 1240,
         "wires": [
             [
-                "b0123b7e084a2a5b"
+                "8a207440a142e767"
             ]
         ]
     },
     {
-        "id": "1fcb2f5518d4a84d",
-        "type": "moment",
-        "z": "d8f87e00334234e5",
-        "name": "",
-        "topic": "",
-        "input": "payload",
-        "inputType": "msg",
-        "inTz": "Asia/Ho_Chi_Minh",
-        "adjAmount": 0,
-        "adjType": "days",
-        "adjDir": "add",
-        "format": "ddd, Do MMM, YYYY, hh:mm:ss",
-        "locale": "vi_VN",
-        "output": "payload",
-        "outputType": "msg",
-        "outTz": "Asia/Ho_Chi_Minh",
-        "x": 420,
-        "y": 1340,
-        "wires": [
-            [
-                "7a79f03321bf1181"
-            ]
-        ]
-    },
-    {
-        "id": "42e181fcde694cf9",
-        "type": "inject",
-        "z": "d8f87e00334234e5",
-        "d": true,
-        "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "1",
-        "crontab": "",
-        "once": false,
-        "onceDelay": "1",
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 190,
-        "y": 1340,
-        "wires": [
-            [
-                "1fcb2f5518d4a84d"
-            ]
-        ]
-    },
-    {
-        "id": "7a79f03321bf1181",
-        "type": "function",
-        "z": "d8f87e00334234e5",
-        "name": "get datetime",
-        "func": "flow.set(\"datetime\", msg.payload); \nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 650,
-        "y": 1340,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "51c6ae3e56d850ab",
+        "id": "67bb1f4efc81ff69",
         "type": "http request",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Read cloud",
         "method": "GET",
         "ret": "obj",
@@ -1554,19 +1482,19 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 530,
-        "y": 1200,
+        "x": 370,
+        "y": 1320,
         "wires": [
             [
-                "b51793160de71d89",
-                "e8aca99590039370"
+                "de1cece6a9f3c50b",
+                "32337def7d0586a6"
             ]
         ]
     },
     {
-        "id": "e8aca99590039370",
+        "id": "32337def7d0586a6",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "debug 15",
         "active": true,
         "tosidebar": true,
@@ -1576,14 +1504,14 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 700,
-        "y": 1240,
+        "x": 540,
+        "y": 1360,
         "wires": []
     },
     {
-        "id": "63454f1a184e3569",
+        "id": "e910a2ef58c42394",
         "type": "http request",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "d": true,
         "name": "Read danger alert",
         "method": "GET",
@@ -1597,19 +1525,19 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 550,
-        "y": 1280,
+        "x": 390,
+        "y": 1400,
         "wires": [
             [
-                "1bd95f1be44fbaef",
-                "a71f406d0de7ab0a"
+                "d5fc3c1e68daa606",
+                "c54a94e1de178f5c"
             ]
         ]
     },
     {
-        "id": "1bd95f1be44fbaef",
+        "id": "d5fc3c1e68daa606",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "debug 16",
         "active": false,
         "tosidebar": true,
@@ -1618,14 +1546,14 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 760,
-        "y": 1320,
+        "x": 600,
+        "y": 1440,
         "wires": []
     },
     {
-        "id": "8712c6c8b19427f5",
+        "id": "3c7e4373a24df3af",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "debug 17",
         "active": false,
         "tosidebar": true,
@@ -1634,14 +1562,14 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 940,
-        "y": 920,
+        "x": 960,
+        "y": 1040,
         "wires": []
     },
     {
-        "id": "6974bfb26f276d8d",
+        "id": "828bd6bd5b2439d0",
         "type": "http request",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "d": true,
         "name": "Write danger alert",
         "method": "GET",
@@ -1655,16 +1583,16 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 970,
-        "y": 1080,
+        "x": 990,
+        "y": 1200,
         "wires": [
             []
         ]
     },
     {
-        "id": "a71f406d0de7ab0a",
+        "id": "c54a94e1de178f5c",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "create alert log",
         "func": "\nmsg.topic = \"Danger alert\"; \nconst obj = msg.payload.feeds[0]; // obj as \"3\" as field2\nlet dateStr = obj.created_at; \nlet val = obj.field2; \n\n// detect abnormality: maybe data is not written yet\nif (val == \"0\" || val == \"\")\n{\n    msg.payload = -1; \n    return msg; \n}\n\n// Split date and time\nlet parts = dateStr.split(\"T\");\nlet date = parts[0];\nlet timeAndOffset = parts[1];\n\n// Remove timezone offset\nvar timeWithoutOffset = timeAndOffset.split(\"+\")[0];\n\nmsg.payload = date + \", \" + timeWithoutOffset + \": Danger alert was sent\"; \nreturn msg;",
         "outputs": 1,
@@ -1672,18 +1600,18 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 860,
-        "y": 1280,
+        "x": 700,
+        "y": 1400,
         "wires": [
             [
-                "54ed57a417145d9a"
+                "21cf670bfd6eb54b"
             ]
         ]
     },
     {
-        "id": "54ed57a417145d9a",
+        "id": "21cf670bfd6eb54b",
         "type": "switch",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "d": true,
         "name": "",
         "property": "payload",
@@ -1698,18 +1626,18 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 1050,
-        "y": 1280,
+        "x": 890,
+        "y": 1400,
         "wires": [
             [
-                "520ffa224335e9e9"
+                "e48104653ba9295b"
             ]
         ]
     },
     {
-        "id": "7b80e988d1598815",
+        "id": "3e9156de99cd5a62",
         "type": "delay",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "pauseType": "rate",
         "timeout": "5",
@@ -1727,15 +1655,15 @@
         "y": 700,
         "wires": [
             [
-                "8952e2871072cae7",
-                "5be8a7f89d283fda"
+                "77d7328825807022",
+                "f8d99fcd68b2cff0"
             ]
         ]
     },
     {
-        "id": "bfa5303a6dd25b0a",
+        "id": "a98dc336a941202c",
         "type": "comment",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "info": "to prevent messages from getting sent to fast -> infinite loop so we queue messages",
         "x": 1180,
@@ -1743,9 +1671,9 @@
         "wires": []
     },
     {
-        "id": "a065950d244cb101",
+        "id": "7a8c33ccfd49b7d6",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "set old lock stat",
         "func": "\nlet stat = flow.get(\"device_locked\");\nstat = !stat; \n\nmsg.topic = \"door lock (1: locked, 2: unlocked)\";\nmsg.payload = (stat === true ? 1 : 2);\n\nreturn msg;",
         "outputs": 1,
@@ -1753,19 +1681,19 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 280,
-        "y": 840,
+        "x": 120,
+        "y": 940,
         "wires": [
             [
-                "58972588ade27245",
-                "b0123b7e084a2a5b"
+                "9d3fe675f3b66e81",
+                "8a207440a142e767"
             ]
         ]
     },
     {
-        "id": "92768a99f05396f4",
+        "id": "ed88bc8942e92c99",
         "type": "mqtt in",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "on-start device",
         "topic": "21127119/device_activated",
         "qos": "2",
@@ -1775,18 +1703,18 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 160,
-        "y": 2080,
+        "x": 180,
+        "y": 2220,
         "wires": [
             [
-                "8725a9d30ad9414e"
+                "da1fd1cb76155040"
             ]
         ]
     },
     {
-        "id": "8725a9d30ad9414e",
+        "id": "da1fd1cb76155040",
         "type": "file in",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "filename": "C:\\IOT\\pass.txt",
         "filenameType": "str",
@@ -1795,19 +1723,19 @@
         "sendError": false,
         "encoding": "none",
         "allProps": false,
-        "x": 400,
-        "y": 2080,
+        "x": 420,
+        "y": 2220,
         "wires": [
             [
-                "28cce13559baa166",
-                "b74139f27ace3fcd"
+                "eda86e9c778c6d9a",
+                "61b685dce7b45d78"
             ]
         ]
     },
     {
-        "id": "28cce13559baa166",
+        "id": "eda86e9c778c6d9a",
         "type": "mqtt out",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "pub password",
         "topic": "21127119/pass",
         "qos": "2",
@@ -1818,14 +1746,14 @@
         "correl": "",
         "expiry": "",
         "broker": "e609c620bd3749d8",
-        "x": 600,
-        "y": 2080,
+        "x": 620,
+        "y": 2220,
         "wires": []
     },
     {
-        "id": "935c44a04498c77e",
+        "id": "aa071aa0adf230d7",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "set pass",
         "func": "flow.set(\"pass\", msg.payload); \nreturn msg;",
         "outputs": 1,
@@ -1833,16 +1761,16 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 460,
-        "y": 1780,
+        "x": 400,
+        "y": 1920,
         "wires": [
             []
         ]
     },
     {
-        "id": "320c00a421b120aa",
+        "id": "face14628e2f6043",
         "type": "file",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "write new pass",
         "filename": "C:\\IOT\\pass.txt",
         "filenameType": "str",
@@ -1850,19 +1778,19 @@
         "createDir": true,
         "overwriteFile": "true",
         "encoding": "none",
-        "x": 940,
-        "y": 1900,
+        "x": 880,
+        "y": 2040,
         "wires": [
             [
-                "dc1768d603e8ebce",
-                "63c4bcb43e05fe07"
+                "7da94db8f2e7f055",
+                "5dddc6ee808f9bba"
             ]
         ]
     },
     {
-        "id": "f25b84fbc9b352a7",
+        "id": "401374f51e0d0f42",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "check pass",
         "func": "let pass = msg.payload; \n\n// tối đa 16 ký tự\nif (pass.length === \"\" || pass.length > 16){\n    msg.payload = false; \n    return msg;  \n}\n\n// phải là số\nfor (let c of pass){\n    if (c < '0' || c > '9'){\n        msg.payload = false;\n        return msg;  \n    }\n}\n\nmsg.payload = true; \nflow.set(\"pass\", pass); \nreturn msg;",
         "outputs": 1,
@@ -1870,19 +1798,19 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 450,
-        "y": 1840,
+        "x": 390,
+        "y": 1980,
         "wires": [
             [
-                "9d8d7c8c919189fa",
-                "2d17f0e971dcf603"
+                "fe315a82bce565f0",
+                "6e16a31096cbcf49"
             ]
         ]
     },
     {
-        "id": "9d8d7c8c919189fa",
+        "id": "fe315a82bce565f0",
         "type": "switch",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "pass valid",
         "property": "payload",
         "propertyType": "msg",
@@ -1894,19 +1822,19 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 640,
-        "y": 1840,
+        "x": 580,
+        "y": 1980,
         "wires": [
             [
-                "324f4b8474cdfb63",
-                "302d59a4ac360810"
+                "bd46f18bb2628c36",
+                "c8bd34ce9ab47da6"
             ]
         ]
     },
     {
-        "id": "dc1768d603e8ebce",
+        "id": "7da94db8f2e7f055",
         "type": "mqtt out",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "pub password",
         "topic": "21127119/pass",
         "qos": "2",
@@ -1917,14 +1845,14 @@
         "correl": "",
         "expiry": "",
         "broker": "e609c620bd3749d8",
-        "x": 1160,
-        "y": 1900,
+        "x": 1100,
+        "y": 2040,
         "wires": []
     },
     {
-        "id": "2d17f0e971dcf603",
+        "id": "6e16a31096cbcf49",
         "type": "switch",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "pass invalid",
         "property": "payload",
         "propertyType": "msg",
@@ -1936,18 +1864,18 @@
         "checkall": "true",
         "repair": false,
         "outputs": 1,
-        "x": 670,
-        "y": 1960,
+        "x": 610,
+        "y": 2100,
         "wires": [
             [
-                "a80b0768c63fc191"
+                "d65ac77a7eace32e"
             ]
         ]
     },
     {
-        "id": "ed7d7a0a8ac268ba",
+        "id": "10476c76d779731a",
         "type": "ui_toast",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "position": "bottom right",
         "displayTime": "3",
         "highlight": "red",
@@ -1959,14 +1887,14 @@
         "className": "",
         "topic": "",
         "name": "",
-        "x": 1110,
-        "y": 1960,
+        "x": 1050,
+        "y": 2100,
         "wires": []
     },
     {
-        "id": "a80b0768c63fc191",
+        "id": "d65ac77a7eace32e",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "set fail msg",
         "func": "\nmsg.topic = \"Invalid password\"; \nmsg.payload = \"Cant change password\"; \nreturn msg;",
         "outputs": 1,
@@ -1974,18 +1902,18 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 870,
-        "y": 1960,
+        "x": 810,
+        "y": 2100,
         "wires": [
             [
-                "ed7d7a0a8ac268ba"
+                "10476c76d779731a"
             ]
         ]
     },
     {
-        "id": "63c4bcb43e05fe07",
+        "id": "5dddc6ee808f9bba",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "debug 19",
         "active": true,
         "tosidebar": true,
@@ -1994,14 +1922,14 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1140,
-        "y": 1780,
+        "x": 1080,
+        "y": 1920,
         "wires": []
     },
     {
-        "id": "b74139f27ace3fcd",
+        "id": "61b685dce7b45d78",
         "type": "debug",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "debug 20",
         "active": true,
         "tosidebar": true,
@@ -2010,14 +1938,14 @@
         "complete": "false",
         "statusVal": "",
         "statusType": "auto",
-        "x": 600,
-        "y": 2140,
+        "x": 620,
+        "y": 2280,
         "wires": []
     },
     {
-        "id": "302d59a4ac360810",
+        "id": "c8bd34ce9ab47da6",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "retrieve pass",
         "func": "msg.payload = flow.get(\"pass\"); \nreturn msg;",
         "outputs": 1,
@@ -2025,18 +1953,18 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 750,
-        "y": 1900,
+        "x": 690,
+        "y": 2040,
         "wires": [
             [
-                "320c00a421b120aa"
+                "face14628e2f6043"
             ]
         ]
     },
     {
-        "id": "d57dd296953f0ccd",
+        "id": "4f35afc3b1e0d0a0",
         "type": "inject",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Always update log",
         "props": [
             {
@@ -2054,18 +1982,18 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 310,
-        "y": 1200,
+        "x": 150,
+        "y": 1320,
         "wires": [
             [
-                "51c6ae3e56d850ab"
+                "67bb1f4efc81ff69"
             ]
         ]
     },
     {
-        "id": "185e1cc2bb825d7f",
+        "id": "6d9081c21e23cd62",
         "type": "inject",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "Empty log",
         "props": [
             {
@@ -2083,18 +2011,18 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 980,
-        "y": 1420,
+        "x": 800,
+        "y": 1480,
         "wires": [
             [
-                "16216c0c8f62154d"
+                "65c7b65a5f6042d8"
             ]
         ]
     },
     {
-        "id": "16216c0c8f62154d",
+        "id": "65c7b65a5f6042d8",
         "type": "function",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "updateLog",
         "func": "msg.payload = []; \nflow.set('dashboardLog', []);  \nreturn msg; ",
         "outputs": 1,
@@ -2102,18 +2030,18 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1170,
-        "y": 1420,
+        "x": 990,
+        "y": 1480,
         "wires": [
             [
-                "5d0355e915f258fe"
+                "2a0f1fdc95d008a4"
             ]
         ]
     },
     {
-        "id": "8e8efd6843e9f40d",
+        "id": "ddcc9db9cb5d3008",
         "type": "mqtt out",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "topic": "time/time_out",
         "qos": "2",
@@ -2129,9 +2057,9 @@
         "wires": []
     },
     {
-        "id": "54c127936eecc2c6",
+        "id": "e42d9cfa438023cc",
         "type": "ui_numeric",
-        "z": "d8f87e00334234e5",
+        "z": "6bfeec6122bbd2e8",
         "name": "",
         "label": "Auto locking",
         "tooltip": "",
@@ -2152,7 +2080,7 @@
         "y": 700,
         "wires": [
             [
-                "8e8efd6843e9f40d"
+                "ddcc9db9cb5d3008"
             ]
         ]
     },
