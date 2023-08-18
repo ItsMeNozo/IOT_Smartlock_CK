@@ -127,6 +127,12 @@ void setup()
 	analogWrite(PIN_RED_02, 255);
 	analogWrite(PIN_BLUE_02, 0);
 
+	// auto lighting for keypad
+	pinMode(35, INPUT);
+	pinMode(PIN_RED_01, OUTPUT);
+	pinMode(PIN_GREEN_01, OUTPUT);
+	pinMode(PIN_BLUE_01, OUTPUT);
+
 	// mqtt
 	mqttConnect();
 
@@ -379,6 +385,22 @@ void lock_unlock()
 	// int switchState = data.switchState;
 	// handleOuterButton(switchState, true);
 }
+bool kpLightOn = false;
+void autoKeypadLight() {
+	if (analogRead(35) > 1700) { // turn on
+		if (!kpLightOn) {
+			analogWrite(PIN_GREEN_01, 255);
+			analogWrite(PIN_RED_01, 255);
+			analogWrite(PIN_BLUE_01, 255);
+			kpLightOn = true;
+		}
+	} else if (kpLightOn) { // turn off
+		analogWrite(PIN_GREEN_01, 0);
+		analogWrite(PIN_RED_01, 0);
+		analogWrite(PIN_BLUE_01, 0);
+		kpLightOn = false;
+	}
+}
 
 // subscribe callback
 void callback(char *topic, byte *payload, unsigned int length)
@@ -533,5 +555,7 @@ void loop()
 	handleKeypad();
 
 	schedule_auto();
+
+	autoKeypadLight();
 	delay(100);
 }
