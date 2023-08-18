@@ -231,7 +231,13 @@ void authenBeforeUnlock()
 	lcd.clear();
 
 	if (userInput.length() == 0)
+	{
+		lcd.clear();
+		lcd.println("No input");
+		delay(1000);
+		lcd.clear();
 		return;
+	}
 
 	if (isPasswordCorrect())
 	{
@@ -386,15 +392,20 @@ void lock_unlock()
 	// handleOuterButton(switchState, true);
 }
 bool kpLightOn = false;
-void autoKeypadLight() {
-	if (analogRead(35) > 1700) { // turn on
-		if (!kpLightOn) {
+void autoKeypadLight()
+{
+	if (analogRead(35) > 1700)
+	{ // turn on
+		if (!kpLightOn)
+		{
 			analogWrite(PIN_GREEN_01, 255);
 			analogWrite(PIN_RED_01, 255);
 			analogWrite(PIN_BLUE_01, 255);
 			kpLightOn = true;
 		}
-	} else if (kpLightOn) { // turn off
+	}
+	else if (kpLightOn)
+	{ // turn off
 		analogWrite(PIN_GREEN_01, 0);
 		analogWrite(PIN_RED_01, 0);
 		analogWrite(PIN_BLUE_01, 0);
