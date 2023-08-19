@@ -233,10 +233,10 @@ void authenBeforeUnlock()
 
 	if (userInput.length() == 0)
 	{
-		lcd.clear();
+		lcd.clear(); 
 		lcd.println("No input");
-		delay(1000);
-		lcd.clear();
+		delay(1000); 
+		lcd.clear(); 
 		return;
 	}
 
@@ -393,20 +393,15 @@ void lock_unlock()
 	// handleOuterButton(switchState, true);
 }
 bool kpLightOn = false;
-void autoKeypadLight()
-{
-	if (analogRead(35) > 1700)
-	{ // turn on
-		if (!kpLightOn)
-		{
+void autoKeypadLight() {
+	if (analogRead(35) > 1700) { // turn on
+		if (!kpLightOn) {
 			analogWrite(PIN_GREEN_01, 255);
 			analogWrite(PIN_RED_01, 255);
 			analogWrite(PIN_BLUE_01, 255);
 			kpLightOn = true;
 		}
-	}
-	else if (kpLightOn)
-	{ // turn off
+	} else if (kpLightOn) { // turn off
 		analogWrite(PIN_GREEN_01, 0);
 		analogWrite(PIN_RED_01, 0);
 		analogWrite(PIN_BLUE_01, 0);
@@ -464,27 +459,29 @@ void callback(char *topic, byte *payload, unsigned int length)
 		correctPassword = data;
 
 		Serial.println("----------------");
+
 	}
 
 	else if (String(topic) == "21127089/alertReply")
 	{
-		if (data == "It's me")
+		if (data == "Ok. Keypad is re-enabled.")
 		{
 			isReplied = true;
 			initAuthen();
 		}
-		else if (data == "It's not me")
+		else if (data == "Danger mode is on.")
 		{
 			isReplied = true;
 			turnOnDangerMode();
 		}
-		else if (data == "Turn off danger mode")
+		else if (data == "Ok. Your device went back to normal.")
 		{
 			turnOffDangerMode();
 			initAuthen();
 		}
 	}
 }
+
 
 void mqttConnect()
 {

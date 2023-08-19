@@ -689,7 +689,7 @@
         "type": "function",
         "z": "6bfeec6122bbd2e8",
         "name": "set_device_locked",
-        "func": "const device_locked = (msg.payload == \"🔒 Locked\" ? true : false); \nflow.set(\"device_locked\", device_locked); \nflow.set(\"prev_lock\", device_locked); \nreturn msg;",
+        "func": "const device_locked = (msg.payload == \"🔒 Locked\" ? true : false); \nflow.set(\"device_locked\", device_locked); \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1760,7 +1760,7 @@
         "type": "function",
         "z": "6bfeec6122bbd2e8",
         "name": "function 15",
-        "func": "// msg.callback = msg.payload;\nreturn msg;",
+        "func": "let userRep = msg.payload.content;\n\nif (userRep === \"It's me\")\n    msg.payload = \"Ok. Keypad is re-enabled.\";\nelse if (userRep === \"It's not me\")\n    msg.payload = \"Danger mode is on.\";\nelse if (userRep === \"Turn off danger mode\")\n    msg.payload = \"Ok. Your device went back to normal.\";\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -1770,8 +1770,10 @@
         "y": 2720,
         "wires": [
             [
-                "a189f91db6dcbcee",
-                "6939ce4dfe9c2d0b"
+                "6939ce4dfe9c2d0b",
+                "44f9f2c221bea9ed",
+                "b775390baccd0faa",
+                "d04a62ce68ea150c"
             ]
         ]
     },
@@ -1907,7 +1909,7 @@
         "type": "function",
         "z": "6bfeec6122bbd2e8",
         "name": "function 5.1",
-        "func": "var opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        \"keyboard\": [[\n            {\n                \"text\": \"It's me\",\n            },\n            {\n                \"text\": \"It's not me\",\n            }\n        ]],\n        \"one_time_keyboard\": true\n    })\n};\nmsg.payload = {};\nmsg.error = false;\nmsg.payload.content = 'Selection?';\nmsg.payload.options = opts;\nmsg.payload.chatId = '5568748632';\nmsg.payload.type = \"message\";\nreturn [msg];",
+        "func": "var opts = {\n    reply_to_message_id: msg.payload.messageId,\n    reply_markup: JSON.stringify({\n        \"keyboard\": [[\n            {\n                \"text\": \"It's me\",\n            },\n            {\n                \"text\": \"It's not me\",\n            }\n        ]],\n        \"one_time_keyboard\": true\n    })\n};\nmsg.payload = {};\nmsg.error = false;\nmsg.payload.content = 'You have entered the wrong password too many times. Is this you?';\nmsg.payload.options = opts;\nmsg.payload.chatId = '5568748632';\nmsg.payload.type = \"message\";\nreturn [msg];",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2005,10 +2007,12 @@
         "bot": "c02213771d929471",
         "haserroroutput": false,
         "outputs": 1,
-        "x": 830,
+        "x": 890,
         "y": 2720,
         "wires": [
-            []
+            [
+                "30ea4d92249237c4"
+            ]
         ]
     },
     {
@@ -2073,8 +2077,9 @@
         "id": "6939ce4dfe9c2d0b",
         "type": "function",
         "z": "6bfeec6122bbd2e8",
+        "d": true,
         "name": "function 18",
-        "func": "msg.payload = msg.payload.content\nreturn msg;",
+        "func": "let userRep = msg.payload.content; \n\nif (userRep === \"It's me\")\n    msg.payload = \"Ok. Keypad is re-enabled\";\nelse if (userRep === \"It's not me\")\n    msg.payload = \"Danger mode is on.\";\nelse if (userRep === \"Turn off danger mode\")\n    msg.payload = \"Ok. Your device went back to normal.\";\n\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
@@ -2094,7 +2099,7 @@
         "type": "debug",
         "z": "6bfeec6122bbd2e8",
         "name": "debug 23",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -2104,6 +2109,41 @@
         "x": 880,
         "y": 2920,
         "wires": []
+    },
+    {
+        "id": "30ea4d92249237c4",
+        "type": "debug",
+        "z": "6bfeec6122bbd2e8",
+        "name": "debug 24",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 940,
+        "y": 2640,
+        "wires": []
+    },
+    {
+        "id": "d04a62ce68ea150c",
+        "type": "function",
+        "z": "6bfeec6122bbd2e8",
+        "name": "function 19",
+        "func": "let rep = msg.payload; \n\nmsg.payload = {};\nmsg.payload.content = rep; \nmsg.payload.chatId = '5568748632';\nmsg.payload.type = \"message\";\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 670,
+        "y": 2720,
+        "wires": [
+            [
+                "a189f91db6dcbcee"
+            ]
+        ]
     },
     {
         "id": "d86330bc58d8059b",
