@@ -347,8 +347,7 @@
         "wires": [
             [
                 "8a207440a142e767",
-                "7b96523c72bb8bfa",
-                "828bd6bd5b2439d0"
+                "7b96523c72bb8bfa"
             ]
         ]
     },
@@ -534,7 +533,7 @@
         "resendOnRefresh": true,
         "templateScope": "local",
         "className": "",
-        "x": 1090,
+        "x": 830,
         "y": 1320,
         "wires": [
             []
@@ -589,26 +588,6 @@
         "x": 160,
         "y": 1560,
         "wires": []
-    },
-    {
-        "id": "e48104653ba9295b",
-        "type": "function",
-        "z": "6bfeec6122bbd2e8",
-        "d": true,
-        "name": "updateLog",
-        "func": "// initialize the counter to [] if flow.get() doesn't exist already\nvar dashboardLog = flow.get('dashboardLog') || [];\n\ndashboardLog.push(msg);\nif (dashboardLog.length > 20) {\n    // delete the first message in array\n    dashboardLog.shift();\n    dashboardLog.length = 20;\n}\n\nflow.set('dashboardLog', dashboardLog);\n\nconsole.log(msg);\nmsg = {}\nmsg.payload = dashboardLog;\nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 890,
-        "y": 1320,
-        "wires": [
-            [
-                "2a0f1fdc95d008a4"
-            ]
-        ]
     },
     {
         "id": "0c9ac71a9ef8e5a5",
@@ -707,14 +686,14 @@
         "id": "4eec9f0dff98233e",
         "type": "function",
         "z": "6bfeec6122bbd2e8",
-        "name": "device & web lock are synced? ",
+        "name": "device & web lock are not synced? ",
         "func": "const web_lock = flow.get(\"web_lock\");\nconst device_lock = flow.get(\"device_locked\");\n\nnode.warn(`Web lock: ${web_lock}`); \nnode.warn(`Device lock: ${device_lock}`); \n\nif (web_lock == device_lock){\n    // dont allow changing switch\n    msg.payload = false; \n}\nelse \n    msg.payload = true; \n    \nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 550,
+        "x": 560,
         "y": 580,
         "wires": [
             [
@@ -902,8 +881,6 @@
         "y": 1320,
         "wires": [
             [
-                "21cf670bfd6eb54b",
-                "e48104653ba9295b",
                 "2a0f1fdc95d008a4"
             ]
         ]
@@ -1013,7 +990,6 @@
         "id": "668eb541c36a8da1",
         "type": "inject",
         "z": "6bfeec6122bbd2e8",
-        "d": true,
         "name": "",
         "props": [
             {
@@ -1040,29 +1016,6 @@
         ]
     },
     {
-        "id": "f8571188de6e9b26",
-        "type": "http request",
-        "z": "6bfeec6122bbd2e8",
-        "d": true,
-        "name": "Write lock",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "https://api.thingspeak.com/update?api_key=RUK1GD4GABD5TQEN&field1={{payload}}",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 740,
-        "y": 1120,
-        "wires": [
-            []
-        ]
-    },
-    {
         "id": "9d3fe675f3b66e81",
         "type": "function",
         "z": "6bfeec6122bbd2e8",
@@ -1077,8 +1030,7 @@
         "y": 1020,
         "wires": [
             [
-                "8a207440a142e767",
-                "f8571188de6e9b26"
+                "8a207440a142e767"
             ]
         ]
     },
@@ -1154,48 +1106,6 @@
         "wires": []
     },
     {
-        "id": "e910a2ef58c42394",
-        "type": "http request",
-        "z": "6bfeec6122bbd2e8",
-        "d": true,
-        "name": "Read danger alert",
-        "method": "GET",
-        "ret": "obj",
-        "paytoqs": "ignore",
-        "url": "https://api.thingspeak.com/channels/2227143/fields/2.json?api_key=1IPEHQXO7BHRWNUK&results=2&timezone=Asia/Bangkok",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 390,
-        "y": 1400,
-        "wires": [
-            [
-                "d5fc3c1e68daa606",
-                "c54a94e1de178f5c"
-            ]
-        ]
-    },
-    {
-        "id": "d5fc3c1e68daa606",
-        "type": "debug",
-        "z": "6bfeec6122bbd2e8",
-        "name": "debug 16",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 600,
-        "y": 1440,
-        "wires": []
-    },
-    {
         "id": "3c7e4373a24df3af",
         "type": "debug",
         "z": "6bfeec6122bbd2e8",
@@ -1210,74 +1120,6 @@
         "x": 960,
         "y": 1040,
         "wires": []
-    },
-    {
-        "id": "828bd6bd5b2439d0",
-        "type": "http request",
-        "z": "6bfeec6122bbd2e8",
-        "d": true,
-        "name": "Write danger alert",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "https://api.thingspeak.com/update?api_key=RUK1GD4GABD5TQEN&field2={{payload}}",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 990,
-        "y": 1200,
-        "wires": [
-            []
-        ]
-    },
-    {
-        "id": "c54a94e1de178f5c",
-        "type": "function",
-        "z": "6bfeec6122bbd2e8",
-        "name": "create alert log",
-        "func": "\nmsg.topic = \"Danger alert\"; \nconst obj = msg.payload.feeds[0]; // obj as \"3\" as field2\nlet dateStr = obj.created_at; \nlet val = obj.field2; \n\n// detect abnormality: maybe data is not written yet\nif (val == \"0\" || val == \"\")\n{\n    msg.payload = -1; \n    return msg; \n}\n\n// Split date and time\nlet parts = dateStr.split(\"T\");\nlet date = parts[0];\nlet timeAndOffset = parts[1];\n\n// Remove timezone offset\nvar timeWithoutOffset = timeAndOffset.split(\"+\")[0];\n\nmsg.payload = date + \", \" + timeWithoutOffset + \": Danger alert was sent\"; \nreturn msg;",
-        "outputs": 1,
-        "noerr": 0,
-        "initialize": "",
-        "finalize": "",
-        "libs": [],
-        "x": 700,
-        "y": 1400,
-        "wires": [
-            [
-                "21cf670bfd6eb54b"
-            ]
-        ]
-    },
-    {
-        "id": "21cf670bfd6eb54b",
-        "type": "switch",
-        "z": "6bfeec6122bbd2e8",
-        "d": true,
-        "name": "",
-        "property": "payload",
-        "propertyType": "msg",
-        "rules": [
-            {
-                "t": "neq",
-                "v": "-1",
-                "vt": "str"
-            }
-        ],
-        "checkall": "true",
-        "repair": false,
-        "outputs": 1,
-        "x": 890,
-        "y": 1400,
-        "wires": [
-            [
-                "e48104653ba9295b"
-            ]
-        ]
     },
     {
         "id": "3e9156de99cd5a62",
@@ -1656,8 +1498,8 @@
         "topic": "",
         "payload": "",
         "payloadType": "date",
-        "x": 800,
-        "y": 1480,
+        "x": 540,
+        "y": 1420,
         "wires": [
             [
                 "65c7b65a5f6042d8"
@@ -1675,8 +1517,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 990,
-        "y": 1480,
+        "x": 730,
+        "y": 1420,
         "wires": [
             [
                 "2a0f1fdc95d008a4"
