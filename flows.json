@@ -342,7 +342,7 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 410,
+        "x": 590,
         "y": 1180,
         "wires": [
             [
@@ -949,11 +949,11 @@
         "rap": true,
         "rh": 0,
         "inputs": 0,
-        "x": 150,
+        "x": 90,
         "y": 1180,
         "wires": [
             [
-                "fe1c5a2cbb782f8c"
+                "787b32d0e6db5261"
             ]
         ]
     },
@@ -1011,7 +1011,7 @@
         "y": 1220,
         "wires": [
             [
-                "fe1c5a2cbb782f8c"
+                "787b32d0e6db5261"
             ]
         ]
     },
@@ -1984,6 +1984,26 @@
         "wires": [
             [
                 "a189f91db6dcbcee"
+            ]
+        ]
+    },
+    {
+        "id": "787b32d0e6db5261",
+        "type": "function",
+        "z": "6bfeec6122bbd2e8",
+        "name": "turn off alert on chart",
+        "func": "msg.topic = \"danger alert (0: no alert, 3: alert sent)\";\nmsg.payload = 0;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 1180,
+        "wires": [
+            [
+                "fe1c5a2cbb782f8c",
+                "8a207440a142e767"
             ]
         ]
     },
