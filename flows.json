@@ -12,14 +12,14 @@
         "type": "function",
         "z": "6bfeec6122bbd2e8",
         "name": "Verify Login",
-        "func": "if (msg.payload.username === 'admin' && msg.payload.password === 'admin')\n    msg.payload = {\n        \"tab\": \"Home\",\n        \"tabs\": {\n            \"show\": [\"Home\"],\n            \"hide\": [\"Login\"],\n        }\n    };\nelse \n    msg.payload = \"Wrong password or username! Please try again.\"\nreturn msg;",
+        "func": "const correctPass = flow.get(\"pass\"); \n\nif (msg.payload.username === 'admin' && msg.payload.password === correctPass)\n    msg.payload = {\n        \"tab\": \"Home\",\n        \"tabs\": {\n            \"show\": [\"Home\"],\n            \"hide\": [\"Login\"],\n        }\n    };\nelse \n    msg.payload = \"Wrong password or username! Please try again.\"\nreturn msg;",
         "outputs": 1,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 470,
-        "y": 220,
+        "x": 450,
+        "y": 260,
         "wires": [
             [
                 "0160502b846a4868",
@@ -33,8 +33,8 @@
         "z": "6bfeec6122bbd2e8",
         "name": "",
         "events": "all",
-        "x": 720,
-        "y": 220,
+        "x": 700,
+        "y": 260,
         "wires": [
             []
         ]
@@ -60,7 +60,8 @@
         "y": 120,
         "wires": [
             [
-                "6344178dc98241f2"
+                "6344178dc98241f2",
+                "09e9dc2d639b5189"
             ]
         ]
     },
@@ -113,7 +114,7 @@
         "topic": "",
         "name": "",
         "x": 930,
-        "y": 320,
+        "y": 360,
         "wires": []
     },
     {
@@ -127,8 +128,8 @@
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 680,
-        "y": 320,
+        "x": 660,
+        "y": 360,
         "wires": [
             [
                 "1f608a827fead139"
@@ -172,8 +173,8 @@
         "topicType": "msg",
         "splitLayout": "",
         "className": "",
-        "x": 270,
-        "y": 220,
+        "x": 210,
+        "y": 260,
         "wires": [
             [
                 "aa17fe60a5d661d9"
@@ -2006,6 +2007,60 @@
                 "8a207440a142e767"
             ]
         ]
+    },
+    {
+        "id": "09e9dc2d639b5189",
+        "type": "file in",
+        "z": "6bfeec6122bbd2e8",
+        "name": "",
+        "filename": "C:\\IOT\\pass.txt",
+        "filenameType": "str",
+        "format": "utf8",
+        "chunk": false,
+        "sendError": false,
+        "encoding": "none",
+        "allProps": false,
+        "x": 480,
+        "y": 180,
+        "wires": [
+            [
+                "de999ca3606b0cbf",
+                "2f3534a8a90ef5ae"
+            ]
+        ]
+    },
+    {
+        "id": "de999ca3606b0cbf",
+        "type": "function",
+        "z": "6bfeec6122bbd2e8",
+        "name": "get pass from file",
+        "func": "flow.set(\"pass\", msg.payload); \nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 710,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2f3534a8a90ef5ae",
+        "type": "debug",
+        "z": "6bfeec6122bbd2e8",
+        "name": "debug 25",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 700,
+        "y": 220,
+        "wires": []
     },
     {
         "id": "d86330bc58d8059b",
